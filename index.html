@@ -1,0 +1,1336 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="A complete answer key scoring dashboard for Indian government exams." />
+  <title>ExamScorer — Answer Key Scorer</title>
+  <style>
+:root {
+  --bg: #f6f8fc;
+  --surface: #ffffff;
+  --surface-2: #f9fbff;
+  --text: #121a2d;
+  --muted: #667085;
+  --line: #e4e9f2;
+  --primary: #246bfd;
+  --primary-2: #174fc5;
+  --primary-soft: #edf3ff;
+  --success: #1f9d55;
+  --success-soft: #eaf8f0;
+  --danger: #ef4444;
+  --danger-soft: #fff0f0;
+  --warning: #f59e0b;
+  --warning-soft: #fff7df;
+  --neutral: #9aa5b6;
+  --purple: #7c3aed;
+  --shadow: 0 12px 35px rgba(31, 49, 86, 0.07);
+  --shadow-sm: 0 5px 18px rgba(31, 49, 86, 0.06);
+  --radius: 16px;
+  --radius-sm: 11px;
+  --sidebar: 260px;
+}
+
+html[data-theme="dark"] {
+  --bg: #0e1421;
+  --surface: #151d2c;
+  --surface-2: #111827;
+  --text: #f4f7fb;
+  --muted: #9ca9ba;
+  --line: #263247;
+  --primary-soft: #172b52;
+  --success-soft: #123326;
+  --danger-soft: #3b1f25;
+  --warning-soft: #3a2d12;
+  --shadow: 0 16px 38px rgba(0, 0, 0, .24);
+  --shadow-sm: 0 7px 20px rgba(0, 0, 0, .18);
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; min-width: 320px; background: var(--bg); color: var(--text); font: 14px/1.5 Inter, system-ui, sans-serif; }
+button, input, select, textarea { font: inherit; }
+button, select { cursor: pointer; }
+button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, [tabindex]:focus-visible { outline: 3px solid rgba(36,107,253,.22); outline-offset: 2px; }
+.hidden { display: none !important; }
+.skip-link { position: fixed; top: 8px; left: 8px; z-index: 999; padding: 8px 12px; background: var(--primary); color: white; border-radius: 8px; transform: translateY(-150%); }
+.skip-link:focus { transform: none; }
+
+.app-shell { min-height: 100vh; }
+.sidebar { width: var(--sidebar); position: fixed; inset: 0 auto 0 0; background: var(--surface); border-right: 1px solid var(--line); padding: 22px 16px 18px; display: flex; flex-direction: column; z-index: 30; overflow-y: auto; transition: transform .25s ease; }
+.brand-row { display: flex; align-items: center; gap: 12px; padding: 0 4px 22px; }
+.brand-mark { width: 48px; height: 48px; flex: 0 0 48px; display: grid; place-items: center; border-radius: 15px; background: linear-gradient(145deg, #2d7bff, #1551d3); color: white; font-size: 26px; box-shadow: 0 8px 20px rgba(36,107,253,.25); }
+.brand-name { font-size: 19px; font-weight: 800; letter-spacing: -.03em; }
+.brand-subtitle { color: var(--muted); font-size: 12px; }
+.sidebar-close { display: none !important; margin-left: auto; }
+.nav-list { display: grid; gap: 4px; }
+.nav-item { position: relative; width: 100%; min-height: 42px; border: 0; background: transparent; color: var(--muted); display: flex; align-items: center; gap: 12px; padding: 9px 12px; border-radius: 10px; text-align: left; font-weight: 500; }
+.nav-item:hover { color: var(--text); background: var(--surface-2); }
+.nav-item.active { color: var(--primary); background: var(--primary-soft); font-weight: 700; }
+.nav-item.active::before { content: ""; position: absolute; left: -16px; width: 3px; height: 26px; border-radius: 0 4px 4px 0; background: var(--primary); }
+.nav-icon { width: 21px; text-align: center; font-size: 19px; }
+.nav-badge { margin-left: auto; min-width: 21px; height: 21px; display: grid; place-items: center; border-radius: 999px; background: var(--surface-2); color: var(--muted); font-size: 11px; }
+.sidebar-spacer { flex: 1; min-height: 24px; }
+.upgrade-card { padding: 17px; border: 1px solid #bfd1ff; border-radius: 15px; text-align: center; background: linear-gradient(145deg, var(--surface), var(--primary-soft)); margin: 18px 0; }
+.upgrade-card p { margin: 8px 0 14px; color: var(--muted); font-size: 12px; }
+.upgrade-icon { color: var(--warning); font-size: 22px; }
+.sidebar-footer { display: grid; gap: 4px; border-top: 1px solid var(--line); padding-top: 12px; }
+.theme-row { width: 100%; border: 0; background: transparent; color: var(--muted); display: grid; grid-template-columns: 22px 1fr auto; align-items: center; gap: 10px; padding: 9px 12px; text-align: left; }
+.switch { width: 38px; height: 22px; border-radius: 999px; background: #cbd3df; padding: 3px; transition: .2s; }
+.switch span { display: block; width: 16px; height: 16px; border-radius: 50%; background: white; transition: .2s; box-shadow: 0 1px 4px rgba(0,0,0,.2); }
+html[data-theme="dark"] .switch { background: var(--primary); }
+html[data-theme="dark"] .switch span { transform: translateX(16px); }
+
+.main { margin-left: var(--sidebar); min-height: 100vh; padding: 0 22px 42px; }
+.topbar { height: 88px; display: flex; align-items: center; justify-content: space-between; gap: 18px; }
+.topbar-left { display: flex; align-items: center; gap: 12px; }
+.topbar h1 { font-size: 25px; line-height: 1.2; margin: 0; letter-spacing: -.035em; }
+.topbar p { color: var(--muted); margin: 4px 0 0; }
+.topbar-actions { display: flex; align-items: center; gap: 10px; }
+.icon-btn { width: 40px; height: 40px; padding: 0; border-radius: 50%; border: 1px solid var(--line); background: var(--surface); color: var(--text); display: inline-grid; place-items: center; }
+.icon-btn:hover { border-color: #b6c4da; background: var(--surface-2); }
+.mobile-menu { display: none; }
+.notification-btn { position: relative; }
+.notification-btn > span { position: absolute; top: -3px; right: -2px; min-width: 17px; height: 17px; border-radius: 99px; background: var(--danger); color: white; border: 2px solid var(--bg); display: grid; place-items: center; font-size: 9px; }
+.profile-button { border: 0; background: transparent; color: var(--text); display: flex; align-items: center; gap: 9px; padding: 4px 3px; border-radius: 11px; }
+.profile-button:hover { background: var(--surface); }
+.avatar { width: 37px; height: 37px; display: inline-grid; place-items: center; border-radius: 50%; background: linear-gradient(145deg, #111827, #667085); color: white; font-weight: 800; font-size: 12px; }
+
+.view { display: none; }
+.active-view { display: block; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow-sm); }
+.exam-card { display: flex; justify-content: space-between; align-items: center; gap: 28px; padding: 20px 24px; }
+.exam-info { display: flex; align-items: center; gap: 18px; min-width: 390px; }
+.exam-emblem { width: 66px; height: 66px; border-radius: 50%; background: radial-gradient(circle at 30% 25%, #3a86ff, #11439f); color: white; display: grid; place-items: center; font-weight: 800; border: 5px double rgba(255,255,255,.8); box-shadow: inset 0 0 0 2px rgba(255,255,255,.22); }
+.exam-title-line { display: flex; align-items: center; gap: 10px; }
+.exam-title-line h2 { font-size: 18px; margin: 0; letter-spacing: -.02em; }
+.link-btn { border: 0; background: transparent; color: var(--primary); padding: 2px; font-weight: 600; font-size: 12px; }
+.exam-meta { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 10px; }
+.meta-item { min-width: 78px; }
+.meta-item span { display: block; color: var(--muted); font-size: 10px; }
+.meta-item strong { font-size: 12px; }
+.steps { flex: 1; max-width: 740px; display: flex; align-items: center; justify-content: flex-end; gap: 14px; }
+.step { flex: 1; display: flex; align-items: center; gap: 11px; opacity: .58; }
+.step.active, .step.completed { opacity: 1; }
+.step-icon { width: 46px; height: 46px; flex: 0 0 46px; display: grid; place-items: center; border-radius: 50%; background: var(--primary-soft); color: var(--primary); font-size: 20px; }
+.step.completed .step-icon { color: white; background: var(--success); }
+.step div { position: relative; }
+.step small { position: absolute; left: -8px; top: -10px; color: var(--primary); font-weight: 800; font-size: 10px; }
+.step strong { display: block; font-size: 12px; white-space: nowrap; }
+.step p { margin: 3px 0 0; color: var(--muted); font-size: 10px; }
+.step-arrow { color: #a8c1f8; font-size: 22px; }
+
+.workspace-grid { display: grid; grid-template-columns: minmax(0, 1fr) 318px; gap: 20px; align-items: start; margin-top: 18px; }
+.workspace-main { min-width: 0; }
+.setup-panel { padding: 24px; }
+.setup-header, .section-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
+.eyebrow { display: block; color: var(--primary); text-transform: uppercase; font-weight: 800; font-size: 10px; letter-spacing: .11em; margin-bottom: 6px; }
+.setup-header h2, .section-heading h2, .analytics-sidebar h2 { margin: 0; font-size: 17px; letter-spacing: -.02em; }
+.setup-header p, .section-heading p { margin: 5px 0 0; color: var(--muted); }
+.setup-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 20px; }
+.upload-box { min-height: 226px; border: 1.5px dashed #abc4f5; border-radius: 14px; background: var(--primary-soft); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 7px; text-align: center; color: var(--muted); transition: .2s; }
+.upload-box:hover, .upload-box.dragging { border-color: var(--primary); transform: translateY(-1px); }
+.upload-box strong { color: var(--text); }
+.upload-box small { font-size: 11px; }
+.upload-icon { width: 50px; height: 50px; display: grid; place-items: center; border-radius: 50%; background: var(--surface); color: var(--primary); font-size: 23px; box-shadow: var(--shadow-sm); }
+.paste-box label, .form-group label { display: block; margin-bottom: 7px; color: var(--text); font-weight: 700; font-size: 12px; }
+textarea, input, select { width: 100%; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); color: var(--text); padding: 11px 12px; }
+textarea { resize: vertical; min-height: 166px; }
+textarea:focus, input:focus, select:focus { border-color: var(--primary); }
+.field-hint { display: flex; justify-content: space-between; gap: 10px; color: var(--muted); font-size: 11px; margin-top: 6px; }
+.answer-key-row { display: flex; align-items: end; gap: 14px; border-top: 1px solid var(--line); margin-top: 22px; padding-top: 20px; }
+.grow { flex: 1; }
+.score-btn { min-width: 178px; height: 43px; }
+.privacy-note { margin-top: 13px; color: var(--muted); font-size: 11px; }
+.btn { border-radius: 10px; border: 1px solid transparent; padding: 10px 15px; font-weight: 700; transition: .18s; }
+.btn:hover { transform: translateY(-1px); }
+.btn-primary { color: white; background: linear-gradient(135deg, var(--primary), var(--primary-2)); box-shadow: 0 8px 20px rgba(36,107,253,.18); }
+.btn-secondary { border-color: var(--line); color: var(--text); background: var(--surface); }
+.btn-sm { width: 100%; padding: 8px 12px; }
+
+.tabbar { display: flex; border-bottom: 1px solid var(--line); margin: 16px 0; overflow-x: auto; }
+.tab { position: relative; border: 0; background: transparent; color: var(--muted); padding: 12px 18px; white-space: nowrap; font-weight: 600; }
+.tab.active { color: var(--primary); }
+.tab.active::after { content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; border-radius: 4px; background: var(--primary); }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+.metrics-grid { display: grid; grid-template-columns: 1.15fr repeat(4, 1fr); gap: 12px; }
+.metric-card { min-height: 124px; padding: 16px; }
+.metric-card .metric-label { color: var(--muted); font-size: 11px; }
+.metric-card .metric-value { display: flex; align-items: baseline; gap: 5px; margin-top: 8px; }
+.metric-card .metric-value strong { font-size: 24px; letter-spacing: -.03em; }
+.metric-card .metric-value span { color: var(--muted); }
+.metric-card .metric-caption { margin-top: 10px; color: var(--muted); font-size: 11px; }
+.metric-tag { display: inline-flex; padding: 3px 7px; border-radius: 6px; margin-top: 11px; background: var(--success-soft); color: var(--success); font-size: 10px; font-weight: 700; }
+.progress { height: 6px; border-radius: 99px; background: var(--line); margin-top: 9px; overflow: hidden; }
+.progress span { display: block; height: 100%; border-radius: inherit; background: var(--primary); }
+.metric-card.correct .progress span { background: var(--success); }
+.metric-card.incorrect .progress span { background: var(--danger); }
+.metric-card.unattempted .progress span { background: var(--neutral); }
+.review-card, .comparison-card, .answer-table-card { margin-top: 14px; padding: 18px; }
+.section-heading { align-items: center; }
+.section-heading.simple { align-items: center; }
+.legend { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 9px; color: var(--muted); font-size: 11px; }
+.legend-item.correct { color: var(--success); }
+.legend-item.incorrect { color: var(--danger); }
+.legend-item.unattempted { color: var(--neutral); }
+.legend-item.marked { color: var(--purple); }
+.toolbar { display: flex; align-items: center; gap: 10px; }
+.toolbar select, .toolbar input { min-width: 138px; padding: 9px 11px; }
+.compact-section-row { margin-top: 12px; border: 1px solid var(--line); border-radius: 12px; padding: 13px; }
+.compact-row-title { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 10px; }
+.compact-row-title strong { font-size: 12px; }
+.compact-row-title span { color: var(--muted); font-size: 10px; }
+.question-strip, .question-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(42px, 1fr)); gap: 9px; }
+.question-grid { margin-top: 17px; grid-template-columns: repeat(auto-fill, minmax(56px, 1fr)); }
+.question-cell { position: relative; min-height: 39px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface-2); color: var(--text); display: grid; place-items: center; font-weight: 700; font-size: 12px; }
+.question-cell:hover { transform: translateY(-1px); box-shadow: var(--shadow-sm); }
+.question-cell.correct { color: var(--success); background: var(--success-soft); border-color: rgba(31,157,85,.35); }
+.question-cell.incorrect { color: var(--danger); background: var(--danger-soft); border-color: rgba(239,68,68,.32); }
+.question-cell.unattempted { color: var(--muted); }
+.question-cell.marked::after { content: ""; position: absolute; bottom: -5px; width: 7px; height: 7px; background: var(--purple); transform: rotate(45deg); border-radius: 1px; }
+.review-summary { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+.summary-chip { padding: 7px 10px; border-radius: 8px; background: var(--surface-2); color: var(--muted); border: 1px solid var(--line); font-size: 11px; }
+.comparison-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 18px; }
+.comparison-stat { padding: 15px; border-radius: 11px; background: var(--surface-2); border: 1px solid var(--line); }
+.comparison-stat span { display: block; color: var(--muted); font-size: 11px; }
+.comparison-stat strong { display: block; font-size: 23px; margin-top: 5px; }
+.delta { font-size: 11px; margin-top: 3px; }
+.delta.up { color: var(--success); }
+.delta.down { color: var(--danger); }
+.empty-comparison { padding: 34px; text-align: center; color: var(--muted); }
+.table-wrap { overflow-x: auto; margin-top: 15px; }
+table { width: 100%; border-collapse: collapse; min-width: 720px; }
+th, td { padding: 11px 10px; border-bottom: 1px solid var(--line); text-align: left; font-size: 12px; }
+th { color: var(--muted); font-weight: 600; background: var(--surface-2); }
+.status-pill { display: inline-flex; align-items: center; padding: 4px 8px; border-radius: 999px; font-size: 10px; font-weight: 700; }
+.status-pill.correct { color: var(--success); background: var(--success-soft); }
+.status-pill.incorrect { color: var(--danger); background: var(--danger-soft); }
+.status-pill.unattempted { color: var(--muted); background: var(--surface-2); }
+
+.analytics-sidebar { display: grid; gap: 12px; position: sticky; top: 16px; }
+.analytics-sidebar .card { padding: 18px; }
+.empty-state-card { text-align: center; padding: 30px 22px !important; }
+.empty-state-card h3 { margin: 12px 0 5px; }
+.empty-state-card p { color: var(--muted); font-size: 12px; }
+.empty-graphic { width: 68px; height: 68px; margin: 0 auto; display: grid; place-items: center; border-radius: 20px; background: var(--primary-soft); color: var(--primary); font-size: 30px; }
+.mini-checklist { display: grid; gap: 7px; text-align: left; margin-top: 18px; color: var(--muted); font-size: 11px; }
+#analyticsContent { display: grid; gap: 12px; }
+.score-gauge { --score-pct: 0%; width: 190px; height: 104px; margin: 12px auto 0; overflow: hidden; position: relative; }
+.score-gauge::before { content: ""; position: absolute; width: 174px; height: 174px; left: 8px; top: 12px; border-radius: 50%; background: conic-gradient(from 270deg, var(--success) 0 var(--score-pct), var(--warning) var(--score-pct) calc(var(--score-pct) + 7%), var(--line) calc(var(--score-pct) + 7%) 50%, transparent 50% 100%); transform: rotate(0deg); }
+.score-gauge::after { content: ""; position: absolute; width: 130px; height: 130px; left: 30px; top: 34px; border-radius: 50%; background: var(--surface); }
+.score-gauge > div { position: absolute; z-index: 2; inset: 56px 0 0; text-align: center; }
+.score-gauge strong { display: block; font-size: 22px; }
+.score-gauge span { color: var(--muted); font-size: 12px; }
+.rank-block { text-align: center; margin: 11px 0; }
+.rank-block span { display: block; color: var(--muted); font-size: 11px; }
+.rank-block strong { display: block; margin-top: 4px; color: var(--primary); }
+.percentile-box { padding: 12px; border: 1px solid #c8d8ff; background: var(--primary-soft); border-radius: 10px; }
+.percentile-box span { display: block; color: var(--muted); font-size: 10px; }
+.percentile-box strong { display: block; color: var(--primary); margin-top: 3px; }
+.accuracy-content { display: flex; align-items: center; gap: 18px; margin-top: 15px; }
+.donut { --correct: 0deg; --incorrect: 0deg; width: 90px; height: 90px; flex: 0 0 90px; border-radius: 50%; background: conic-gradient(var(--success) 0 var(--correct), var(--danger) var(--correct) var(--incorrect), var(--neutral) var(--incorrect) 360deg); display: grid; place-items: center; position: relative; }
+.donut::after { content: ""; position: absolute; inset: 11px; border-radius: 50%; background: var(--surface); }
+.donut strong { z-index: 1; font-size: 13px; }
+.accuracy-legend { flex: 1; display: grid; gap: 7px; }
+.accuracy-line { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 10px; }
+.accuracy-line span:first-child::before { content: ""; display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 6px; background: var(--neutral); }
+.accuracy-line.correct span:first-child::before { background: var(--success); }
+.accuracy-line.incorrect span:first-child::before { background: var(--danger); }
+.performance-row { margin-top: 13px; }
+.performance-row-head { display: flex; justify-content: space-between; gap: 8px; color: var(--muted); font-size: 10px; }
+.performance-bar { height: 5px; border-radius: 99px; background: var(--line); overflow: hidden; margin-top: 5px; }
+.performance-bar span { height: 100%; display: block; background: var(--success); border-radius: 99px; }
+.insight-card { background: linear-gradient(145deg, var(--primary-soft), var(--surface)); }
+.insight-card strong { display: block; }
+.insight-card p { color: var(--muted); margin: 6px 0 0; font-size: 11px; }
+.action-card { width: 100%; min-height: 62px; padding: 10px 14px; border: 1px solid #cbd8f5; border-radius: 12px; background: var(--surface); color: var(--text); display: grid; grid-template-columns: 30px 1fr auto; align-items: center; text-align: left; gap: 8px; }
+.action-card:hover { border-color: var(--primary); }
+.action-card > span:first-child { color: var(--primary); font-size: 19px; }
+.action-card strong, .action-card small { display: block; }
+.action-card small { color: var(--muted); font-size: 10px; margin-top: 2px; }
+.file-pill { color: var(--danger); background: var(--danger-soft); padding: 4px 7px; border-radius: 6px; font-size: 10px !important; }
+
+.generic-view { padding-bottom: 30px; }
+.generic-hero { padding: 26px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+.generic-hero h2 { margin: 0; font-size: 25px; }
+.generic-hero p { color: var(--muted); margin: 7px 0 0; }
+.generic-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 16px; }
+.generic-card { padding: 19px; }
+.generic-card h3 { margin: 0 0 6px; }
+.generic-card p { color: var(--muted); margin: 0; }
+.history-list { display: grid; gap: 10px; margin-top: 15px; }
+.history-item { display: grid; grid-template-columns: 1fr auto auto; gap: 18px; align-items: center; padding: 15px; border: 1px solid var(--line); border-radius: 11px; background: var(--surface); }
+.history-item small { color: var(--muted); display: block; }
+.history-score { font-size: 18px; font-weight: 800; }
+
+.popover { display: none; position: fixed; z-index: 80; right: 22px; top: 70px; width: 235px; padding: 9px; background: var(--surface); border: 1px solid var(--line); border-radius: 13px; box-shadow: var(--shadow); }
+.popover.open { display: block; }
+.popover button { width: 100%; border: 0; background: transparent; color: var(--text); text-align: left; padding: 9px 10px; border-radius: 8px; }
+.popover button:hover { background: var(--surface-2); }
+.popover-profile { display: flex; gap: 10px; align-items: center; padding: 8px 9px 12px; border-bottom: 1px solid var(--line); margin-bottom: 5px; }
+.popover-profile small { display: block; color: var(--muted); font-size: 10px; }
+.notifications-popover { width: 330px; }
+.popover-title { display: flex; align-items: center; justify-content: space-between; padding: 7px 9px 10px; }
+.notification-item { display: grid; grid-template-columns: 9px 1fr; gap: 9px; padding: 10px 8px; border-top: 1px solid var(--line); }
+.notification-item small { display: block; color: var(--muted); margin-top: 2px; }
+.notification-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--primary); margin-top: 7px; }
+
+.modal { width: min(760px, calc(100vw - 32px)); border: 0; padding: 0; border-radius: 18px; background: var(--surface); color: var(--text); box-shadow: 0 22px 60px rgba(0,0,0,.25); }
+.modal::backdrop { background: rgba(12, 20, 34, .56); backdrop-filter: blur(3px); }
+.modal form { padding: 22px; }
+.modal-header { display: flex; justify-content: space-between; gap: 16px; align-items: flex-start; }
+.modal-header h2 { margin: 0; }
+.exam-options { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin: 20px 0; }
+.exam-option { border: 1px solid var(--line); border-radius: 12px; background: var(--surface); color: var(--text); padding: 15px; text-align: left; }
+.exam-option.selected { border-color: var(--primary); background: var(--primary-soft); }
+.exam-option strong, .exam-option small { display: block; }
+.exam-option small { color: var(--muted); margin-top: 4px; }
+.field-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; border-top: 1px solid var(--line); padding-top: 16px; }
+.question-detail-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 18px; }
+.detail-box { padding: 14px; border: 1px solid var(--line); border-radius: 11px; background: var(--surface-2); }
+.detail-box span { display: block; color: var(--muted); font-size: 10px; }
+.detail-box strong { display: block; font-size: 18px; margin-top: 4px; }
+.question-note { margin-top: 14px; padding: 13px; border-radius: 10px; background: var(--primary-soft); color: var(--muted); font-size: 12px; }
+.toast { position: fixed; z-index: 100; left: 50%; bottom: 24px; transform: translate(-50%, 20px); background: #111827; color: white; padding: 11px 15px; border-radius: 10px; box-shadow: 0 12px 30px rgba(0,0,0,.25); opacity: 0; pointer-events: none; transition: .2s; max-width: min(90vw, 440px); text-align: center; }
+.toast.show { opacity: 1; transform: translate(-50%, 0); }
+.sidebar-backdrop { display: none; }
+
+@media (max-width: 1220px) {
+  :root { --sidebar: 224px; }
+  .workspace-grid { grid-template-columns: minmax(0,1fr) 290px; }
+  .steps { display: none; }
+  .exam-card { justify-content: flex-start; }
+  .metrics-grid { grid-template-columns: repeat(3, 1fr); }
+  .metric-card:first-child { grid-column: span 1; }
+}
+
+@media (max-width: 960px) {
+  .sidebar { transform: translateX(-100%); width: 270px; }
+  .sidebar.open { transform: none; }
+  .sidebar-close { display: grid !important; }
+  .sidebar-backdrop { position: fixed; inset: 0; z-index: 20; background: rgba(0,0,0,.45); }
+  .sidebar-backdrop.open { display: block; }
+  .main { margin-left: 0; }
+  .mobile-menu { display: grid; }
+  .workspace-grid { grid-template-columns: 1fr; }
+  .analytics-sidebar { position: static; grid-row: auto; }
+  #analyticsContent { grid-template-columns: repeat(2, 1fr); }
+  #analyticsContent .action-card { grid-column: span 1; }
+  .score-summary-card, .accuracy-card, .topic-card, .insight-card { min-height: 100%; }
+}
+
+@media (max-width: 720px) {
+  .main { padding: 0 14px 28px; }
+  .topbar { height: 78px; }
+  .topbar h1 { font-size: 20px; }
+  .topbar p, .profile-name { display: none; }
+  .exam-card { padding: 16px; }
+  .exam-info { min-width: 0; }
+  .exam-emblem { width: 50px; height: 50px; flex: 0 0 50px; font-size: 12px; }
+  .exam-title-line { align-items: flex-start; flex-direction: column; gap: 2px; }
+  .exam-title-line h2 { font-size: 15px; }
+  .exam-meta { gap: 9px; }
+  .setup-grid { grid-template-columns: 1fr; }
+  .answer-key-row { flex-direction: column; align-items: stretch; }
+  .score-btn { width: 100%; }
+  .metrics-grid { grid-template-columns: repeat(2, 1fr); }
+  .metric-card { min-height: 112px; }
+  .section-heading { align-items: flex-start; flex-direction: column; }
+  .toolbar { width: 100%; }
+  .toolbar select, .toolbar input { flex: 1; min-width: 0; }
+  #analyticsContent { grid-template-columns: 1fr; }
+  .generic-grid { grid-template-columns: 1fr; }
+  .comparison-grid { grid-template-columns: 1fr; }
+  .exam-options { grid-template-columns: 1fr; }
+  .field-grid, .question-detail-grid { grid-template-columns: 1fr; }
+  .notifications-popover { right: 10px; width: calc(100vw - 20px); }
+  .history-item { grid-template-columns: 1fr auto; }
+  .history-item .btn { grid-column: 1 / -1; }
+}
+
+@media (max-width: 430px) {
+  .topbar-actions { gap: 5px; }
+  .topbar-actions .icon-btn { width: 36px; height: 36px; }
+  .profile-button .avatar { width: 34px; height: 34px; }
+  .metrics-grid { grid-template-columns: 1fr; }
+  .setup-panel { padding: 17px; }
+  .setup-header { flex-direction: column; }
+  .question-strip { grid-template-columns: repeat(5, 1fr); }
+  .wrap-toolbar { flex-direction: column; }
+  .wrap-toolbar > * { width: 100%; }
+}
+
+@media print {
+  .sidebar, .topbar-actions, .setup-panel, .tabbar, .toolbar, .action-card, .btn, .link-btn, .popover, .toast { display: none !important; }
+  body, .main { background: white; color: black; }
+  .main { margin: 0; padding: 0; }
+  .topbar { height: auto; padding: 10px 0; }
+  .exam-card, .card { box-shadow: none; border-color: #ddd; break-inside: avoid; }
+  .workspace-grid { grid-template-columns: 1fr 290px; }
+  #resultsArea, #analyticsContent { display: block !important; }
+  .tab-panel { display: block !important; margin-bottom: 14px; }
+  #reviewTab, #comparisonTab, #answerkeyTab { display: none !important; }
+}
+
+</style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar" aria-label="Main navigation">
+      <div class="brand-row">
+        <div class="brand-mark" aria-hidden="true">✓</div>
+        <div>
+          <div class="brand-name">ExamScorer</div>
+          <div class="brand-subtitle">Answer Key Scorer</div>
+        </div>
+        <button class="icon-btn sidebar-close" id="closeSidebar" aria-label="Close navigation">×</button>
+      </div>
+
+      <nav class="nav-list">
+        <button class="nav-item" data-view="dashboard"><span class="nav-icon">⌂</span><span>Dashboard</span></button>
+        <button class="nav-item active" data-view="scorer"><span class="nav-icon">✓</span><span>Answer Key Scorer</span></button>
+        <button class="nav-item" data-view="mock"><span class="nav-icon">▣</span><span>Mock Tests</span></button>
+        <button class="nav-item" data-view="history"><span class="nav-icon">◷</span><span>Previous Results</span><span class="nav-badge" id="historyCount">0</span></button>
+        <button class="nav-item" data-view="calendar"><span class="nav-icon">□</span><span>Exam Calendar</span></button>
+        <button class="nav-item" data-view="planner"><span class="nav-icon">☷</span><span>Study Planner</span></button>
+        <button class="nav-item" data-view="performance"><span class="nav-icon">▥</span><span>Performance</span></button>
+        <button class="nav-item" data-view="topics"><span class="nav-icon">⌁</span><span>Topic Analysis</span></button>
+        <button class="nav-item" data-view="bookmarks"><span class="nav-icon">⌑</span><span>Bookmarks</span></button>
+        <button class="nav-item" data-view="downloads"><span class="nav-icon">↓</span><span>Downloads</span></button>
+      </nav>
+
+      <div class="sidebar-spacer"></div>
+
+      <div class="upgrade-card">
+        <div class="upgrade-icon">♛</div>
+        <strong>Go Premium</strong>
+        <p>Unlock advanced analytics, rank prediction and unlimited saved attempts.</p>
+        <button class="btn btn-primary btn-sm" data-toast="Premium plans will be available soon.">Upgrade Now</button>
+      </div>
+
+      <div class="sidebar-footer">
+        <button class="nav-item" data-view="profile"><span class="nav-icon">○</span><span>Profile</span></button>
+        <button class="nav-item" data-view="settings"><span class="nav-icon">⚙</span><span>Settings</span></button>
+        <button class="theme-row" id="themeToggle" aria-pressed="false">
+          <span>☾</span><span>Dark mode</span><span class="switch"><span></span></span>
+        </button>
+      </div>
+    </aside>
+
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+    <main class="main" id="main">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="icon-btn mobile-menu" id="openSidebar" aria-label="Open navigation">☰</button>
+          <div>
+            <h1 id="pageTitle">Answer Key Scorer</h1>
+            <p id="pageSubtitle">Upload your answers and check your score instantly</p>
+          </div>
+        </div>
+        <div class="topbar-actions">
+          <button class="icon-btn" id="quickTheme" aria-label="Toggle theme">☾</button>
+          <button class="icon-btn notification-btn" id="notificationBtn" aria-label="Notifications">♢<span>3</span></button>
+          <button class="profile-button" id="profileButton" aria-expanded="false">
+            <span class="avatar">AK</span>
+            <span class="profile-name">Amit Kumar</span>
+            <span>⌄</span>
+          </button>
+        </div>
+      </header>
+
+      <section id="scorerView" class="view active-view">
+        <section class="exam-card card">
+          <div class="exam-info">
+            <div class="exam-emblem" aria-hidden="true">SSC</div>
+            <div>
+              <div class="exam-title-line">
+                <h2 id="examName">SSC CGL 2024 (Tier 1)</h2>
+                <button class="link-btn" id="changeExamBtn">Change exam</button>
+              </div>
+              <div class="exam-meta" id="examMeta"></div>
+            </div>
+          </div>
+          <div class="steps" aria-label="Scoring steps">
+            <div class="step active" data-step="1"><span class="step-icon">⇧</span><div><small>1</small><strong>Upload answers</strong><p>Upload or enter your response sheet</p></div></div>
+            <span class="step-arrow">→</span>
+            <div class="step" data-step="2"><span class="step-icon">⚿</span><div><small>2</small><strong>Select answer key</strong><p>Choose or upload the official key</p></div></div>
+            <span class="step-arrow">→</span>
+            <div class="step" data-step="3"><span class="step-icon">▥</span><div><small>3</small><strong>View results</strong><p>Get your score and analysis</p></div></div>
+          </div>
+        </section>
+
+        <section class="workspace-grid">
+          <div class="workspace-main">
+            <div class="setup-panel card" id="setupPanel">
+              <div class="setup-header">
+                <div>
+                  <span class="eyebrow">Start scoring</span>
+                  <h2>Import your response sheet</h2>
+                  <p>Paste answers, upload CSV/TXT/JSON, or load a sample attempt.</p>
+                </div>
+                <button class="btn btn-secondary" id="sampleBtn">Load sample</button>
+              </div>
+
+              <div class="setup-grid">
+                <div class="upload-box" id="responseDropzone" tabindex="0" role="button" aria-label="Upload response sheet">
+                  <input type="file" id="responseFile" accept=".csv,.txt,.json" hidden />
+                  <div class="upload-icon">⇧</div>
+                  <strong>Drop response sheet here</strong>
+                  <span>or click to browse</span>
+                  <small>CSV, TXT or JSON up to 5 MB</small>
+                </div>
+                <div class="paste-box">
+                  <label for="responseText">Or paste your answers</label>
+                  <textarea id="responseText" rows="8" placeholder="Example: A, B, C, D, -, A ..."></textarea>
+                  <div class="field-hint"><span id="answerParseHint">Use A/B/C/D and “-” for unattempted.</span><span id="responseCount">0 answers</span></div>
+                </div>
+              </div>
+
+              <div class="answer-key-row">
+                <div class="form-group grow">
+                  <label for="answerKeySelect">Official answer key</label>
+                  <select id="answerKeySelect"></select>
+                </div>
+                <div class="form-group grow">
+                  <label for="keyText">Custom key (optional)</label>
+                  <input id="keyText" placeholder="Paste custom key: A,B,C,D..." />
+                </div>
+                <button class="btn btn-primary score-btn" id="scoreBtn">Calculate score <span>→</span></button>
+              </div>
+              <div class="privacy-note">🔒 Your answer files are processed locally in your browser and are not uploaded.</div>
+            </div>
+
+            <div id="resultsArea" class="hidden">
+              <div class="tabbar" role="tablist" aria-label="Result views">
+                <button class="tab active" data-tab="overview" role="tab">Overview</button>
+                <button class="tab" data-tab="review" role="tab">Question Review</button>
+                <button class="tab" data-tab="comparison" role="tab">Comparison</button>
+                <button class="tab" data-tab="answerkey" role="tab">Answer Key</button>
+              </div>
+
+              <div class="tab-panel active" id="overviewTab">
+                <div class="metrics-grid" id="metricsGrid"></div>
+                <section class="card review-card compact-review">
+                  <div class="section-heading">
+                    <div>
+                      <h2>Question Review</h2>
+                      <div class="legend"><span class="legend-item correct">● Correct</span><span class="legend-item incorrect">● Incorrect</span><span class="legend-item unattempted">● Unattempted</span><span class="legend-item marked">◆ Marked</span></div>
+                    </div>
+                    <div class="toolbar">
+                      <select id="sectionFilterOverview" aria-label="Filter by section"></select>
+                      <button class="btn btn-secondary" id="openReviewBtn">Full review</button>
+                    </div>
+                  </div>
+                  <div id="compactReviewRows"></div>
+                </section>
+              </div>
+
+              <div class="tab-panel" id="reviewTab">
+                <section class="card review-card">
+                  <div class="section-heading">
+                    <div>
+                      <h2>Full Question Review</h2>
+                      <p>Inspect every answer and bookmark questions for revision.</p>
+                    </div>
+                    <div class="toolbar wrap-toolbar">
+                      <select id="sectionFilter" aria-label="Filter by section"></select>
+                      <select id="statusFilter" aria-label="Filter by status">
+                        <option value="all">All statuses</option>
+                        <option value="correct">Correct</option>
+                        <option value="incorrect">Incorrect</option>
+                        <option value="unattempted">Unattempted</option>
+                        <option value="marked">Bookmarked</option>
+                      </select>
+                      <input id="questionSearch" type="search" placeholder="Question no." aria-label="Search question number" />
+                    </div>
+                  </div>
+                  <div class="review-summary" id="reviewSummary"></div>
+                  <div class="question-grid" id="fullQuestionGrid"></div>
+                </section>
+              </div>
+
+              <div class="tab-panel" id="comparisonTab">
+                <section class="card comparison-card">
+                  <div class="section-heading"><div><h2>Attempt Comparison</h2><p>Compare this attempt with your most recent saved result.</p></div><button class="btn btn-secondary" id="saveAttemptBtn">Save this attempt</button></div>
+                  <div id="comparisonContent"></div>
+                </section>
+              </div>
+
+              <div class="tab-panel" id="answerkeyTab">
+                <section class="card answer-table-card">
+                  <div class="section-heading"><div><h2>Answer Key</h2><p>Candidate response, correct answer and marks awarded.</p></div><button class="btn btn-secondary" id="exportCsvBtn">Export CSV</button></div>
+                  <div class="table-wrap"><table><thead><tr><th>Q.</th><th>Section</th><th>Your answer</th><th>Correct</th><th>Status</th><th>Marks</th><th></th></tr></thead><tbody id="answerTableBody"></tbody></table></div>
+                </section>
+              </div>
+            </div>
+          </div>
+
+          <aside class="analytics-sidebar" id="analyticsSidebar">
+            <section class="card empty-state-card" id="emptyAnalytics">
+              <div class="empty-graphic">▥</div>
+              <h3>Your analysis will appear here</h3>
+              <p>Import a response sheet and select an official answer key to calculate your score.</p>
+              <div class="mini-checklist"><span>✓ Section-wise marks</span><span>✓ Accuracy and attempts</span><span>✓ Rank and percentile estimate</span></div>
+            </section>
+            <div id="analyticsContent" class="hidden">
+              <section class="card score-summary-card">
+                <div class="section-heading simple"><h2>Score Summary</h2><button class="icon-btn" id="scoreInfoBtn" aria-label="Score information">i</button></div>
+                <div class="score-gauge" id="scoreGauge"><div><strong id="gaugeScore">0</strong><span id="gaugeMax">/ 0</span></div></div>
+                <div class="rank-block"><span>Your expected rank</span><strong id="rankEstimate">—</strong></div>
+                <div class="percentile-box"><span>↗ Percentile (estimated)</span><strong id="percentileEstimate">—</strong></div>
+              </section>
+
+              <section class="card accuracy-card">
+                <h2>Accuracy</h2>
+                <div class="accuracy-content"><div class="donut" id="accuracyDonut"><strong id="accuracyValue">0%</strong></div><div class="accuracy-legend" id="accuracyLegend"></div></div>
+              </section>
+
+              <section class="card topic-card">
+                <div class="section-heading simple"><h2>Section Performance</h2><button class="link-btn" data-tab-jump="review">View all</button></div>
+                <div id="sectionPerformance"></div>
+              </section>
+
+              <section class="card insight-card" id="insightCard"></section>
+
+              <button class="action-card" id="downloadReportBtn"><span>↓</span><div><strong>Download report</strong><small>Print or save as PDF</small></div><span class="file-pill">PDF</span></button>
+              <button class="action-card" id="shareResultBtn"><span>⌁</span><div><strong>Share result</strong><small>Copy a summary to clipboard</small></div><span>→</span></button>
+              <button class="action-card" id="resetBtn"><span>↻</span><div><strong>Score another attempt</strong><small>Clear current responses</small></div><span>→</span></button>
+            </div>
+          </aside>
+        </section>
+      </section>
+
+      <section id="genericView" class="view generic-view">
+        <div id="genericContent"></div>
+      </section>
+    </main>
+  </div>
+
+  <div class="popover" id="profilePopover" role="menu">
+    <div class="popover-profile"><span class="avatar">AK</span><div><strong>Amit Kumar</strong><small>Government exam aspirant</small></div></div>
+    <button role="menuitem" data-view="profile">View profile</button>
+    <button role="menuitem" data-view="settings">Preferences</button>
+    <button role="menuitem" data-toast="You are already signed in to the demo.">Sign out</button>
+  </div>
+
+  <div class="popover notifications-popover" id="notificationsPopover">
+    <div class="popover-title"><strong>Notifications</strong><button class="link-btn" id="clearNotifications">Mark all read</button></div>
+    <div class="notification-item"><span class="notification-dot"></span><div><strong>SSC CGL answer key updated</strong><small>Final key Set A is now available.</small></div></div>
+    <div class="notification-item"><span class="notification-dot"></span><div><strong>Saved result reminder</strong><small>Review weak sections from your last attempt.</small></div></div>
+    <div class="notification-item"><span class="notification-dot"></span><div><strong>New scoring format</strong><small>Custom marking schemes are supported.</small></div></div>
+  </div>
+
+  <dialog id="examDialog" class="modal">
+    <form method="dialog">
+      <div class="modal-header"><div><span class="eyebrow">Exam configuration</span><h2>Choose an exam</h2></div><button class="icon-btn" value="cancel" aria-label="Close">×</button></div>
+      <div class="exam-options" id="examOptions"></div>
+      <div class="custom-exam-fields hidden" id="customExamFields">
+        <div class="form-group"><label for="customExamName">Exam name</label><input id="customExamName" value="Custom Government Exam" /></div>
+        <div class="field-grid">
+          <div class="form-group"><label for="customQuestions">Questions</label><input id="customQuestions" type="number" min="1" max="500" value="100" /></div>
+          <div class="form-group"><label for="customCorrect">Marks / correct</label><input id="customCorrect" type="number" step="0.01" value="2" /></div>
+          <div class="form-group"><label for="customNegative">Negative marks</label><input id="customNegative" type="number" step="0.01" value="0.5" /></div>
+        </div>
+      </div>
+      <div class="modal-actions"><button class="btn btn-secondary" value="cancel">Cancel</button><button class="btn btn-primary" id="applyExamBtn" value="default">Apply exam</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="questionDialog" class="modal question-modal">
+    <form method="dialog">
+      <div class="modal-header"><div><span class="eyebrow" id="questionSection">Section</span><h2 id="questionTitle">Question 1</h2></div><button class="icon-btn" value="cancel" aria-label="Close">×</button></div>
+      <div id="questionDetail"></div>
+      <div class="modal-actions"><button class="btn btn-secondary" id="bookmarkQuestionBtn" type="button">Bookmark</button><button class="btn btn-primary" value="cancel">Done</button></div>
+    </form>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <noscript><div style="padding:16px;background:#fff3cd;color:#664d03;font-family:system-ui">JavaScript is required for the interactive scorer.</div></noscript>
+<script>
+(() => {
+  'use strict';
+
+  const EXAMS = {
+    sscCgl: {
+      id: 'sscCgl', name: 'SSC CGL 2024 (Tier 1)', short: 'SSC', date: '09 Sep 2024', questions: 100,
+      correctMarks: 2, negativeMarks: 0.5,
+      sections: [
+        { name: 'General Intelligence & Reasoning', count: 25 },
+        { name: 'General Awareness', count: 25 },
+        { name: 'Quantitative Aptitude', count: 25 },
+        { name: 'English Language', count: 25 }
+      ],
+      keySeed: 'cgl-2024-final-a'
+    },
+    sscChsl: {
+      id: 'sscChsl', name: 'SSC CHSL 2024 (Tier 1)', short: 'CHSL', date: '02 Jul 2024', questions: 100,
+      correctMarks: 2, negativeMarks: 0.5,
+      sections: [
+        { name: 'General Intelligence', count: 25 }, { name: 'General Awareness', count: 25 },
+        { name: 'Quantitative Aptitude', count: 25 }, { name: 'English Language', count: 25 }
+      ], keySeed: 'chsl-2024-final'
+    },
+    rrbNtpc: {
+      id: 'rrbNtpc', name: 'RRB NTPC CBT 1', short: 'RRB', date: '15 Jun 2025', questions: 100,
+      correctMarks: 1, negativeMarks: 0.33,
+      sections: [
+        { name: 'Mathematics', count: 30 }, { name: 'General Intelligence & Reasoning', count: 30 },
+        { name: 'General Awareness', count: 40 }
+      ], keySeed: 'rrb-ntpc-cbt1'
+    },
+    upscCsat: {
+      id: 'upscCsat', name: 'UPSC Civil Services CSAT', short: 'UPSC', date: '25 May 2025', questions: 80,
+      correctMarks: 2.5, negativeMarks: 0.83,
+      sections: [
+        { name: 'Comprehension', count: 25 }, { name: 'Reasoning & Analytical Ability', count: 25 },
+        { name: 'Numeracy & Data Interpretation', count: 30 }
+      ], keySeed: 'upsc-csat-2025'
+    }
+  };
+
+  const memoryStorage = new Map();
+  const safeStorage = {
+    getItem(key) {
+      try { return window.localStorage.getItem(key); }
+      catch (_) { return memoryStorage.has(key) ? memoryStorage.get(key) : null; }
+    },
+    setItem(key, value) {
+      try { window.localStorage.setItem(key, value); }
+      catch (_) { memoryStorage.set(key, String(value)); }
+    }
+  };
+
+  function deepClone(value) {
+    try {
+      if (typeof window.structuredClone === 'function') return window.structuredClone(value);
+    } catch (_) {}
+    return JSON.parse(JSON.stringify(value));
+  }
+
+  function openDialog(dialog) {
+    if (!dialog) return;
+    if (typeof dialog.showModal === 'function') dialog.showModal();
+    else dialog.setAttribute('open', '');
+  }
+
+  function closeDialog(dialog) {
+    if (!dialog) return;
+    if (typeof dialog.close === 'function') dialog.close();
+    else dialog.removeAttribute('open');
+  }
+
+  const state = {
+    exam: deepClone(EXAMS.sscCgl),
+    selectedExamId: 'sscCgl',
+    responses: [], key: [], result: null,
+    bookmarked: new Set(), currentQuestionIndex: null,
+    activeTab: 'overview', theme: safeStorage.getItem('examScorerTheme') || 'light'
+  };
+
+  const $ = (sel, root = document) => root.querySelector(sel);
+  const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
+  const clamp = (n, min, max) => Math.max(min, Math.min(max, n));
+  const round = (n, digits = 2) => Number(n.toFixed(digits));
+
+  const el = {
+    html: document.documentElement,
+    scorerView: $('#scorerView'), genericView: $('#genericView'), genericContent: $('#genericContent'),
+    pageTitle: $('#pageTitle'), pageSubtitle: $('#pageSubtitle'), examName: $('#examName'), examMeta: $('#examMeta'), examEmblem: $('.exam-emblem'),
+    responseText: $('#responseText'), responseCount: $('#responseCount'), responseFile: $('#responseFile'), responseDropzone: $('#responseDropzone'),
+    answerKeySelect: $('#answerKeySelect'), keyText: $('#keyText'), setupPanel: $('#setupPanel'), resultsArea: $('#resultsArea'),
+    emptyAnalytics: $('#emptyAnalytics'), analyticsContent: $('#analyticsContent'), metricsGrid: $('#metricsGrid'),
+    compactReviewRows: $('#compactReviewRows'), fullQuestionGrid: $('#fullQuestionGrid'), reviewSummary: $('#reviewSummary'),
+    sectionFilterOverview: $('#sectionFilterOverview'), sectionFilter: $('#sectionFilter'), statusFilter: $('#statusFilter'), questionSearch: $('#questionSearch'),
+    answerTableBody: $('#answerTableBody'), sectionPerformance: $('#sectionPerformance'), accuracyLegend: $('#accuracyLegend'),
+    accuracyDonut: $('#accuracyDonut'), accuracyValue: $('#accuracyValue'), scoreGauge: $('#scoreGauge'), gaugeScore: $('#gaugeScore'), gaugeMax: $('#gaugeMax'),
+    rankEstimate: $('#rankEstimate'), percentileEstimate: $('#percentileEstimate'), insightCard: $('#insightCard'), comparisonContent: $('#comparisonContent'),
+    examDialog: $('#examDialog'), examOptions: $('#examOptions'), customExamFields: $('#customExamFields'), questionDialog: $('#questionDialog'),
+    toast: $('#toast'), profilePopover: $('#profilePopover'), notificationsPopover: $('#notificationsPopover'),
+    sidebar: $('#sidebar'), sidebarBackdrop: $('#sidebarBackdrop'), historyCount: $('#historyCount')
+  };
+
+  function mulberry32(seed) {
+    return function() {
+      let t = seed += 0x6D2B79F5;
+      t = Math.imul(t ^ t >>> 15, t | 1);
+      t ^= t + Math.imul(t ^ t >>> 7, t | 61);
+      return ((t ^ t >>> 14) >>> 0) / 4294967296;
+    };
+  }
+
+  function seedNumber(text) {
+    return [...text].reduce((acc, ch) => ((acc << 5) - acc + ch.charCodeAt(0)) | 0, 0) >>> 0;
+  }
+
+  function generatedKey(seed, count) {
+    const rnd = mulberry32(seedNumber(seed));
+    const options = ['A', 'B', 'C', 'D'];
+    return Array.from({ length: count }, () => options[Math.floor(rnd() * 4)]);
+  }
+
+  function sampleResponses(exam) {
+    const key = generatedKey(exam.keySeed, exam.questions);
+    const rnd = mulberry32(seedNumber(exam.keySeed + '-candidate'));
+    return key.map((answer, i) => {
+      const p = rnd();
+      if (p < .08) return '-';
+      if (p < .26) {
+        const wrong = ['A','B','C','D'].filter(x => x !== answer);
+        return wrong[Math.floor(rnd() * wrong.length)];
+      }
+      return answer;
+    });
+  }
+
+  function parseAnswers(raw) {
+    if (!raw) return [];
+    let content = String(raw).trim();
+    try {
+      const parsed = JSON.parse(content);
+      const arr = Array.isArray(parsed) ? parsed : parsed.answers || parsed.responses || parsed.key;
+      if (Array.isArray(arr)) return arr.map(normalizeAnswer).filter(Boolean);
+    } catch (_) {}
+
+    const tokens = content
+      .replace(/\r/g, '\n')
+      .replace(/(?:question|ques|q)\s*\d+\s*[:.)-]?/gi, ' ')
+      .split(/[\s,;|\t\n]+/)
+      .map(normalizeAnswer)
+      .filter(Boolean);
+    return tokens;
+  }
+
+  function normalizeAnswer(value) {
+    const v = String(value ?? '').trim().toUpperCase();
+    if (['A','B','C','D'].includes(v)) return v;
+    if (['-', 'NA', 'N/A', 'NONE', 'UNATTEMPTED', '0', 'X'].includes(v)) return '-';
+    const numeric = { '1': 'A', '2': 'B', '3': 'C', '4': 'D' };
+    return numeric[v] || '';
+  }
+
+  function questionSection(index) {
+    let start = 0;
+    for (const section of state.exam.sections) {
+      if (index < start + section.count) return section.name;
+      start += section.count;
+    }
+    return 'General';
+  }
+
+  function calculateResult(responses, key) {
+    const items = [];
+    let correct = 0, incorrect = 0, unattempted = 0, score = 0;
+    const sectionStats = {};
+    state.exam.sections.forEach(s => sectionStats[s.name] = { total: s.count, correct: 0, incorrect: 0, unattempted: 0, score: 0 });
+
+    for (let i = 0; i < state.exam.questions; i++) {
+      const response = responses[i] || '-';
+      const answer = key[i];
+      const section = questionSection(i);
+      let status, marks;
+      if (response === '-') {
+        status = 'unattempted'; marks = 0; unattempted++; sectionStats[section].unattempted++;
+      } else if (response === answer) {
+        status = 'correct'; marks = state.exam.correctMarks; correct++; sectionStats[section].correct++;
+      } else {
+        status = 'incorrect'; marks = -state.exam.negativeMarks; incorrect++; sectionStats[section].incorrect++;
+      }
+      score += marks;
+      sectionStats[section].score += marks;
+      items.push({ number: i + 1, response, answer, status, marks: round(marks), section });
+    }
+
+    const attempted = correct + incorrect;
+    const accuracy = attempted ? (correct / attempted) * 100 : 0;
+    const maxScore = state.exam.questions * state.exam.correctMarks;
+    const scorePercent = maxScore ? clamp((score / maxScore) * 100, 0, 100) : 0;
+    const percentile = clamp(45 + scorePercent * .53, 0, 99.9);
+    const rankTop = Math.max(1, Math.round(180000 * (1 - percentile / 100)));
+    const rankLow = Math.max(rankTop + 400, Math.round(rankTop * 1.27));
+
+    return {
+      score: round(score), maxScore: round(maxScore), correct, incorrect, unattempted, attempted,
+      accuracy: round(accuracy), scorePercent: round(scorePercent), percentile: round(percentile, 1),
+      rank: `${rankTop.toLocaleString('en-IN')} – ${rankLow.toLocaleString('en-IN')}`,
+      items, sectionStats, createdAt: new Date().toISOString(), exam: deepClone(state.exam)
+    };
+  }
+
+  function renderExam() {
+    const e = state.exam;
+    el.examName.textContent = e.name;
+    el.examEmblem.textContent = e.short;
+    el.examMeta.innerHTML = [
+      ['Exam date', e.date], ['Questions', e.questions], ['Total marks', round(e.questions * e.correctMarks)], ['Negative marking', e.negativeMarks]
+    ].map(([a,b]) => `<div class="meta-item"><span>${a}</span><strong>${b}</strong></div>`).join('');
+    renderKeyOptions();
+    renderExamDialog();
+  }
+
+  function renderKeyOptions() {
+    el.answerKeySelect.innerHTML = `
+      <option value="official">Official Final Key — Set A</option>
+      <option value="provisional">Provisional Key — Set A</option>
+      <option value="custom">Use custom key pasted below</option>`;
+  }
+
+  function renderExamDialog() {
+    const options = [...Object.values(EXAMS), { id: 'custom', name: 'Custom Exam', short: 'Custom', questions: 'Configure your own marking scheme' }];
+    el.examOptions.innerHTML = options.map(exam => `
+      <button type="button" class="exam-option ${state.selectedExamId === exam.id ? 'selected' : ''}" data-exam-id="${exam.id}">
+        <strong>${exam.name}</strong><small>${exam.id === 'custom' ? exam.questions : `${exam.questions} questions · +${exam.correctMarks} / −${exam.negativeMarks}`}</small>
+      </button>`).join('');
+    el.customExamFields.classList.toggle('hidden', state.selectedExamId !== 'custom');
+  }
+
+  function updateResponseCount() {
+    const answers = parseAnswers(el.responseText.value);
+    el.responseCount.textContent = `${answers.length} answer${answers.length === 1 ? '' : 's'}`;
+    el.responseCount.style.color = answers.length > state.exam.questions ? 'var(--danger)' : '';
+  }
+
+  function scoreAttempt() {
+    const responses = parseAnswers(el.responseText.value);
+    if (!responses.length) return showToast('Add your answers or load the sample attempt first.');
+    if (responses.length < state.exam.questions) {
+      responses.push(...Array(state.exam.questions - responses.length).fill('-'));
+      showToast(`Missing answers were treated as unattempted (${responses.length}/${state.exam.questions}).`);
+    }
+    if (responses.length > state.exam.questions) responses.length = state.exam.questions;
+
+    let key;
+    const customKey = parseAnswers(el.keyText.value);
+    if (el.answerKeySelect.value === 'custom') {
+      if (customKey.length !== state.exam.questions) return showToast(`Custom key must contain exactly ${state.exam.questions} answers.`);
+      key = customKey;
+    } else {
+      const suffix = el.answerKeySelect.value === 'provisional' ? '-provisional' : '';
+      key = generatedKey(state.exam.keySeed + suffix, state.exam.questions);
+    }
+
+    state.responses = responses;
+    state.key = key;
+    state.result = calculateResult(responses, key);
+    renderResults();
+    setStep(3);
+    el.resultsArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function renderResults() {
+    const r = state.result;
+    if (!r) return;
+    el.resultsArea.classList.remove('hidden');
+    el.emptyAnalytics.classList.add('hidden');
+    el.analyticsContent.classList.remove('hidden');
+
+    const grade = r.scorePercent >= 75 ? 'Excellent' : r.scorePercent >= 55 ? 'Good' : r.scorePercent >= 35 ? 'Needs improvement' : 'Rebuild basics';
+    const metrics = [
+      { label: 'Your Score', value: r.score, suffix: `/ ${r.maxScore}`, caption: grade, tag: true, cls: 'score' },
+      { label: 'Questions Attempted', value: r.attempted, suffix: `/ ${state.exam.questions}`, caption: `${round(r.attempted/state.exam.questions*100)}% attempted`, pct: r.attempted/state.exam.questions*100, cls: 'attempted' },
+      { label: 'Correct Answers', value: r.correct, suffix: '', caption: `${round(r.correct/state.exam.questions*100)}% of paper`, pct: r.correct/state.exam.questions*100, cls: 'correct' },
+      { label: 'Incorrect Answers', value: r.incorrect, suffix: '', caption: `${round(r.incorrect/state.exam.questions*100)}% of paper`, pct: r.incorrect/state.exam.questions*100, cls: 'incorrect' },
+      { label: 'Unattempted', value: r.unattempted, suffix: '', caption: `${round(r.unattempted/state.exam.questions*100)}% of paper`, pct: r.unattempted/state.exam.questions*100, cls: 'unattempted' }
+    ];
+    el.metricsGrid.innerHTML = metrics.map(m => `<article class="card metric-card ${m.cls}">
+      <div class="metric-label">${m.label}</div><div class="metric-value"><strong>${m.value}</strong><span>${m.suffix}</span></div>
+      ${m.tag ? `<span class="metric-tag">${m.caption}</span>` : `<div class="metric-caption">${m.caption}</div><div class="progress"><span style="width:${clamp(m.pct,0,100)}%"></span></div>`}
+    </article>`).join('');
+
+    populateSectionFilters();
+    renderCompactReview();
+    renderFullReview();
+    renderAnswerTable();
+    renderComparison();
+    renderAnalytics();
+  }
+
+  function populateSectionFilters() {
+    const opts = `<option value="all">All sections</option>` + state.exam.sections.map(s => `<option value="${escapeHtml(s.name)}">${escapeHtml(s.name)}</option>`).join('');
+    el.sectionFilter.innerHTML = opts;
+    el.sectionFilterOverview.innerHTML = opts;
+  }
+
+  function renderCompactReview() {
+    const filter = el.sectionFilterOverview.value || 'all';
+    const sections = state.exam.sections.filter(s => filter === 'all' || s.name === filter);
+    el.compactReviewRows.innerHTML = sections.map(section => {
+      const questions = state.result.items.filter(i => i.section === section.name).slice(0, 10);
+      const stat = state.result.sectionStats[section.name];
+      return `<div class="compact-section-row"><div class="compact-row-title"><strong>${escapeHtml(section.name)}</strong><span>${stat.correct}/${stat.total} correct · ${round(stat.score)} marks</span></div>
+        <div class="question-strip">${questions.map(questionButton).join('')}</div></div>`;
+    }).join('');
+  }
+
+  function renderFullReview() {
+    const section = el.sectionFilter.value || 'all';
+    const status = el.statusFilter.value || 'all';
+    const query = Number(el.questionSearch.value || 0);
+    let items = state.result.items.filter(i => section === 'all' || i.section === section);
+    items = items.filter(i => status === 'all' || (status === 'marked' ? state.bookmarked.has(i.number) : i.status === status));
+    if (query) items = items.filter(i => i.number === query);
+    el.reviewSummary.innerHTML = [
+      `${items.length} shown`, `${state.result.correct} correct`, `${state.result.incorrect} incorrect`, `${state.result.unattempted} unattempted`, `${state.bookmarked.size} bookmarked`
+    ].map(x => `<span class="summary-chip">${x}</span>`).join('');
+    el.fullQuestionGrid.innerHTML = items.length ? items.map(questionButton).join('') : `<div class="empty-comparison">No questions match these filters.</div>`;
+  }
+
+  function questionButton(item) {
+    const marked = state.bookmarked.has(item.number) ? ' marked' : '';
+    return `<button class="question-cell ${item.status}${marked}" data-question="${item.number}" aria-label="Question ${item.number}, ${item.status}">${item.number}</button>`;
+  }
+
+  function renderAnswerTable() {
+    el.answerTableBody.innerHTML = state.result.items.map(item => `<tr>
+      <td><strong>${item.number}</strong></td><td>${escapeHtml(item.section)}</td><td>${item.response}</td><td>${item.answer}</td>
+      <td><span class="status-pill ${item.status}">${capitalize(item.status)}</span></td><td>${formatSigned(item.marks)}</td>
+      <td><button class="link-btn" data-question="${item.number}">View</button></td></tr>`).join('');
+  }
+
+  function renderAnalytics() {
+    const r = state.result;
+    el.gaugeScore.textContent = r.score;
+    el.gaugeMax.textContent = `/ ${r.maxScore}`;
+    el.scoreGauge.style.setProperty('--score-pct', `${clamp(r.scorePercent * .5, 0, 50)}%`);
+    el.rankEstimate.textContent = r.rank;
+    el.percentileEstimate.textContent = `${r.percentile}%`;
+    el.accuracyValue.textContent = `${r.accuracy}%`;
+    const correctDeg = r.correct / state.exam.questions * 360;
+    const incorrectDeg = (r.correct + r.incorrect) / state.exam.questions * 360;
+    el.accuracyDonut.style.setProperty('--correct', `${correctDeg}deg`);
+    el.accuracyDonut.style.setProperty('--incorrect', `${incorrectDeg}deg`);
+    el.accuracyLegend.innerHTML = [
+      ['correct', 'Correct', r.correct], ['incorrect', 'Incorrect', r.incorrect], ['unattempted', 'Unattempted', r.unattempted]
+    ].map(([cls,label,val]) => `<div class="accuracy-line ${cls}"><span>${label}</span><strong>${val} (${round(val/state.exam.questions*100)}%)</strong></div>`).join('');
+
+    el.sectionPerformance.innerHTML = Object.entries(r.sectionStats).map(([name, stat]) => {
+      const attempted = stat.correct + stat.incorrect;
+      const accuracy = attempted ? stat.correct / attempted * 100 : 0;
+      return `<div class="performance-row"><div class="performance-row-head"><span>${escapeHtml(name)}</span><strong>${round(accuracy)}%</strong></div><div class="performance-bar"><span style="width:${accuracy}%"></span></div></div>`;
+    }).join('');
+
+    const weakest = Object.entries(r.sectionStats).map(([name, stat]) => ({ name, accuracy: (stat.correct/(stat.correct+stat.incorrect||1))*100, incorrect: stat.incorrect })).sort((a,b) => a.accuracy-b.accuracy)[0];
+    el.insightCard.innerHTML = `<strong>💡 Smart insight</strong><p>${escapeHtml(weakest.name)} is your biggest improvement opportunity. Revisit ${weakest.incorrect} incorrect question${weakest.incorrect === 1 ? '' : 's'} before the next attempt.</p>`;
+  }
+
+  function renderComparison() {
+    const saved = getSavedResults().filter(x => x.exam?.id === state.exam.id);
+    const previous = saved[0];
+    if (!previous) {
+      el.comparisonContent.innerHTML = `<div class="empty-comparison"><h3>No earlier attempt yet</h3><p>Save this attempt, then score another response sheet to compare progress.</p></div>`;
+      return;
+    }
+    const current = state.result;
+    const stats = [
+      ['Score', current.score, previous.score], ['Accuracy', current.accuracy, previous.accuracy, '%'], ['Correct', current.correct, previous.correct]
+    ];
+    el.comparisonContent.innerHTML = `<div class="comparison-grid">${stats.map(([label, now, before, suffix='']) => {
+      const delta = round(now-before);
+      return `<div class="comparison-stat"><span>${label}</span><strong>${now}${suffix}</strong><div class="delta ${delta >= 0 ? 'up' : 'down'}">${delta >= 0 ? '↑' : '↓'} ${Math.abs(delta)}${suffix} vs previous</div></div>`;
+    }).join('')}</div><div class="question-note">Previous attempt saved on ${new Date(previous.createdAt).toLocaleString('en-IN')} with a score of ${previous.score}/${previous.maxScore}.</div>`;
+  }
+
+  function openQuestion(number) {
+    const item = state.result?.items[number - 1];
+    if (!item) return;
+    state.currentQuestionIndex = number;
+    $('#questionSection').textContent = item.section;
+    $('#questionTitle').textContent = `Question ${item.number}`;
+    $('#questionDetail').innerHTML = `<div class="question-detail-grid">
+      <div class="detail-box"><span>Your answer</span><strong>${item.response === '-' ? 'Not attempted' : item.response}</strong></div>
+      <div class="detail-box"><span>Correct answer</span><strong>${item.answer}</strong></div>
+      <div class="detail-box"><span>Marks awarded</span><strong>${formatSigned(item.marks)}</strong></div>
+    </div><div class="question-note">This demo focuses on response-key comparison. In production, this panel can also show the question text, official explanation, objection status, and source reference.</div>`;
+    $('#bookmarkQuestionBtn').textContent = state.bookmarked.has(number) ? 'Remove bookmark' : 'Bookmark question';
+    openDialog(el.questionDialog);
+  }
+
+  function saveAttempt() {
+    if (!state.result) return;
+    const results = getSavedResults();
+    const snapshot = { ...state.result, bookmarked: [...state.bookmarked], id: window.crypto?.randomUUID?.() || `${Date.now()}` };
+    results.unshift(snapshot);
+    safeStorage.setItem('examScorerResults', JSON.stringify(results.slice(0, 25)));
+    updateHistoryCount();
+    renderComparison();
+    showToast('Attempt saved to Previous Results.');
+  }
+
+  function getSavedResults() {
+    try { return JSON.parse(safeStorage.getItem('examScorerResults') || '[]'); } catch (_) { return []; }
+  }
+
+  function deleteSavedResult(id) {
+    const results = getSavedResults().filter(r => r.id !== id);
+    safeStorage.setItem('examScorerResults', JSON.stringify(results));
+    updateHistoryCount();
+    renderGenericView('history');
+  }
+
+  function renderGenericView(view) {
+    const configs = {
+      dashboard: ['Dashboard', 'Your preparation command centre', ['Upcoming exams', 'Recent scores', 'Study streak']],
+      mock: ['Mock Tests', 'Practice in real exam conditions', ['Recommended tests', 'Section tests', 'Full-length mocks']],
+      calendar: ['Exam Calendar', 'Never miss an important government exam date', ['Applications', 'Admit cards', 'Exam dates']],
+      planner: ['Study Planner', 'Build a practical daily preparation plan', ['Today’s plan', 'Weekly goals', 'Revision queue']],
+      performance: ['Performance', 'Track how your scores improve over time', ['Score trend', 'Accuracy trend', 'Attempt strategy']],
+      topics: ['Topic Analysis', 'See strengths and weak areas at a glance', ['Strong topics', 'Needs revision', 'Recommended practice']],
+      bookmarks: ['Bookmarks', 'Questions saved for focused revision', ['Incorrect questions', 'Difficult questions', 'Revision notes']],
+      downloads: ['Downloads', 'Reports and exported answer sheets', ['Score reports', 'Answer-key CSVs', 'Study summaries']],
+      profile: ['Profile', 'Your exam preferences and preparation details', ['Personal details', 'Target exams', 'Notification preferences']],
+      settings: ['Settings', 'Control appearance, scoring and privacy', ['Theme', 'Default marking scheme', 'Data controls']]
+    };
+
+    el.scorerView.classList.remove('active-view');
+    el.genericView.classList.add('active-view');
+    if (view === 'history') {
+      el.pageTitle.textContent = 'Previous Results';
+      el.pageSubtitle.textContent = 'Review and compare saved scoring attempts';
+      const results = getSavedResults();
+      el.genericContent.innerHTML = `<section class="card generic-hero"><div><span class="eyebrow">Attempt archive</span><h2>Previous Results</h2><p>Your saved answer-key scoring attempts are kept locally in this browser.</p></div><button class="btn btn-primary" data-view="scorer">Score new attempt</button></section>
+        <div class="history-list">${results.length ? results.map(r => `<article class="history-item"><div><strong>${escapeHtml(r.exam?.name || 'Exam')}</strong><small>${new Date(r.createdAt).toLocaleString('en-IN')} · ${r.correct} correct · ${r.accuracy}% accuracy</small></div><div class="history-score">${r.score}/${r.maxScore}</div><button class="btn btn-secondary" data-delete-result="${r.id}">Delete</button></article>`).join('') : `<section class="card empty-comparison"><h3>No saved attempts</h3><p>Save a scored attempt and it will appear here.</p><button class="btn btn-primary" data-view="scorer">Open scorer</button></section>`}</div>`;
+      return;
+    }
+
+    const [title, subtitle, cards] = configs[view] || configs.dashboard;
+    el.pageTitle.textContent = title;
+    el.pageSubtitle.textContent = subtitle;
+    el.genericContent.innerHTML = `<section class="card generic-hero"><div><span class="eyebrow">ExamScorer module</span><h2>${title}</h2><p>${subtitle}. This connected preview keeps the full navigation experience intact.</p></div><button class="btn btn-primary" data-view="scorer">Open Answer Key Scorer</button></section>
+      <div class="generic-grid">${cards.map((c,i) => `<article class="card generic-card"><div class="empty-graphic" style="margin:0 0 14px;width:46px;height:46px;font-size:20px">${['◫','↗','✓'][i]}</div><h3>${c}</h3><p>Ready for live data and backend integration in the production app.</p></article>`).join('')}</div>`;
+  }
+
+  function navigate(view) {
+    $$('.nav-item').forEach(n => n.classList.toggle('active', n.dataset.view === view));
+    closeSidebar(); closePopovers();
+    if (view === 'scorer') {
+      el.scorerView.classList.add('active-view'); el.genericView.classList.remove('active-view');
+      el.pageTitle.textContent = 'Answer Key Scorer';
+      el.pageSubtitle.textContent = 'Upload your answers and check your score instantly';
+    } else renderGenericView(view);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function changeExam(exam) {
+    state.exam = deepClone(exam);
+    state.responses = []; state.key = []; state.result = null; state.bookmarked.clear();
+    el.responseText.value = ''; el.keyText.value = '';
+    el.resultsArea.classList.add('hidden'); el.analyticsContent.classList.add('hidden'); el.emptyAnalytics.classList.remove('hidden');
+    renderExam(); updateResponseCount(); setStep(1);
+  }
+
+  function applySelectedExam(event) {
+    event.preventDefault();
+    if (state.selectedExamId === 'custom') {
+      const questions = clamp(Number($('#customQuestions').value) || 100, 1, 500);
+      const correctMarks = Math.max(0, Number($('#customCorrect').value) || 1);
+      const negativeMarks = Math.max(0, Number($('#customNegative').value) || 0);
+      const custom = { id: 'custom', name: $('#customExamName').value.trim() || 'Custom Exam', short: 'Custom', date: 'Custom', questions, correctMarks, negativeMarks, sections: [{ name: 'All Questions', count: questions }], keySeed: `custom-${questions}-${correctMarks}-${negativeMarks}` };
+      changeExam(custom);
+    } else changeExam(EXAMS[state.selectedExamId]);
+    closeDialog(el.examDialog);
+    showToast(`${state.exam.name} selected.`);
+  }
+
+  function loadSample() {
+    const sample = sampleResponses(state.exam);
+    el.responseText.value = sample.join(', ');
+    el.answerKeySelect.value = 'official';
+    updateResponseCount(); setStep(2);
+    showToast('Sample response sheet loaded.');
+  }
+
+  function setStep(step) {
+    $$('.step').forEach(s => {
+      const n = Number(s.dataset.step);
+      s.classList.toggle('active', n === step);
+      s.classList.toggle('completed', n < step);
+    });
+  }
+
+  async function readResponseFile(file) {
+    if (!file) return;
+    if (file.size > 5 * 1024 * 1024) return showToast('Please choose a file smaller than 5 MB.');
+    try {
+      const text = await file.text();
+      const answers = parseAnswers(text);
+      if (!answers.length) return showToast('No valid A/B/C/D answers were found in this file.');
+      el.responseText.value = answers.join(', ');
+      updateResponseCount(); setStep(2);
+      showToast(`${answers.length} answers imported from ${file.name}.`);
+    } catch (_) { showToast('Could not read this response file.'); }
+  }
+
+  function resetScorer() {
+    state.responses = []; state.key = []; state.result = null; state.bookmarked.clear();
+    el.responseText.value = ''; el.keyText.value = '';
+    el.resultsArea.classList.add('hidden'); el.analyticsContent.classList.add('hidden'); el.emptyAnalytics.classList.remove('hidden');
+    updateResponseCount(); setStep(1);
+    el.setupPanel.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  function switchTab(name) {
+    state.activeTab = name;
+    $$('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === name));
+    $$('.tab-panel').forEach(p => p.classList.toggle('active', p.id === `${name}Tab`));
+    if (name === 'review') renderFullReview();
+    if (name === 'comparison') renderComparison();
+  }
+
+  function toggleTheme() {
+    state.theme = state.theme === 'dark' ? 'light' : 'dark';
+    el.html.dataset.theme = state.theme;
+    safeStorage.setItem('examScorerTheme', state.theme);
+    $('#themeToggle').setAttribute('aria-pressed', String(state.theme === 'dark'));
+    $('#quickTheme').textContent = state.theme === 'dark' ? '☀' : '☾';
+  }
+
+  function exportCsv() {
+    if (!state.result) return;
+    const rows = [['Question','Section','Candidate Answer','Correct Answer','Status','Marks'], ...state.result.items.map(i => [i.number,i.section,i.response,i.answer,i.status,i.marks])];
+    const csv = rows.map(r => r.map(csvEscape).join(',')).join('\n');
+    downloadBlob(csv, `${slugify(state.exam.name)}-answer-review.csv`, 'text/csv');
+    showToast('Answer review CSV downloaded.');
+  }
+
+  function shareResult() {
+    if (!state.result) return;
+    const r = state.result;
+    const text = `${state.exam.name}: I scored ${r.score}/${r.maxScore} with ${r.correct} correct, ${r.incorrect} incorrect and ${r.accuracy}% accuracy on ExamScorer.`;
+    if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+      navigator.clipboard.writeText(text)
+        .then(() => showToast('Result summary copied to clipboard.'))
+        .catch(() => fallbackCopy(text));
+    } else fallbackCopy(text);
+  }
+
+  function fallbackCopy(text) {
+    try {
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.setAttribute('readonly', '');
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.select();
+      const copied = document.execCommand && document.execCommand('copy');
+      textarea.remove();
+      showToast(copied ? 'Result summary copied to clipboard.' : text);
+    } catch (_) { showToast(text); }
+  }
+
+  function downloadBlob(content, filename, type) {
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([content], { type }));
+    a.download = filename; a.click();
+    setTimeout(() => URL.revokeObjectURL(a.href), 500);
+  }
+
+  function showToast(message) {
+    el.toast.textContent = message;
+    el.toast.classList.add('show');
+    clearTimeout(showToast.timer);
+    showToast.timer = setTimeout(() => el.toast.classList.remove('show'), 3000);
+  }
+
+  function openSidebar() { el.sidebar.classList.add('open'); el.sidebarBackdrop.classList.add('open'); }
+  function closeSidebar() { el.sidebar.classList.remove('open'); el.sidebarBackdrop.classList.remove('open'); }
+  function closePopovers() { el.profilePopover.classList.remove('open'); el.notificationsPopover.classList.remove('open'); }
+  function updateHistoryCount() { el.historyCount.textContent = getSavedResults().length; }
+  function capitalize(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+  function formatSigned(n) { return `${n > 0 ? '+' : ''}${round(n)}`; }
+  function slugify(s) { return s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''); }
+  function csvEscape(v) { const s = String(v); return /[",\n]/.test(s) ? `"${s.replace(/"/g,'""')}"` : s; }
+  function escapeHtml(str) { return String(str).replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c])); }
+
+  function bindEvents() {
+    document.addEventListener('click', event => {
+      const nav = event.target.closest('[data-view]');
+      if (nav) { navigate(nav.dataset.view); return; }
+      const toast = event.target.closest('[data-toast]');
+      if (toast) { showToast(toast.dataset.toast); return; }
+      const q = event.target.closest('[data-question]');
+      if (q) { openQuestion(Number(q.dataset.question)); return; }
+      const del = event.target.closest('[data-delete-result]');
+      if (del && confirm('Delete this saved attempt?')) deleteSavedResult(del.dataset.deleteResult);
+    });
+
+    $('#changeExamBtn').addEventListener('click', () => openDialog(el.examDialog));
+    el.examOptions.addEventListener('click', event => {
+      const option = event.target.closest('[data-exam-id]');
+      if (!option) return;
+      state.selectedExamId = option.dataset.examId;
+      renderExamDialog();
+    });
+    $('#applyExamBtn').addEventListener('click', applySelectedExam);
+
+    $('#sampleBtn').addEventListener('click', loadSample);
+    $('#scoreBtn').addEventListener('click', scoreAttempt);
+    el.responseText.addEventListener('input', () => { updateResponseCount(); if (parseAnswers(el.responseText.value).length) setStep(2); });
+    el.answerKeySelect.addEventListener('change', () => setStep(2));
+    el.responseDropzone.addEventListener('click', () => el.responseFile.click());
+    el.responseDropzone.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') el.responseFile.click(); });
+    el.responseFile.addEventListener('change', e => readResponseFile(e.target.files[0]));
+    ['dragenter','dragover'].forEach(type => el.responseDropzone.addEventListener(type, e => { e.preventDefault(); el.responseDropzone.classList.add('dragging'); }));
+    ['dragleave','drop'].forEach(type => el.responseDropzone.addEventListener(type, e => { e.preventDefault(); el.responseDropzone.classList.remove('dragging'); }));
+    el.responseDropzone.addEventListener('drop', e => readResponseFile(e.dataTransfer.files[0]));
+
+    $$('.tab').forEach(tab => tab.addEventListener('click', () => switchTab(tab.dataset.tab)));
+    $('#openReviewBtn').addEventListener('click', () => switchTab('review'));
+    $$('[data-tab-jump]').forEach(b => b.addEventListener('click', () => switchTab(b.dataset.tabJump)));
+    el.sectionFilterOverview.addEventListener('change', renderCompactReview);
+    [el.sectionFilter, el.statusFilter, el.questionSearch].forEach(node => node.addEventListener('input', renderFullReview));
+    $('#saveAttemptBtn').addEventListener('click', saveAttempt);
+    $('#exportCsvBtn').addEventListener('click', exportCsv);
+    $('#downloadReportBtn').addEventListener('click', () => window.print());
+    $('#shareResultBtn').addEventListener('click', shareResult);
+    $('#resetBtn').addEventListener('click', resetScorer);
+    $('#scoreInfoBtn').addEventListener('click', () => showToast('Rank and percentile are illustrative estimates, not official predictions.'));
+
+    $('#bookmarkQuestionBtn').addEventListener('click', () => {
+      const n = state.currentQuestionIndex;
+      if (!n) return;
+      state.bookmarked.has(n) ? state.bookmarked.delete(n) : state.bookmarked.add(n);
+      $('#bookmarkQuestionBtn').textContent = state.bookmarked.has(n) ? 'Remove bookmark' : 'Bookmark question';
+      renderCompactReview(); renderFullReview();
+      showToast(state.bookmarked.has(n) ? `Question ${n} bookmarked.` : `Question ${n} removed from bookmarks.`);
+    });
+
+    $('#themeToggle').addEventListener('click', toggleTheme);
+    $('#quickTheme').addEventListener('click', toggleTheme);
+    $('#openSidebar').addEventListener('click', openSidebar);
+    $('#closeSidebar').addEventListener('click', closeSidebar);
+    el.sidebarBackdrop.addEventListener('click', closeSidebar);
+
+    $('#profileButton').addEventListener('click', e => {
+      e.stopPropagation(); el.notificationsPopover.classList.remove('open'); el.profilePopover.classList.toggle('open');
+    });
+    $('#notificationBtn').addEventListener('click', e => {
+      e.stopPropagation(); el.profilePopover.classList.remove('open'); el.notificationsPopover.classList.toggle('open');
+    });
+    $('#clearNotifications').addEventListener('click', () => {
+      $$('.notification-dot').forEach(d => d.style.opacity = '.15');
+      $('.notification-btn > span').classList.add('hidden');
+      showToast('All notifications marked as read.');
+    });
+    document.addEventListener('click', event => {
+      if (!event.target.closest('.popover') && !event.target.closest('#profileButton') && !event.target.closest('#notificationBtn')) closePopovers();
+    });
+  }
+
+  function init() {
+    el.html.dataset.theme = state.theme;
+    $('#quickTheme').textContent = state.theme === 'dark' ? '☀' : '☾';
+    $('#themeToggle').setAttribute('aria-pressed', String(state.theme === 'dark'));
+    renderExam(); updateResponseCount(); updateHistoryCount(); bindEvents();
+  }
+
+  init();
+})();
+
+</script>
+</body>
+</html>
