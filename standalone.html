@@ -1,0 +1,768 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="A complete candidate dashboard for Indian government-exam aspirants." />
+  <title>Sarkari Aspirant — Candidate Portal</title>
+  <style>
+:root{
+  color-scheme:light;
+  --bg:#f5f8ff;--surface:#fff;--surface-2:#f8faff;--surface-3:#edf3ff;--text:#101828;--muted:#667085;--muted-2:#98a2b3;--border:#dfe6f0;
+  --primary:#155eef;--primary-2:#0d4bcc;--primary-soft:#eaf1ff;--success:#079455;--success-soft:#e8f8f0;--warning:#dc6803;--warning-soft:#fff3e0;
+  --danger:#d92d20;--danger-soft:#fff0ef;--violet:#7f56d9;--violet-soft:#f1ebff;--cyan:#0e9384;--cyan-soft:#e6f8f6;--sidebar:#0f58cc;--sidebar-2:#0a3e9a;
+  --shadow-sm:0 1px 3px rgba(16,24,40,.06);--shadow-md:0 14px 38px rgba(16,24,40,.10);--radius:14px;--radius-lg:20px;--sidebar-w:244px;
+}
+html[data-theme="dark"]{
+  color-scheme:dark;--bg:#0a1020;--surface:#111827;--surface-2:#151e2f;--surface-3:#1c2940;--text:#f8fafc;--muted:#a8b3c5;--muted-2:#78869b;--border:#27344a;
+  --primary:#75a4ff;--primary-2:#95b9ff;--primary-soft:#182d52;--success:#46d7a0;--success-soft:#113b2d;--warning:#ffb55a;--warning-soft:#412a13;
+  --danger:#ff837a;--danger-soft:#451f21;--violet:#b692f6;--violet-soft:#30234a;--cyan:#53d6cc;--cyan-soft:#153d3b;--sidebar:#0a409f;--sidebar-2:#062c71;
+  --shadow-sm:0 1px 3px rgba(0,0,0,.25);--shadow-md:0 18px 44px rgba(0,0,0,.38)
+}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;min-width:320px;background:radial-gradient(circle at 78% 0,rgba(21,94,239,.07),transparent 30%),var(--bg);color:var(--text);font:14px/1.45 Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}button,input,select,textarea{font:inherit}button{cursor:pointer}a{color:inherit;text-decoration:none}h1,h2,h3,h4,p{margin-top:0}.hidden{display:none!important}.mobile-only{display:none}.app-shell{min-height:100vh}.sidebar{position:fixed;inset:0 auto 0 0;width:var(--sidebar-w);z-index:40;display:flex;flex-direction:column;padding:16px 13px;background:linear-gradient(180deg,var(--sidebar),var(--sidebar-2));color:#fff;overflow:auto;transition:.22s ease}.brand{display:flex;align-items:center;gap:11px;width:100%;padding:0 8px 17px;border:0;border-bottom:1px solid rgba(255,255,255,.15);background:none;color:#fff;text-align:left}.brand-mark{width:40px;height:40px;display:grid;place-items:center;flex:0 0 auto;border-radius:12px;background:#fff;color:#1457c8;font-size:20px;font-weight:900;box-shadow:0 10px 22px rgba(0,0,0,.14)}.brand-copy strong,.brand-copy small{display:block}.brand-copy strong{font-size:17px;letter-spacing:-.02em}.brand-copy small{color:rgba(255,255,255,.78);font-size:11px}.nav{display:grid;gap:3px;padding:13px 0}.nav-item{position:relative;width:100%;min-height:41px;display:flex;align-items:center;gap:11px;padding:0 12px;border:0;border-radius:10px;background:transparent;color:#fff;text-align:left;transition:.16s ease}.nav-item>span{width:20px;text-align:center;font-size:16px}.nav-item b{font-weight:600}.nav-item em{margin-left:auto;min-width:20px;height:20px;display:grid;place-items:center;padding:0 5px;border-radius:10px;background:#fff;color:#1253bd;font-size:10px;font-style:normal;font-weight:800}.nav-item:hover{background:rgba(255,255,255,.10);transform:translateX(2px)}.nav-item.active{background:rgba(255,255,255,.18);box-shadow:inset 3px 0 0 #fff}.sidebar-spacer{flex:1}.streak-card,.sidebar blockquote{margin:8px 4px;padding:13px;border:1px solid rgba(255,255,255,.08);border-radius:12px;background:rgba(255,255,255,.12)}.streak-title{display:flex;gap:7px;align-items:center}.streak-card p{margin:6px 0 10px;color:rgba(255,255,255,.77);font-size:11px}.week-dots{display:flex;justify-content:space-between;gap:3px}.week-dot{font-size:9px;text-align:center;color:rgba(255,255,255,.75)}.week-dot i{width:18px;height:18px;margin:0 auto 3px;display:grid;place-items:center;border-radius:50%;background:rgba(255,255,255,.15);font-style:normal}.week-dot.done i{background:#fff;color:#1457c8}.sidebar blockquote{text-align:center;color:rgba(255,255,255,.86);font-size:11px;font-style:italic;line-height:1.6}.main-shell{min-height:100vh;margin-left:var(--sidebar-w);transition:.22s ease}.sidebar.compact{width:78px}.sidebar.compact~.main-shell{margin-left:78px}.sidebar.compact .brand{justify-content:center;padding-inline:0}.sidebar.compact .brand-copy,.sidebar.compact .nav-item b,.sidebar.compact .nav-item em,.sidebar.compact .streak-card,.sidebar.compact blockquote{display:none}.sidebar.compact .nav-item{justify-content:center;padding-inline:0}.topbar{position:sticky;top:0;z-index:30;height:66px;display:flex;align-items:center;gap:14px;padding:0 26px;border-bottom:1px solid var(--border);background:color-mix(in srgb,var(--surface) 90%,transparent);backdrop-filter:blur(14px)}.icon-btn{position:relative;width:38px;height:38px;display:grid;place-items:center;border:1px solid transparent;border-radius:10px;background:transparent;color:var(--text);transition:.16s}.icon-btn:hover{background:var(--surface-3);border-color:var(--border)}.global-search{position:relative;flex:1;max-width:670px}.global-search>span{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--muted)}.global-search input{width:100%;height:40px;padding:0 42px 0 39px;border:1px solid var(--border);border-radius:10px;background:var(--surface);color:var(--text);outline:none}.global-search input:focus{border-color:var(--primary);box-shadow:0 0 0 4px color-mix(in srgb,var(--primary) 15%,transparent)}kbd{position:absolute;right:10px;top:9px;min-width:22px;height:22px;display:grid;place-items:center;border:1px solid var(--border);border-radius:6px;color:var(--muted);background:var(--surface);font:11px inherit}.search-results{position:absolute;left:0;right:0;top:46px;display:none;max-height:380px;overflow:auto;padding:7px;border:1px solid var(--border);border-radius:12px;background:var(--surface);box-shadow:var(--shadow-md)}.search-results.open{display:block}.search-result{width:100%;display:grid;grid-template-columns:36px 1fr auto;align-items:center;gap:10px;padding:9px;border:0;border-radius:9px;background:transparent;color:var(--text);text-align:left}.search-result:hover{background:var(--surface-2)}.search-result>span:first-child{width:34px;height:34px;display:grid;place-items:center;border-radius:9px;background:var(--primary-soft);color:var(--primary)}.search-result strong,.search-result small{display:block}.search-result small{margin-top:2px;color:var(--muted);font-size:10px}.top-actions{margin-left:auto;display:flex;align-items:center;gap:4px}.alert-button>span{position:absolute;right:0;top:0;min-width:16px;height:16px;display:grid;place-items:center;border:2px solid var(--surface);border-radius:8px;background:#e11d48;color:#fff;font-size:8px;font-weight:800}.profile-button{display:flex;align-items:center;gap:9px;margin-left:7px;padding:4px 6px 4px 12px;border:0;border-left:1px solid var(--border);background:transparent;color:var(--text);text-align:left}.avatar{width:38px;height:38px;display:grid;place-items:center;border:2px solid var(--surface);border-radius:50%;background:linear-gradient(135deg,#efbd83,#805137);box-shadow:0 0 0 1px var(--border);color:#fff;font-weight:800}.profile-text strong,.profile-text small{display:block}.profile-text strong{font-size:13px}.profile-text small{color:var(--muted);font-size:10px}.content{max-width:1600px;margin:auto;padding:22px 26px 50px}.page-header{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:18px}.page-title h1{margin-bottom:3px;font-size:24px;letter-spacing:-.035em}.page-title p{margin:0;color:var(--muted)}.page-actions{display:flex;flex-wrap:wrap;gap:8px}.btn{min-height:38px;display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:0 14px;border:1px solid var(--border);border-radius:10px;background:var(--surface);color:var(--text);font-weight:700;box-shadow:var(--shadow-sm);transition:.16s}.btn:hover{transform:translateY(-1px);border-color:color-mix(in srgb,var(--primary) 45%,var(--border))}.btn-primary{border-color:var(--primary);background:var(--primary);color:#fff}.btn-danger{border-color:var(--danger);background:var(--danger);color:#fff}.btn-ghost{background:transparent;box-shadow:none}.btn-sm{min-height:31px;padding:0 10px;border-radius:8px;font-size:11px}.btn:disabled{cursor:not-allowed;opacity:.55;transform:none}.grid{display:grid;gap:16px}.grid-2{grid-template-columns:repeat(2,minmax(0,1fr))}.grid-3{grid-template-columns:repeat(3,minmax(0,1fr))}.grid-4{grid-template-columns:repeat(4,minmax(0,1fr))}.card{border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);box-shadow:var(--shadow-sm);overflow:hidden}.card-pad{padding:16px}.card-header{min-height:54px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 16px;border-bottom:1px solid color-mix(in srgb,var(--border) 70%,transparent)}.card-header h2,.card-header h3{margin:0;font-size:15px}.card-header p{margin:2px 0 0;color:var(--muted);font-size:11px}.summary-card{position:relative;min-height:118px;display:flex;gap:12px;align-items:flex-start;padding:16px;overflow:hidden}.summary-card:after{content:"";position:absolute;right:-28px;bottom:-46px;width:110px;height:110px;border-radius:50%;background:color-mix(in srgb,var(--accent) 9%,transparent)}.summary-icon{width:42px;height:42px;display:grid;place-items:center;flex:0 0 auto;border-radius:11px;background:color-mix(in srgb,var(--accent) 12%,var(--surface));color:var(--accent);font-size:20px}.summary-label{display:block;color:var(--muted);font-size:12px}.summary-value{display:block;margin:2px 0 10px;font-size:26px;line-height:1}.summary-foot{color:var(--muted);font-size:11px}.summary-foot b{color:var(--accent)}.dashboard-layout{display:grid;grid-template-columns:minmax(440px,1.35fr) minmax(350px,1.05fr) minmax(270px,.78fr);gap:16px;align-items:start}.stack{display:grid;gap:16px}.tabs{display:flex;gap:2px;overflow:auto;padding:0 12px;border-bottom:1px solid var(--border);scrollbar-width:none}.tab{position:relative;flex:0 0 auto;padding:11px 12px;border:0;background:transparent;color:var(--muted);font-size:12px}.tab.active{color:var(--primary);font-weight:800}.tab.active:after{content:"";position:absolute;left:8px;right:8px;bottom:-1px;height:3px;border-radius:3px 3px 0 0;background:var(--primary)}.exam-list,.list{display:grid}.exam-row{display:grid;grid-template-columns:46px minmax(0,1fr) 85px 92px;align-items:center;gap:10px;min-height:72px;padding:10px 16px;border-bottom:1px solid var(--border);cursor:pointer}.exam-row:hover{background:var(--surface-2)}.exam-row:last-child{border-bottom:0}.exam-logo{width:42px;height:42px;display:grid;place-items:center;border-radius:50%;background:linear-gradient(135deg,var(--a),var(--b));color:#fff;font-size:10px;font-weight:900;box-shadow:inset 0 0 0 3px rgba(255,255,255,.2)}.item-copy strong,.item-copy small{display:block}.item-copy small{margin-top:2px;color:var(--muted);font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.deadline{text-align:center}.deadline strong,.deadline small{display:block}.deadline strong{font-size:18px}.deadline small{color:var(--muted);font-size:9px}.badge{display:inline-flex;align-items:center;justify-content:center;min-height:25px;padding:0 8px;border-radius:8px;font-size:10px;font-weight:800;white-space:nowrap}.badge-blue{background:var(--primary-soft);color:var(--primary)}.badge-green{background:var(--success-soft);color:var(--success)}.badge-orange{background:var(--warning-soft);color:var(--warning)}.badge-red{background:var(--danger-soft);color:var(--danger)}.badge-violet{background:var(--violet-soft);color:var(--violet)}.progress-overview{display:grid;grid-template-columns:145px 1fr;align-items:center;gap:15px;padding:16px;border-bottom:1px solid var(--border)}.progress-ring{--value:72;width:132px;aspect-ratio:1;display:grid;place-items:center;margin:auto;border-radius:50%;background:conic-gradient(var(--primary) calc(var(--value)*1%),var(--surface-3) 0);position:relative}.progress-ring:before{content:"";position:absolute;width:106px;aspect-ratio:1;border-radius:50%;background:var(--surface)}.progress-ring div{position:relative;text-align:center}.progress-ring strong,.progress-ring span{display:block}.progress-ring strong{color:var(--primary);font-size:30px;line-height:1}.progress-ring span{margin-top:4px;color:var(--muted);font-size:9px}.metric-list{border:1px solid var(--border);border-radius:10px;overflow:hidden}.metric{min-height:38px;display:grid;grid-template-columns:20px 1fr auto;align-items:center;gap:7px;padding:0 10px;border-bottom:1px solid var(--border);font-size:11px}.metric:last-child{border-bottom:0}.metric span{color:var(--muted)}.subject-list{padding:14px 16px}.subject-row{display:grid;grid-template-columns:140px 1fr 40px;align-items:center;gap:10px;margin:10px 0;font-size:11px}.bar{height:7px;overflow:hidden;border-radius:10px;background:var(--surface-3)}.bar i{display:block;width:var(--w);height:100%;border-radius:inherit;background:var(--c,var(--primary))}.task-row{display:grid;grid-template-columns:24px 1fr auto;align-items:center;gap:9px;padding:11px 15px;border-bottom:1px solid var(--border)}.task-row:last-child{border-bottom:0}.check{width:20px;height:20px;display:grid;place-items:center;border:1px solid var(--border);border-radius:50%;background:var(--surface);color:transparent}.task-row.done .check{border-color:var(--success);background:var(--success);color:#fff}.task-copy span,.task-copy small{display:block}.task-copy small{margin-top:5px;color:var(--muted);font-size:10px}.mini-progress{width:115px;height:4px;margin-top:6px;border-radius:4px;background:var(--surface-3)}.mini-progress i{display:block;width:var(--w);height:100%;border-radius:inherit;background:var(--primary)}.alert-row{width:100%;display:grid;grid-template-columns:38px 1fr auto;align-items:center;gap:9px;padding:11px 15px;border:0;border-bottom:1px solid var(--border);background:transparent;color:var(--text);text-align:left}.alert-row:last-child{border-bottom:0}.alert-row:hover{background:var(--surface-2)}.alert-row.unread{background:color-mix(in srgb,var(--primary-soft) 45%,var(--surface))}.alert-icon{width:36px;height:36px;display:grid;place-items:center;border-radius:50%;background:var(--soft,var(--primary-soft));color:var(--tone,var(--primary))}.alert-row small{color:var(--muted)}.resource-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:15px}.resource-card{min-height:92px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:8px;border:1px solid transparent;border-radius:11px;background:transparent;color:var(--text);text-align:center;font-size:10px}.resource-card:hover{border-color:var(--border);background:var(--surface-2)}.resource-card i{width:42px;height:42px;display:grid;place-items:center;border-radius:11px;background:var(--soft);color:var(--tone);font-size:19px;font-style:normal}.action-row{width:100%;min-height:43px;display:grid;grid-template-columns:22px 1fr auto;align-items:center;gap:8px;padding:0 15px;border:0;border-bottom:1px solid var(--border);background:transparent;color:var(--text);text-align:left;font-size:11px}.action-row:hover{background:var(--surface-2)}.stat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;padding:15px}.stat-box{padding:12px;border:1px solid var(--border);border-radius:10px;background:var(--surface-2)}.stat-box small,.stat-box strong,.stat-box span{display:block}.stat-box small{color:var(--muted)}.stat-box strong{margin:4px 0;font-size:18px}.trend-up{color:var(--success);font-size:10px}.toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:15px}.toolbar .grow{flex:1;min-width:180px}.input,.select,.textarea{width:100%;border:1px solid var(--border);border-radius:10px;background:var(--surface);color:var(--text);outline:none}.input,.select{height:40px;padding:0 11px}.textarea{min-height:110px;padding:11px;resize:vertical}.input:focus,.select:focus,.textarea:focus{border-color:var(--primary);box-shadow:0 0 0 3px color-mix(in srgb,var(--primary) 13%,transparent)}.data-table{width:100%;border-collapse:collapse}.data-table th,.data-table td{padding:12px 14px;border-bottom:1px solid var(--border);text-align:left;vertical-align:middle}.data-table th{background:var(--surface-2);color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.04em}.data-table tbody tr:hover{background:var(--surface-2)}.row-actions{display:flex;gap:6px;justify-content:flex-end}.empty-state{padding:44px 20px;text-align:center;color:var(--muted)}.empty-state i{display:grid;place-items:center;width:54px;height:54px;margin:0 auto 12px;border-radius:15px;background:var(--surface-3);color:var(--primary);font-size:22px;font-style:normal}.exam-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}.exam-card{position:relative;padding:16px}.exam-card-top{display:flex;justify-content:space-between;gap:12px}.exam-card h3{margin:12px 0 3px;font-size:16px}.exam-card p{color:var(--muted);font-size:11px}.exam-meta{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:14px 0}.meta-box{padding:9px;border-radius:9px;background:var(--surface-2)}.meta-box small,.meta-box strong{display:block}.meta-box small{color:var(--muted);font-size:9px}.meta-box strong{margin-top:2px;font-size:11px}.card-actions{display:flex;gap:7px}.card-actions .btn{flex:1}.kanban{display:grid;grid-template-columns:repeat(4,minmax(235px,1fr));gap:13px;overflow-x:auto;padding-bottom:8px}.kanban-column{padding:11px;border:1px solid var(--border);border-radius:13px;background:var(--surface-2)}.kanban-head{display:flex;justify-content:space-between;margin-bottom:10px}.kanban-head span{color:var(--muted);font-size:11px}.kanban-card{margin-bottom:9px;padding:12px;border:1px solid var(--border);border-radius:10px;background:var(--surface);box-shadow:var(--shadow-sm)}.kanban-card h4{margin-bottom:3px}.kanban-card p{margin-bottom:9px;color:var(--muted);font-size:10px}.doc-checklist{display:grid;gap:8px;margin-top:12px}.doc-item{display:flex;align-items:center;justify-content:space-between;padding:10px;border:1px solid var(--border);border-radius:9px}.week-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:15px}.week-nav{display:flex;align-items:center;gap:7px}.week-board{display:grid;grid-template-columns:repeat(7,minmax(150px,1fr));gap:10px;overflow-x:auto;padding-bottom:8px}.day-column{min-height:400px;padding:10px;border:1px solid var(--border);border-radius:12px;background:var(--surface-2)}.day-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}.day-head strong,.day-head small{display:block}.day-head small{color:var(--muted);font-size:9px}.day-column.today{border-color:var(--primary);box-shadow:0 0 0 2px color-mix(in srgb,var(--primary) 12%,transparent)}.session{margin-bottom:8px;padding:9px;border-left:3px solid var(--tone,var(--primary));border-radius:8px;background:var(--surface);box-shadow:var(--shadow-sm)}.session.done{opacity:.65}.session.done strong{text-decoration:line-through}.session strong,.session small{display:block}.session small{margin-top:3px;color:var(--muted);font-size:9px}.session-actions{display:flex;gap:4px;margin-top:7px}.session-actions button{padding:3px 6px;border:1px solid var(--border);border-radius:6px;background:transparent;color:var(--muted);font-size:9px}.goal-card{padding:14px}.goal-head{display:flex;justify-content:space-between;gap:10px;margin-bottom:8px}.goal-card h3{margin:0}.mock-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.mock-card{padding:16px}.mock-card-top{display:flex;justify-content:space-between;gap:10px}.mock-card h3{margin:12px 0 4px}.mock-card p{color:var(--muted);font-size:11px}.mock-info{display:flex;flex-wrap:wrap;gap:7px;margin:12px 0}.chip{display:inline-flex;align-items:center;min-height:25px;padding:0 8px;border:1px solid var(--border);border-radius:8px;color:var(--muted);font-size:9px}.question-shell{display:grid;grid-template-columns:210px 1fr;min-height:580px}.question-palette{padding:15px;border-right:1px solid var(--border);background:var(--surface-2)}.question-palette-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}.q-number{width:30px;height:30px;border:1px solid var(--border);border-radius:7px;background:var(--surface);color:var(--text)}.q-number.active{border-color:var(--primary);background:var(--primary);color:#fff}.q-number.answered{border-color:var(--success);background:var(--success-soft);color:var(--success)}.question-main{padding:20px}.test-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-bottom:15px;border-bottom:1px solid var(--border)}.timer{padding:7px 10px;border-radius:8px;background:var(--danger-soft);color:var(--danger);font-weight:800}.question-text{margin:24px 0 16px;font-size:17px;font-weight:700}.option{width:100%;display:flex;gap:10px;align-items:flex-start;margin:8px 0;padding:12px;border:1px solid var(--border);border-radius:10px;background:var(--surface);color:var(--text);text-align:left}.option.selected{border-color:var(--primary);background:var(--primary-soft)}.option.correct{border-color:var(--success);background:var(--success-soft)}.option.wrong{border-color:var(--danger);background:var(--danger-soft)}.option i{width:24px;height:24px;display:grid;place-items:center;flex:0 0 auto;border:1px solid var(--border);border-radius:50%;font-style:normal;font-size:10px}.test-nav{display:flex;justify-content:space-between;gap:10px;margin-top:22px}.chart-card{padding:16px}.bars-chart{height:230px;display:flex;align-items:flex-end;gap:12px;padding:20px 8px 0;border-bottom:1px solid var(--border)}.chart-bar{flex:1;min-width:30px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:5px}.chart-bar i{width:72%;max-width:46px;height:var(--h);border-radius:7px 7px 0 0;background:linear-gradient(180deg,var(--primary),color-mix(in srgb,var(--primary) 62%,var(--violet)))}.chart-bar span{color:var(--muted);font-size:9px}.heatmap{display:grid;grid-template-columns:repeat(14,1fr);gap:5px}.heat{aspect-ratio:1;border-radius:4px;background:color-mix(in srgb,var(--success) var(--level),var(--surface-3))}.note-layout{display:grid;grid-template-columns:310px 1fr;min-height:650px}.note-sidebar{border-right:1px solid var(--border);background:var(--surface-2)}.note-toolbar{padding:12px}.note-list{display:grid}.note-item{padding:13px;border:0;border-top:1px solid var(--border);background:transparent;color:var(--text);text-align:left}.note-item.active{background:var(--surface)}.note-item h4{margin:0 0 4px}.note-item p{margin:0;color:var(--muted);font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.note-editor{display:flex;flex-direction:column;padding:18px}.note-title{border:0;background:transparent;color:var(--text);font-size:23px;font-weight:800;outline:none}.note-meta{display:flex;gap:8px;margin:12px 0}.editor-area{flex:1;min-height:430px;padding:14px;border:1px solid var(--border);border-radius:11px;background:var(--surface-2);color:var(--text);outline:none;resize:none;line-height:1.7}.bookmark-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.bookmark-card{padding:15px}.bookmark-icon{width:44px;height:44px;display:grid;place-items:center;border-radius:11px;background:var(--primary-soft);color:var(--primary);font-size:20px}.bookmark-card h3{margin:12px 0 4px}.bookmark-card p{min-height:34px;color:var(--muted);font-size:11px}.settings-layout{display:grid;grid-template-columns:230px 1fr;gap:15px}.settings-nav{padding:8px}.settings-nav button{width:100%;display:flex;align-items:center;gap:9px;padding:10px;border:0;border-radius:9px;background:transparent;color:var(--text);text-align:left}.settings-nav button.active{background:var(--primary-soft);color:var(--primary);font-weight:800}.settings-panel{padding:18px}.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}.field{display:grid;gap:6px}.field.full{grid-column:1/-1}.field label{font-size:11px;font-weight:700}.switch-row{display:flex;align-items:center;justify-content:space-between;gap:15px;padding:13px 0;border-bottom:1px solid var(--border)}.switch-copy strong,.switch-copy small{display:block}.switch-copy small{margin-top:2px;color:var(--muted);font-size:10px}.switch{position:relative;width:42px;height:24px;flex:0 0 auto}.switch input{position:absolute;opacity:0}.switch span{position:absolute;inset:0;border-radius:14px;background:var(--border);transition:.18s}.switch span:after{content:"";position:absolute;left:3px;top:3px;width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.22);transition:.18s}.switch input:checked+span{background:var(--primary)}.switch input:checked+span:after{transform:translateX(18px)}.resource-layout{display:grid;grid-template-columns:230px 1fr;gap:15px}.resource-nav{padding:8px}.resource-nav button{width:100%;padding:10px;border:0;border-radius:9px;background:transparent;color:var(--text);text-align:left}.resource-nav button.active{background:var(--primary-soft);color:var(--primary);font-weight:800}.topic-tree{display:grid;gap:9px}.topic-item{display:grid;grid-template-columns:24px 1fr auto;align-items:center;gap:9px;padding:11px;border:1px solid var(--border);border-radius:10px}.topic-check{width:20px;height:20px;border:1px solid var(--border);border-radius:6px;background:var(--surface)}.topic-item.done .topic-check{background:var(--success);border-color:var(--success);color:#fff}.paper-row{display:grid;grid-template-columns:50px 1fr auto;align-items:center;gap:12px;padding:12px;border-bottom:1px solid var(--border)}.calendar{display:grid;grid-template-columns:repeat(7,1fr);gap:7px}.calendar-head{text-align:center;color:var(--muted);font-size:10px;font-weight:800}.calendar-day{min-height:95px;padding:7px;border:1px solid var(--border);border-radius:9px;background:var(--surface)}.calendar-day.muted{opacity:.4}.calendar-day.today{border-color:var(--primary);box-shadow:inset 0 0 0 1px var(--primary)}.calendar-event{display:block;margin-top:5px;padding:4px;border-radius:5px;background:var(--primary-soft);color:var(--primary);font-size:8px}.news-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}.news-card{padding:15px}.news-card p{color:var(--muted);font-size:11px}.cutoff-chart{display:grid;gap:10px}.cutoff-row{display:grid;grid-template-columns:150px 1fr 50px;align-items:center;gap:10px}.overlay{position:fixed;inset:0;z-index:60;display:none;background:rgba(8,15,31,.55);backdrop-filter:blur(3px)}.overlay.open{display:block}.modal{position:fixed;inset:0;z-index:70;display:none;place-items:center;padding:20px;pointer-events:none}.modal.open{display:grid}.modal-panel{width:min(720px,100%);max-height:calc(100vh - 40px);overflow:auto;border:1px solid var(--border);border-radius:18px;background:var(--surface);box-shadow:0 28px 80px rgba(0,0,0,.28);pointer-events:auto}.modal-panel.wide{width:min(1080px,100%)}.modal-head{position:sticky;top:0;z-index:2;display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:16px 18px;border-bottom:1px solid var(--border);background:var(--surface)}.modal-head h2{margin:0}.modal-head p{margin:3px 0 0;color:var(--muted);font-size:11px}.modal-body{padding:18px}.modal-actions{display:flex;justify-content:flex-end;gap:8px;padding:14px 18px;border-top:1px solid var(--border)}.detail-hero{display:flex;align-items:center;gap:13px;margin-bottom:15px}.detail-hero .exam-logo{width:58px;height:58px}.detail-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-bottom:15px}.detail-box{padding:10px;border:1px solid var(--border);border-radius:9px;background:var(--surface-2)}.detail-box small,.detail-box strong{display:block}.detail-box small{color:var(--muted);font-size:9px}.timeline{display:grid;gap:0;margin-top:14px}.timeline-item{position:relative;display:grid;grid-template-columns:30px 1fr;gap:9px;padding-bottom:15px}.timeline-item:after{content:"";position:absolute;left:14px;top:26px;bottom:0;width:2px;background:var(--border)}.timeline-item:last-child:after{display:none}.timeline-dot{position:relative;z-index:1;width:28px;height:28px;display:grid;place-items:center;border:2px solid var(--border);border-radius:50%;background:var(--surface);color:var(--muted);font-size:10px}.timeline-item.done .timeline-dot{border-color:var(--success);background:var(--success);color:#fff}.timeline-item.current .timeline-dot{border-color:var(--primary);color:var(--primary)}.timeline-copy strong,.timeline-copy small{display:block}.timeline-copy small{color:var(--muted)}.toast-area{position:fixed;right:20px;bottom:20px;z-index:90;display:grid;gap:8px}.toast{width:min(360px,calc(100vw - 40px));display:grid;grid-template-columns:34px 1fr;gap:9px;padding:12px;border:1px solid var(--border);border-radius:12px;background:var(--surface);box-shadow:var(--shadow-md);animation:toast-in .2s ease}.toast>i{width:32px;height:32px;display:grid;place-items:center;border-radius:9px;background:var(--primary-soft);color:var(--primary);font-style:normal}.toast.success>i{background:var(--success-soft);color:var(--success)}.toast.warning>i{background:var(--warning-soft);color:var(--warning)}.toast strong,.toast span{display:block}.toast span{color:var(--muted);font-size:10px}@keyframes toast-in{from{opacity:0;transform:translateY(8px)}}
+@media(max-width:1250px){.dashboard-layout{grid-template-columns:1.15fr .9fr}.dashboard-layout>.stack:last-child{grid-column:1/-1;grid-template-columns:1fr 1fr}.grid-4{grid-template-columns:repeat(2,1fr)}.exam-cards,.mock-grid,.bookmark-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:900px){.mobile-only{display:grid}.desktop-only{display:none}.sidebar{transform:translateX(-100%);width:260px}.sidebar.mobile-open{transform:none}.sidebar.compact{width:260px}.sidebar.compact .brand-copy,.sidebar.compact .nav-item b,.sidebar.compact .nav-item em,.sidebar.compact .streak-card,.sidebar.compact blockquote{display:block}.sidebar.compact .nav-item{justify-content:flex-start;padding:0 12px}.main-shell,.sidebar.compact~.main-shell{margin-left:0}.topbar{padding:0 14px}.content{padding:18px 14px 40px}.profile-text{display:none}.dashboard-layout{display:block}.dashboard-layout>.stack{margin-bottom:14px}.dashboard-layout>.stack:last-child{display:grid;grid-template-columns:1fr 1fr}.grid-3{grid-template-columns:1fr 1fr}.exam-cards,.mock-grid,.bookmark-grid{grid-template-columns:1fr 1fr}.week-board{grid-template-columns:repeat(7,150px)}.note-layout{grid-template-columns:240px 1fr}.settings-layout,.resource-layout{grid-template-columns:190px 1fr}.question-shell{grid-template-columns:1fr}.question-palette{border-right:0;border-bottom:1px solid var(--border)}.question-palette-grid{grid-template-columns:repeat(10,1fr)}}
+@media(max-width:620px){.topbar{gap:7px}.global-search kbd,.top-actions>.icon-btn:first-child{display:none}.profile-button{padding-left:6px;margin-left:0}.content{padding-inline:11px}.page-header{flex-direction:column}.page-actions{width:100%}.page-actions .btn{flex:1}.grid-2,.grid-3,.grid-4{grid-template-columns:1fr}.dashboard-layout>.stack:last-child{grid-template-columns:1fr}.exam-cards,.mock-grid,.bookmark-grid{grid-template-columns:1fr}.exam-row{grid-template-columns:42px 1fr auto;padding-inline:11px}.exam-row .deadline{display:none}.progress-overview{grid-template-columns:1fr}.resource-grid{grid-template-columns:repeat(2,1fr)}.stat-grid{grid-template-columns:1fr}.subject-row{grid-template-columns:115px 1fr 34px}.data-table{min-width:700px}.table-scroll{overflow:auto}.note-layout{display:block}.note-sidebar{border-right:0;border-bottom:1px solid var(--border)}.note-list{max-height:250px;overflow:auto}.settings-layout,.resource-layout{display:block}.settings-nav,.resource-nav{display:flex;overflow:auto}.settings-nav button,.resource-nav button{flex:0 0 auto;width:auto}.form-grid{grid-template-columns:1fr}.field.full{grid-column:auto}.detail-grid{grid-template-columns:1fr 1fr}.calendar{grid-template-columns:repeat(7,72px);overflow:auto}.calendar-day{min-height:75px}.news-grid{grid-template-columns:1fr}.cutoff-row{grid-template-columns:105px 1fr 40px}.question-main{padding:14px}.question-palette-grid{grid-template-columns:repeat(5,1fr)}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition-duration:.01ms!important;animation-duration:.01ms!important}}
+body.focus-mode .sidebar{filter:saturate(.8)}body.focus-mode .dashboard-layout>.stack:first-child article:not(:first-child),body.focus-mode .dashboard-layout>.stack:last-child{display:none}body.focus-mode .dashboard-layout{grid-template-columns:minmax(480px,1.2fr) minmax(380px,1fr)}
+@media(max-width:900px){.sidebar.mobile-open{z-index:65}}
+
+</style>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar" aria-label="Primary navigation">
+      <button class="brand" data-route="Dashboard" aria-label="Open dashboard">
+        <span class="brand-mark">✣</span>
+        <span class="brand-copy"><strong>Sarkari Aspirant</strong><small>Your journey. Your success.</small></span>
+      </button>
+      <nav class="nav" id="mainNav">
+        <button class="nav-item active" data-route="Dashboard"><span>▦</span><b>Dashboard</b></button>
+        <button class="nav-item" data-route="My Exams"><span>▣</span><b>My Exams</b></button>
+        <button class="nav-item" data-route="Applications"><span>✓</span><b>Applications</b></button>
+        <button class="nav-item" data-route="Admit Cards"><span>▤</span><b>Admit Cards</b></button>
+        <button class="nav-item" data-route="Results"><span>◎</span><b>Results</b></button>
+        <button class="nav-item" data-route="Study Planner"><span>▧</span><b>Study Planner</b></button>
+        <button class="nav-item" data-route="Mock Tests"><span>◫</span><b>Mock Tests</b></button>
+        <button class="nav-item" data-route="Study Progress"><span>▥</span><b>Study Progress</b></button>
+        <button class="nav-item" data-route="Bookmarks"><span>♧</span><b>Bookmarks</b></button>
+        <button class="nav-item" data-route="Notes"><span>▨</span><b>Notes</b></button>
+        <button class="nav-item" data-route="Alerts & Updates"><span>♢</span><b>Alerts & Updates</b><em id="navAlertCount">3</em></button>
+        <button class="nav-item" data-route="Downloads"><span>⇩</span><b>Downloads</b></button>
+        <button class="nav-item" data-route="Settings"><span>⚙</span><b>Settings</b></button>
+      </nav>
+      <div class="sidebar-spacer"></div>
+      <section class="streak-card">
+        <div class="streak-title">🔥 <strong id="streakLabel">12 Day Streak</strong></div>
+        <p>Consistency beats intensity. Finish one study block today.</p>
+        <div class="week-dots" id="sidebarWeek"></div>
+      </section>
+      <blockquote>“Success is the sum of small efforts repeated every day.”</blockquote>
+    </aside>
+
+    <section class="main-shell">
+      <header class="topbar">
+        <button class="icon-btn mobile-only" id="mobileMenu" aria-label="Open navigation">☰</button>
+        <button class="icon-btn desktop-only" id="collapseSidebar" aria-label="Collapse navigation">☰</button>
+        <div class="global-search">
+          <span>⌕</span>
+          <input id="globalSearch" type="search" placeholder="Search exams, notes, tests, resources..." autocomplete="off" aria-label="Search portal" />
+          <kbd>/</kbd>
+          <div class="search-results" id="searchResults"></div>
+        </div>
+        <div class="top-actions">
+          <button class="icon-btn" id="themeToggle" aria-label="Toggle theme">☾</button>
+          <button class="icon-btn alert-button" data-route="Alerts & Updates" aria-label="Open alerts">♢<span id="topAlertCount">3</span></button>
+          <button class="profile-button" data-route="Settings" data-settings-tab="profile">
+            <span class="avatar" id="headerAvatar">AK</span>
+            <span class="profile-text"><strong id="headerName">Amit Kumar</strong><small>Aspirant</small></span>
+            <span>⌄</span>
+          </button>
+        </div>
+      </header>
+
+      <main class="content">
+        <div id="pageHeader"></div>
+        <div id="pageRoot" aria-live="polite"></div>
+      </main>
+    </section>
+  </div>
+
+  <div class="overlay" id="overlay"></div>
+  <section class="modal" id="modal" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal-panel" id="modalPanel"></div>
+  </section>
+  <div class="toast-area" id="toastArea" aria-live="polite"></div>
+  <input id="importFile" type="file" accept="application/json" hidden />
+  <script>
+(() => {
+  'use strict';
+
+  const TODAY = new Date('2026-08-03T12:00:00');
+  const DAY = 86400000;
+  const STORAGE_KEY = 'sarkari-aspirant-portal-v2';
+
+  const defaultState = {
+    theme: 'light',
+    compactSidebar: false,
+    activePage: 'Dashboard',
+    activeResource: 'Syllabus',
+    activeSettingsTab: 'profile',
+    plannerWeekStart: '2026-08-03',
+    profile: { name: 'Amit Kumar', email: 'amit.kumar@example.com', phone: '+91 98765 43210', state: 'Uttar Pradesh', language: 'English', target: 'SSC CGL 2025 Tier 1', dailyGoal: 4 },
+    preferences: { emailAlerts: true, pushAlerts: true, examReminders: true, resultAlerts: true, weeklyReport: true, focusSounds: false, wakeLock: false, dataSaver: false },
+    exams: [
+      {id:1,code:'SSC',name:'SSC CGL 2025 Tier 1',board:'Staff Selection Commission',date:'2026-08-26',stage:'upcoming',application:'Submitted',prep:82,priority:'High',reminder:7,logo:['#b91c1c','#f59e0b'],target:true},
+      {id:2,code:'RRB',name:'RRB NTPC 2025',board:'Railway Recruitment Board',date:'2026-09-17',stage:'upcoming',application:'Verified',prep:64,priority:'High',reminder:7,logo:['#e11d48','#fb7185'],target:false},
+      {id:3,code:'UPP',name:'UP Police Constable 2025',board:'UP Police Recruitment Board',date:'2026-10-10',stage:'upcoming',application:'Submitted',prep:55,priority:'Medium',reminder:14,logo:['#f59e0b','#2563eb'],target:false},
+      {id:4,code:'IBPS',name:'IBPS PO 2025',board:'Institute of Banking Personnel Selection',date:'2026-10-18',stage:'application',application:'Payment pending',prep:31,priority:'Medium',reminder:3,logo:['#0284c7','#38bdf8'],target:false},
+      {id:5,code:'CHSL',name:'SSC CHSL 2025 Tier 1',board:'Staff Selection Commission',date:'2026-06-15',stage:'completed',application:'Qualified',prep:100,priority:'Low',reminder:0,logo:['#7c3aed','#c084fc'],target:false}
+    ],
+    applications: [
+      {id:101,examId:1,applicationNo:'CGL25-714892',stage:'submitted',fee:'Paid',lastUpdated:'2026-07-21',documents:{photo:true,signature:true,id:true,certificate:true}},
+      {id:102,examId:2,applicationNo:'NTPC25-442180',stage:'verified',fee:'Paid',lastUpdated:'2026-07-29',documents:{photo:true,signature:true,id:true,certificate:true}},
+      {id:103,examId:3,applicationNo:'UPP25-993711',stage:'submitted',fee:'Paid',lastUpdated:'2026-07-26',documents:{photo:true,signature:true,id:true,certificate:false}},
+      {id:104,examId:4,applicationNo:'Draft',stage:'draft',fee:'Pending',lastUpdated:'2026-08-02',documents:{photo:true,signature:false,id:true,certificate:false}},
+      {id:105,examId:5,applicationNo:'CHSL25-339117',stage:'completed',fee:'Paid',lastUpdated:'2026-05-14',documents:{photo:true,signature:true,id:true,certificate:true}}
+    ],
+    admitCards: [
+      {id:201,examId:1,status:'available',releaseDate:'2026-08-01',examDate:'2026-08-26',city:'Lucknow',centre:'TCS iON Digital Zone, Gomti Nagar',shift:'09:00 AM – 10:00 AM',downloaded:false},
+      {id:202,examId:2,status:'upcoming',releaseDate:'2026-09-08',examDate:'2026-09-17',city:'To be announced',centre:'To be announced',shift:'To be announced',downloaded:false},
+      {id:203,examId:5,status:'downloaded',releaseDate:'2026-06-04',examDate:'2026-06-15',city:'Kanpur',centre:'iON Digital Zone, Panki',shift:'11:45 AM – 12:45 PM',downloaded:true}
+    ],
+    results: [
+      {id:301,examId:5,status:'qualified',score:154.5,maxScore:200,cutoff:148.7,rank:4821,percentile:96.31,date:'2026-07-28',sectionScores:[['English',41.5,50],['Reasoning',39,50],['Quantitative Aptitude',35,50],['General Awareness',39,50]]},
+      {id:302,examId:3,status:'expected',score:null,maxScore:300,cutoff:null,rank:null,percentile:null,date:'Expected Aug 2026',sectionScores:[]}
+    ],
+    tasks: [
+      {id:401,title:'Complete 2 Mock Tests',date:'2026-08-03',done:false,progress:50,state:'1/2',category:'Mock test'},
+      {id:402,title:'Read Current Affairs',date:'2026-08-03',done:true,progress:100,state:'Done',category:'Current affairs'},
+      {id:403,title:'Practice 50 Quant Questions',date:'2026-08-03',done:false,progress:50,state:'25/50',category:'Practice'},
+      {id:404,title:'Revise Polity Notes',date:'2026-08-03',done:true,progress:100,state:'Done',category:'Revision'}
+    ],
+    plannerSessions: [
+      {id:501,date:'2026-08-03',time:'07:00',duration:60,subject:'Quantitative Aptitude',topic:'Percentage & Profit/Loss',type:'Practice',done:true},
+      {id:502,date:'2026-08-03',time:'11:30',duration:45,subject:'Current Affairs',topic:'National news — weekly revision',type:'Revision',done:false},
+      {id:503,date:'2026-08-03',time:'19:00',duration:60,subject:'Reasoning',topic:'Puzzles and seating arrangement',type:'Practice',done:false},
+      {id:504,date:'2026-08-04',time:'07:00',duration:60,subject:'English Language',topic:'Reading comprehension',type:'Study',done:false},
+      {id:505,date:'2026-08-04',time:'19:00',duration:45,subject:'General Awareness',topic:'Indian Polity — Parliament',type:'Revision',done:false},
+      {id:506,date:'2026-08-05',time:'18:30',duration:60,subject:'Quantitative Aptitude',topic:'Time and work',type:'Practice',done:false},
+      {id:507,date:'2026-08-06',time:'18:30',duration:90,subject:'Full Syllabus',topic:'SSC CGL sectional mock',type:'Mock Test',done:false},
+      {id:508,date:'2026-08-07',time:'07:00',duration:45,subject:'Reasoning',topic:'Syllogism and coding',type:'Study',done:false},
+      {id:509,date:'2026-08-08',time:'10:00',duration:120,subject:'Full Syllabus',topic:'SSC CGL full mock test',type:'Mock Test',done:false},
+      {id:510,date:'2026-08-09',time:'18:00',duration:60,subject:'Weekly Review',topic:'Analyse errors and plan next week',type:'Review',done:false}
+    ],
+    subjects: [
+      {name:'Quantitative Aptitude',progress:80,hours:28.5,accuracy:76,completed:40,total:50,color:'#079455'},
+      {name:'Reasoning',progress:65,hours:21.2,accuracy:82,completed:26,total:40,color:'#3977ef'},
+      {name:'General Awareness',progress:70,hours:17.4,accuracy:71,completed:35,total:50,color:'#7f56d9'},
+      {name:'English Language',progress:60,hours:14.8,accuracy:79,completed:24,total:40,color:'#dc6803'},
+      {name:'Current Affairs',progress:75,hours:11.5,accuracy:74,completed:30,total:40,color:'#0e9384'}
+    ],
+    mockTests: [
+      {id:601,title:'SSC CGL Tier 1 Full Mock 12',exam:'SSC CGL',questions:5,duration:10,difficulty:'Moderate',attempts:18450,free:true},
+      {id:602,title:'Quantitative Aptitude Sectional 08',exam:'SSC CGL',questions:5,duration:8,difficulty:'Hard',attempts:9221,free:true},
+      {id:603,title:'RRB NTPC Full Mock 05',exam:'RRB NTPC',questions:5,duration:10,difficulty:'Moderate',attempts:13780,free:true},
+      {id:604,title:'General Awareness Weekly Test',exam:'Multi-exam',questions:5,duration:7,difficulty:'Easy',attempts:6431,free:true},
+      {id:605,title:'Reasoning Speed Challenge',exam:'Multi-exam',questions:5,duration:6,difficulty:'Hard',attempts:4870,free:true},
+      {id:606,title:'English Language Mini Mock',exam:'SSC CGL',questions:5,duration:7,difficulty:'Moderate',attempts:7712,free:true}
+    ],
+    attempts: [
+      {id:701,testId:601,date:'2026-08-01',score:4,total:5,accuracy:80,time:472,percentile:88},
+      {id:702,testId:602,date:'2026-07-30',score:3,total:5,accuracy:60,time:401,percentile:71},
+      {id:703,testId:603,date:'2026-07-27',score:4,total:5,accuracy:80,time:515,percentile:84}
+    ],
+    bookmarks: [
+      {id:801,type:'Syllabus',title:'SSC CGL Tier 1 Complete Syllabus',description:'Subject-wise topics and latest exam pattern.',source:'SSC',date:'2026-07-31',icon:'▥'},
+      {id:802,type:'Paper',title:'SSC CGL 2024 Tier 1 — 12 September Shift 1',description:'Previous-year paper with solutions.',source:'Previous Papers',date:'2026-07-30',icon:'▤'},
+      {id:803,type:'Current Affairs',title:'Important Government Schemes 2026',description:'Consolidated notes for national schemes.',source:'Current Affairs',date:'2026-07-29',icon:'◎'},
+      {id:804,type:'Strategy',title:'90-Day SSC CGL Preparation Strategy',description:'A topper-inspired daily preparation plan.',source:'Topper Strategy',date:'2026-07-26',icon:'♛'},
+      {id:805,type:'Cut Off',title:'SSC CGL Category-wise Cut-off Trends',description:'Five-year comparison by category and post.',source:'Cut Offs',date:'2026-07-23',icon:'▥'}
+    ],
+    notes: [
+      {id:901,title:'Indian Polity — Parliament',body:'Lok Sabha: maximum strength, tenure, qualifications and key powers.\n\nRajya Sabha: permanent house, one-third members retire every two years.\n\nRevise money bill procedure and joint sitting exceptions.',tag:'Polity',updated:'2026-08-02T18:30:00',pinned:true},
+      {id:902,title:'Percentage shortcuts',body:'Successive percentage change: a + b + ab/100.\nPopulation/value questions can often be solved using fractions.\nPractice reverse percentage daily.',tag:'Quant',updated:'2026-08-01T09:20:00',pinned:false},
+      {id:903,title:'Current affairs — July week 4',body:'Review appointments, sports awards, RBI updates, government schemes and important reports.',tag:'Current Affairs',updated:'2026-07-29T19:10:00',pinned:false}
+    ],
+    alerts: [
+      {id:1001,type:'Admit Card',title:'SSC CGL Tier 1 admit card is available',description:'Download and verify your exam city, centre and shift.',time:'2026-08-03T00:30:00',read:false,route:'Admit Cards'},
+      {id:1002,type:'Result',title:'UP Police Constable result expected this month',description:'We will alert you as soon as the official result is released.',time:'2026-08-02T20:00:00',read:false,route:'Results'},
+      {id:1003,type:'Application',title:'RBI Grade B application window opened',description:'The application window closes on 24 August 2026.',time:'2026-08-02T10:00:00',read:false,route:'Applications'},
+      {id:1004,type:'Exam Date',title:'IBPS PO mains date announced',description:'The updated exam schedule is available in the exam calendar.',time:'2026-08-01T12:00:00',read:true,route:'Resources',resource:'Exam Calendar'},
+      {id:1005,type:'Study',title:'Your weekly study report is ready',description:'You studied 18h 45m with 78% average accuracy.',time:'2026-07-31T08:00:00',read:true,route:'Study Progress'},
+      {id:1006,type:'Reminder',title:'SSC CGL is 23 days away',description:'Your readiness is 82%. Prioritise General Awareness this week.',time:'2026-07-30T09:00:00',read:true,route:'My Exams'}
+    ],
+    downloads: [
+      {id:1101,name:'SSC CGL Tier 1 Admit Card.pdf',type:'Admit Card',size:'248 KB',date:'2026-08-01',status:'Ready'},
+      {id:1102,name:'SSC CGL 2025 Syllabus.pdf',type:'Syllabus',size:'1.2 MB',date:'2026-07-28',status:'Ready'},
+      {id:1103,name:'SSC CHSL Scorecard.pdf',type:'Scorecard',size:'184 KB',date:'2026-07-28',status:'Ready'},
+      {id:1104,name:'Weekly Study Report — 27 Jul to 2 Aug.pdf',type:'Report',size:'392 KB',date:'2026-08-03',status:'Ready'},
+      {id:1105,name:'RRB NTPC Previous Papers.zip',type:'Question Papers',size:'18.6 MB',date:'2026-07-26',status:'Ready'}
+    ],
+    syllabus: [
+      {id:1201,exam:'SSC CGL',subject:'Quantitative Aptitude',topic:'Number System',done:true},
+      {id:1202,exam:'SSC CGL',subject:'Quantitative Aptitude',topic:'Percentage, Profit & Loss',done:true},
+      {id:1203,exam:'SSC CGL',subject:'Quantitative Aptitude',topic:'Time, Speed & Distance',done:false},
+      {id:1204,exam:'SSC CGL',subject:'Reasoning',topic:'Analogy and Classification',done:true},
+      {id:1205,exam:'SSC CGL',subject:'Reasoning',topic:'Coding-Decoding',done:true},
+      {id:1206,exam:'SSC CGL',subject:'Reasoning',topic:'Puzzles and Seating Arrangement',done:false},
+      {id:1207,exam:'SSC CGL',subject:'English Language',topic:'Reading Comprehension',done:true},
+      {id:1208,exam:'SSC CGL',subject:'English Language',topic:'Error Spotting',done:false},
+      {id:1209,exam:'SSC CGL',subject:'General Awareness',topic:'Indian Polity',done:true},
+      {id:1210,exam:'SSC CGL',subject:'General Awareness',topic:'Economics and Current Affairs',done:false}
+    ],
+    currentAffairsQuizScore: null
+  };
+
+  const quizQuestions = [
+    {q:'Which institution publishes India’s monetary policy decisions?',options:['NITI Aayog','Reserve Bank of India','Finance Commission','SEBI'],answer:1},
+    {q:'The Union Budget is presented in Parliament by the:',options:['Prime Minister','RBI Governor','Finance Minister','Cabinet Secretary'],answer:2},
+    {q:'Article 324 of the Constitution relates to:',options:['Election Commission','Finance Commission','CAG','UPSC'],answer:0},
+    {q:'The headquarters of ISRO is located in:',options:['Hyderabad','New Delhi','Bengaluru','Sriharikota'],answer:2},
+    {q:'Repo rate is the rate at which RBI lends to:',options:['State governments','Commercial banks','Individuals','Foreign banks only'],answer:1}
+  ];
+
+  const testQuestions = [
+    {q:'If 25% of a number is 45, what is the number?',options:['120','160','180','200'],answer:2},
+    {q:'Choose the word most similar in meaning to “Diligent”.',options:['Careless','Hardworking','Uncertain','Impatient'],answer:1},
+    {q:'Which Article guarantees equality before law?',options:['Article 14','Article 19','Article 21','Article 32'],answer:0},
+    {q:'Complete the series: 3, 8, 15, 24, 35, ?',options:['46','47','48','49'],answer:2},
+    {q:'The SI unit of electric current is:',options:['Volt','Ohm','Ampere','Watt'],answer:2}
+  ];
+
+  const ui = {
+    examFilter: 'all', examQuery: '', applicationView: 'table', plannerSubject: 'All', mockTab: 'available', bookmarkFilter: 'All', bookmarkQuery: '', noteQuery: '', selectedNoteId: 901,
+    alertFilter: 'All', downloadFilter: 'All', resultFilter: 'All', syllabusExam: 'SSC CGL', currentQuizAnswers: {}, currentQuestion: 0, currentTest: null, testAnswers: {}, testSeconds: 0, testTimer: null
+  };
+
+  const clone = obj => JSON.parse(JSON.stringify(obj));
+  const $ = (s, r=document) => r.querySelector(s);
+  const $$ = (s, r=document) => [...r.querySelectorAll(s)];
+  const esc = value => String(value ?? '').replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
+  const fmtDate = date => new Intl.DateTimeFormat('en-IN',{day:'2-digit',month:'short',year:'numeric'}).format(new Date(date+'T12:00:00'));
+  const shortDate = date => new Intl.DateTimeFormat('en-IN',{day:'numeric',month:'short'}).format(new Date(date+'T12:00:00'));
+  const isoDate = d => { const x=new Date(d); return `${x.getFullYear()}-${String(x.getMonth()+1).padStart(2,'0')}-${String(x.getDate()).padStart(2,'0')}`; };
+  const daysUntil = date => Math.ceil((new Date(date+'T12:00:00') - TODAY)/DAY);
+  const examById = id => state.exams.find(e => e.id === Number(id));
+  const appByExam = id => state.applications.find(a => a.examId === Number(id));
+  const uniqueId = () => Date.now() + Math.floor(Math.random()*1000);
+  const initials = name => name.split(/\s+/).map(x=>x[0]).slice(0,2).join('').toUpperCase();
+  const timeAgo = value => { const diff = Math.max(0, TODAY - new Date(value)); const h=Math.floor(diff/3600000); if(h<1)return 'Just now'; if(h<24)return `${h}h ago`; const d=Math.floor(h/24); return `${d}d ago`; };
+  const stageLabel = s => ({upcoming:'Upcoming',application:'Application in progress',completed:'Completed'}[s] || s);
+  const appStageLabel = s => ({draft:'Draft',submitted:'Submitted',verified:'Verified',completed:'Completed'}[s] || s);
+  const badgeClass = s => ({upcoming:'blue',application:'orange',completed:'green',draft:'orange',submitted:'blue',verified:'green',available:'green',downloaded:'blue',qualified:'green',expected:'orange'}[s] || 'violet');
+
+  let state = loadState();
+
+  function loadState(){
+    try {
+      const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
+      return saved ? Object.assign(clone(defaultState), saved) : clone(defaultState);
+    } catch { return clone(defaultState); }
+  }
+  function save(){ try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }catch{} updateChrome(); }
+
+  function setTheme(theme){
+    state.theme = theme;
+    document.documentElement.dataset.theme = theme;
+    $('#themeToggle').textContent = theme === 'light' ? '☾' : '☀';
+    save();
+  }
+
+  function updateChrome(){
+    const unread = state.alerts.filter(a=>!a.read).length;
+    $('#navAlertCount').textContent = unread;
+    $('#navAlertCount').classList.toggle('hidden', !unread);
+    $('#topAlertCount').textContent = unread;
+    $('#topAlertCount').classList.toggle('hidden', !unread);
+    $('#headerName').textContent = state.profile.name;
+    $('#headerAvatar').textContent = initials(state.profile.name);
+    $('#streakLabel').textContent = '12 Day Streak';
+    $('#sidebarWeek').innerHTML = ['M','T','W','T','F','S','S'].map((d,i)=>`<span class="week-dot ${i<6?'done':''}"><i>${i<6?'✓':'•'}</i>${d}</span>`).join('');
+    $$('.nav-item').forEach(b=>b.classList.toggle('active', b.dataset.route === state.activePage));
+  }
+
+  function header(title, description, actions=''){
+    $('#pageHeader').innerHTML = `<section class="page-header"><div class="page-title"><h1>${title}</h1><p>${description}</p></div><div class="page-actions">${actions}</div></section>`;
+  }
+
+  function navigate(page, options={}){
+    state.activePage = page;
+    if(options.resource) state.activeResource = options.resource;
+    if(options.settingsTab) state.activeSettingsTab = options.settingsTab;
+    save();
+    render();
+    window.scrollTo({top:0,behavior:'smooth'});
+    if(innerWidth <= 900) closeSidebar();
+  }
+
+  function render(){
+    clearInterval(ui.testTimer);
+    ui.testTimer = null;
+    const renderers = {
+      'Dashboard': renderDashboard, 'My Exams': renderMyExams, 'Applications': renderApplications, 'Admit Cards': renderAdmitCards,
+      'Results': renderResults, 'Study Planner': renderPlanner, 'Mock Tests': renderMockTests, 'Study Progress': renderProgress,
+      'Bookmarks': renderBookmarks, 'Notes': renderNotes, 'Alerts & Updates': renderAlerts, 'Downloads': renderDownloads,
+      'Settings': renderSettings, 'Resources': renderResources
+    };
+    (renderers[state.activePage] || renderDashboard)();
+    updateChrome();
+    bindPageInputs();
+  }
+
+  function renderDashboard(){
+    const upcoming = state.exams.filter(e=>e.stage==='upcoming').length;
+    const appProgress = state.applications.filter(a=>['draft','submitted','verified'].includes(a.stage)).length;
+    const availableCards = state.admitCards.filter(a=>a.status==='available' && !a.downloaded).length;
+    const qualified = state.results.filter(r=>r.status==='qualified').length;
+    const todayTasks = state.tasks.filter(t=>t.date===isoDate(TODAY));
+    const overall = Math.round(state.subjects.reduce((a,s)=>a+s.progress,0)/state.subjects.length);
+    const completedSessions = state.plannerSessions.filter(s=>s.done).length;
+    const totalMinutes = state.plannerSessions.filter(s=>s.done).reduce((a,s)=>a+s.duration,0);
+    const exams = state.exams.slice(0,5);
+    header(`Welcome back, ${esc(state.profile.name.split(' ')[0])}! 👋`, 'Stay focused and keep pushing forward. Your dream government job is closer than you think!', `<button class="btn" data-action="focus-mode">◎ Focus mode</button><button class="btn btn-primary" data-action="add-exam">＋ Add exam</button>`);
+    $('#pageRoot').innerHTML = `
+      <section class="grid grid-4" style="margin-bottom:16px">
+        ${summary('▧','Upcoming Exams',upcoming,'Next: SSC CGL · in 23 days','#8a3ffc','My Exams')}
+        ${summary('▣','Applications',state.applications.length,`${appProgress} active applications`,'#079455','Applications')}
+        ${summary('▤','Admit Cards',state.admitCards.length,`${availableCards} available now`,'#155eef','Admit Cards')}
+        ${summary('▨','Results',state.results.length,`${qualified} qualified result`,'#f97316','Results')}
+      </section>
+      <section class="dashboard-layout">
+        <div class="stack">
+          <article class="card">
+            <div class="card-header"><div><h2>My Exams</h2><p>Track deadlines, application stages and readiness</p></div><button class="btn btn-sm" data-route="My Exams">View all</button></div>
+            <div class="tabs"><button class="tab active">All (${state.exams.length})</button><button class="tab">Upcoming (${upcoming})</button><button class="tab">Active (${appProgress})</button></div>
+            <div class="exam-list">${exams.map(examRow).join('')}</div>
+          </article>
+          <article class="card">
+            <div class="card-header"><div><h2>Study Stats</h2><p>Activity from connected planner and tests</p></div><button class="btn btn-sm" data-route="Study Progress">Full report</button></div>
+            <div class="stat-grid">
+              ${statBox('Study Hours',`${Math.floor(totalMinutes/60)}h ${totalMinutes%60}m`,'↑ 12% this week')}
+              ${statBox('Sessions Completed',completedSessions,'On schedule')}
+              ${statBox('Questions Solved',1250 + state.attempts.length*5,'↑ 15% this month')}
+              ${statBox('Average Accuracy',`${Math.round(state.attempts.reduce((a,x)=>a+x.accuracy,0)/state.attempts.length)}%`,'↑ 5% this month')}
+            </div>
+          </article>
+          <article class="card"><div class="card-header"><div><h2>Quick Resources</h2><p>Everything needed for daily preparation</p></div></div>${resourceTiles()}</article>
+        </div>
+        <div class="stack">
+          <article class="card">
+            <div class="card-header"><div><h2>Study Progress</h2><p>Based on active subjects and completed sessions</p></div><button class="btn btn-sm" data-route="Study Progress">Analyse</button></div>
+            <div class="progress-overview">
+              <div class="progress-ring" style="--value:${overall}"><div><strong>${overall}%</strong><span>Overall progress</span></div></div>
+              <div class="metric-list">
+                <div class="metric"><span>◷</span><span>Study hours</span><b>${Math.floor(totalMinutes/60)}h ${totalMinutes%60}m</b></div>
+                <div class="metric"><span>✓</span><span>Topics completed</span><b>${state.subjects.reduce((a,s)=>a+s.completed,0)} / ${state.subjects.reduce((a,s)=>a+s.total,0)}</b></div>
+                <div class="metric"><span>↗</span><span>Mock tests taken</span><b>${state.attempts.length}</b></div>
+                <div class="metric"><span>♙</span><span>Accuracy</span><b>${Math.round(state.subjects.reduce((a,s)=>a+s.accuracy,0)/state.subjects.length)}%</b></div>
+              </div>
+            </div>
+            <div class="subject-list">${state.subjects.map(subjectRow).join('')}</div>
+            <div style="padding:0 16px 15px"><button class="btn btn-primary" style="width:100%" data-route="Study Planner">Go to Study Planner →</button></div>
+          </article>
+        </div>
+        <div class="stack">
+          <article class="card"><div class="card-header"><div><h2>Today's Tasks</h2><p>${todayTasks.filter(t=>t.done).length}/${todayTasks.length} completed</p></div><button class="btn btn-sm" data-action="add-task">Add</button></div><div>${todayTasks.map(taskRow).join('') || empty('No tasks for today','▧')}</div></article>
+          <article class="card"><div class="card-header"><div><h2>Alerts & Notifications</h2><p>${state.alerts.filter(a=>!a.read).length} unread updates</p></div><button class="btn btn-sm" data-route="Alerts & Updates">View all</button></div><div>${state.alerts.slice(0,4).map(alertRow).join('')}</div></article>
+          <article class="card"><div class="card-header"><h2>Quick Actions</h2></div>
+            <button class="action-row" data-route="Admit Cards"><span>⇩</span><span>Download Admit Card</span><span>›</span></button>
+            <button class="action-row" data-route="Results"><span>◎</span><span>Check Results</span><span>›</span></button>
+            <button class="action-row" data-action="add-exam"><span>▣</span><span>Track a New Exam</span><span>›</span></button>
+            <button class="action-row" data-route="Settings" data-settings-tab="profile"><span>♙</span><span>Update Profile</span><span>›</span></button>
+            <button class="action-row" data-route="Alerts & Updates"><span>♢</span><span>Manage Notifications</span><span>›</span></button>
+          </article>
+        </div>
+      </section>`;
+  }
+
+  function summary(icon,label,value,foot,color,route){ return `<button class="card summary-card" style="--accent:${color};text-align:left;color:var(--text)" data-route="${route}"><span class="summary-icon">${icon}</span><span><span class="summary-label">${label}</span><strong class="summary-value">${value}</strong><span class="summary-foot"><b>${foot}</b></span></span></button>`; }
+  function statBox(label,value,trend){ return `<div class="stat-box"><small>${label}</small><strong>${value}</strong><span class="trend-up">${trend}</span></div>`; }
+  function examRow(e){ const days=daysUntil(e.date); return `<button class="exam-row" data-action="view-exam" data-id="${e.id}" style="border:0;background:transparent;color:var(--text);width:100%;text-align:left"><span class="exam-logo" style="--a:${e.logo[0]};--b:${e.logo[1]}">${esc(e.code)}</span><span class="item-copy"><strong>${esc(e.name)}</strong><small>${esc(e.board)}</small></span><span class="deadline"><strong>${days>0?days:'—'}</strong><small>${days>0?'days left':'completed'}</small></span><span class="badge badge-${badgeClass(e.stage)}">${stageLabel(e.stage)}</span></button>`; }
+  function subjectRow(s){ return `<div class="subject-row"><span>${esc(s.name)}</span><div class="bar"><i style="--w:${s.progress}%;--c:${s.color}"></i></div><b>${s.progress}%</b></div>`; }
+  function taskRow(t){ return `<button class="task-row ${t.done?'done':''}" data-action="toggle-task" data-id="${t.id}" style="width:100%;border-left:0;border-right:0;border-top:0;background:transparent;color:var(--text);text-align:left"><span class="check">✓</span><span class="task-copy"><span>${esc(t.title)}</span><small>${esc(t.category)} · ${esc(t.state)}</small>${!t.done?`<span class="mini-progress"><i style="--w:${t.progress}%"></i></span>`:''}</span><small>${t.done?'Done':t.state}</small></button>`; }
+  function alertRow(a){ const tone={'Admit Card':['#7f56d9','var(--violet-soft)','▤'],Result:['#dc6803','var(--warning-soft)','◎'],Application:['#079455','var(--success-soft)','▣'],'Exam Date':['#155eef','var(--primary-soft)','▧'],Study:['#0e9384','var(--cyan-soft)','▥'],Reminder:['#d92d20','var(--danger-soft)','♢']}[a.type]||['#155eef','var(--primary-soft)','♢']; return `<button class="alert-row ${a.read?'':'unread'}" data-action="open-alert" data-id="${a.id}"><span class="alert-icon" style="--tone:${tone[0]};--soft:${tone[1]}">${tone[2]}</span><span class="item-copy"><strong>${esc(a.title)}</strong><small>${esc(a.description)}</small></span><small>${timeAgo(a.time)}</small></button>`; }
+  function resourceTiles(){ const items=[['Syllabus','▥','#7f56d9','var(--violet-soft)'],['Previous Papers','▤','#155eef','var(--primary-soft)'],['Current Affairs','◎','#079455','var(--success-soft)'],['Notes','▨','#dc6803','var(--warning-soft)'],['Exam Calendar','▧','#e11d48','var(--danger-soft)'],['Community','➤','#2284db','var(--primary-soft)'],['Topper Strategy','♛','#7c3aed','var(--violet-soft)'],['Cut Offs','▥','#079455','var(--success-soft)']]; return `<div class="resource-grid">${items.map(([name,icon,tone,soft])=>`<button class="resource-card" ${name==='Notes'?'data-route="Notes"':`data-route="Resources" data-resource="${name}"`}><i style="--tone:${tone};--soft:${soft}">${icon}</i><span>${name}</span></button>`).join('')}</div>`; }
+  function empty(text, icon='◫'){ return `<div class="empty-state"><i>${icon}</i><strong>${text}</strong></div>`; }
+
+  function renderMyExams(){
+    const filtered=state.exams.filter(e=>ui.examFilter==='all'||e.stage===ui.examFilter).filter(e=>`${e.name} ${e.board}`.toLowerCase().includes(ui.examQuery.toLowerCase()));
+    header('My Exams','Track application status, deadlines, readiness and reminders for every target exam.',`<button class="btn" data-action="export-exams">⇩ Export</button><button class="btn btn-primary" data-action="add-exam">＋ Add exam</button>`);
+    $('#pageRoot').innerHTML=`<div class="toolbar"><input class="input grow" id="examSearch" value="${esc(ui.examQuery)}" placeholder="Search tracked exams..."><select class="select" id="examFilter" style="width:190px"><option value="all">All stages</option><option value="upcoming">Upcoming</option><option value="application">Application in progress</option><option value="completed">Completed</option></select></div>
+    <section class="grid grid-4" style="margin-bottom:16px">${summary('▣','Tracked Exams',state.exams.length,'Across SSC, Railways, Banking and Police','#155eef','My Exams')}${summary('◎','Primary Target',state.exams.filter(e=>e.target).length,state.exams.find(e=>e.target)?.name||'Not set','#7f56d9','My Exams')}${summary('◷','Next Exam',Math.max(0,Math.min(...state.exams.filter(e=>daysUntil(e.date)>0).map(e=>daysUntil(e.date)))),'days remaining','#dc6803','My Exams')}${summary('▥','Average Readiness',`${Math.round(state.exams.reduce((a,e)=>a+e.prep,0)/state.exams.length)}%`,'Across all tracked exams','#079455','Study Progress')}</section>
+    ${filtered.length?`<div class="exam-cards">${filtered.map(e=>{const a=appByExam(e.id);return `<article class="card exam-card"><div class="exam-card-top"><span class="exam-logo" style="--a:${e.logo[0]};--b:${e.logo[1]}">${esc(e.code)}</span><span class="badge badge-${badgeClass(e.stage)}">${stageLabel(e.stage)}</span></div><h3>${esc(e.name)} ${e.target?'<span title="Primary target">★</span>':''}</h3><p>${esc(e.board)}</p><div class="subject-row" style="grid-template-columns:70px 1fr 35px"><span>Readiness</span><div class="bar"><i style="--w:${e.prep}%;--c:${e.prep>=75?'var(--success)':'var(--primary)'}"></i></div><b>${e.prep}%</b></div><div class="exam-meta"><div class="meta-box"><small>Exam date</small><strong>${fmtDate(e.date)}</strong></div><div class="meta-box"><small>Days remaining</small><strong>${daysUntil(e.date)>0?daysUntil(e.date):'Completed'}</strong></div><div class="meta-box"><small>Application</small><strong>${esc(a?.stage?appStageLabel(a.stage):e.application)}</strong></div><div class="meta-box"><small>Priority</small><strong>${esc(e.priority)}</strong></div></div><div class="card-actions"><button class="btn" data-action="view-exam" data-id="${e.id}">Details</button><button class="btn btn-primary" data-action="open-exam-plan" data-id="${e.id}">Study plan</button></div></article>`}).join('')}</div>`:empty('No exams match your filters','▣')}`;
+    $('#examFilter').value=ui.examFilter;
+  }
+
+  function renderApplications(){
+    const stages=['draft','submitted','verified','completed'];
+    header('Applications','Manage forms, document checklists, payment status and official application numbers.',`<button class="btn" data-action="application-view">${ui.applicationView==='table'?'▦ Board view':'☷ Table view'}</button><button class="btn btn-primary" data-action="add-application">＋ New application</button>`);
+    const cards=stages.map(s=>summary(s==='draft'?'▨':s==='submitted'?'➤':s==='verified'?'✓':'◎',appStageLabel(s),state.applications.filter(a=>a.stage===s).length,`${state.applications.filter(a=>a.stage===s).length} applications` ,s==='draft'?'#dc6803':s==='submitted'?'#155eef':s==='verified'?'#079455':'#7f56d9','Applications')).join('');
+    let content='';
+    if(ui.applicationView==='table') content=`<article class="card table-scroll"><table class="data-table"><thead><tr><th>Exam</th><th>Application No.</th><th>Stage</th><th>Fee</th><th>Documents</th><th>Last updated</th><th></th></tr></thead><tbody>${state.applications.map(a=>{const e=examById(a.examId);const docs=Object.values(a.documents).filter(Boolean).length;return `<tr><td><strong>${esc(e?.name||'Unknown')}</strong><br><small style="color:var(--muted)">${esc(e?.board||'')}</small></td><td>${esc(a.applicationNo)}</td><td><span class="badge badge-${badgeClass(a.stage)}">${appStageLabel(a.stage)}</span></td><td>${esc(a.fee)}</td><td>${docs}/4 ready</td><td>${fmtDate(a.lastUpdated)}</td><td><div class="row-actions"><button class="btn btn-sm" data-action="view-application" data-id="${a.id}">Manage</button></div></td></tr>`}).join('')}</tbody></table></article>`;
+    else content=`<div class="kanban">${stages.map(s=>`<section class="kanban-column"><div class="kanban-head"><strong>${appStageLabel(s)}</strong><span>${state.applications.filter(a=>a.stage===s).length}</span></div>${state.applications.filter(a=>a.stage===s).map(a=>{const e=examById(a.examId);return `<article class="kanban-card"><span class="badge badge-${badgeClass(a.stage)}">${appStageLabel(a.stage)}</span><h4>${esc(e?.name||'Unknown')}</h4><p>${esc(a.applicationNo)} · Fee ${esc(a.fee)}</p><button class="btn btn-sm" data-action="view-application" data-id="${a.id}">Manage application</button></article>`}).join('')||'<p style="color:var(--muted);font-size:11px">No applications</p>'}</section>`).join('')}</div>`;
+    $('#pageRoot').innerHTML=`<section class="grid grid-4" style="margin-bottom:16px">${cards}</section>${content}`;
+  }
+
+  function renderAdmitCards(){
+    header('Admit Cards','View release dates, verify exam details and keep downloadable copies together.',`<button class="btn" data-action="refresh-admit">↻ Check for updates</button>`);
+    const available=state.admitCards.filter(a=>a.status==='available'&&!a.downloaded).length;
+    $('#pageRoot').innerHTML=`<section class="grid grid-3" style="margin-bottom:16px">${summary('▤','Available Now',available,'Ready to download','#079455','Admit Cards')}${summary('◷','Upcoming',state.admitCards.filter(a=>a.status==='upcoming').length,'We will notify you on release','#dc6803','Admit Cards')}${summary('⇩','Downloaded',state.admitCards.filter(a=>a.downloaded).length,'Saved in Downloads','#155eef','Downloads')}</section><div class="exam-cards">${state.admitCards.map(a=>{const e=examById(a.examId);return `<article class="card exam-card"><div class="exam-card-top"><span class="exam-logo" style="--a:${e.logo[0]};--b:${e.logo[1]}">${e.code}</span><span class="badge badge-${badgeClass(a.downloaded?'downloaded':a.status)}">${a.downloaded?'Downloaded':a.status==='available'?'Available':'Upcoming'}</span></div><h3>${esc(e.name)}</h3><p>Released: ${fmtDate(a.releaseDate)}</p><div class="exam-meta"><div class="meta-box"><small>Exam date</small><strong>${fmtDate(a.examDate)}</strong></div><div class="meta-box"><small>City</small><strong>${esc(a.city)}</strong></div><div class="meta-box"><small>Shift</small><strong>${esc(a.shift)}</strong></div><div class="meta-box"><small>Centre</small><strong>${esc(a.centre)}</strong></div></div><div class="card-actions"><button class="btn" data-action="view-admit" data-id="${a.id}">View details</button><button class="btn btn-primary" data-action="download-admit" data-id="${a.id}" ${a.status==='upcoming'?'disabled':''}>${a.downloaded?'Download again':'Download'}</button></div></article>`}).join('')}</div>`;
+  }
+
+  function renderResults(){
+    const filtered=ui.resultFilter==='All'?state.results:state.results.filter(r=>r.status===ui.resultFilter.toLowerCase());
+    header('Results & Scorecards','Track outcomes, sectional performance, cut-offs, rank and qualification status.',`<button class="btn" data-action="check-result">⌕ Check result</button>`);
+    $('#pageRoot').innerHTML=`<div class="toolbar"><select class="select" id="resultFilter" style="width:200px"><option>All</option><option>Qualified</option><option>Expected</option></select></div><div class="exam-cards">${filtered.map(r=>{const e=examById(r.examId);return `<article class="card exam-card"><div class="exam-card-top"><span class="exam-logo" style="--a:${e.logo[0]};--b:${e.logo[1]}">${e.code}</span><span class="badge badge-${badgeClass(r.status)}">${r.status==='qualified'?'Qualified':'Expected'}</span></div><h3>${esc(e.name)}</h3><p>${typeof r.date==='string'&&r.date.includes('-')?fmtDate(r.date):esc(r.date)}</p>${r.status==='qualified'?`<div class="exam-meta"><div class="meta-box"><small>Score</small><strong>${r.score}/${r.maxScore}</strong></div><div class="meta-box"><small>Cut-off</small><strong>${r.cutoff}</strong></div><div class="meta-box"><small>Percentile</small><strong>${r.percentile}%</strong></div><div class="meta-box"><small>Rank</small><strong>#${r.rank.toLocaleString('en-IN')}</strong></div></div>`:`<div class="card-pad" style="padding-inline:0;color:var(--muted)">Official result is not published yet. Alerts are enabled.</div>`}<div class="card-actions"><button class="btn" data-action="view-result" data-id="${r.id}">${r.status==='qualified'?'Analyse':'View update'}</button><button class="btn btn-primary" data-action="download-scorecard" data-id="${r.id}" ${r.status!=='qualified'?'disabled':''}>Scorecard</button></div></article>`}).join('')}</div>`;
+    $('#resultFilter').value=ui.resultFilter;
+  }
+
+  function renderPlanner(){
+    const start=new Date(state.plannerWeekStart+'T12:00:00'); const days=[...Array(7)].map((_,i)=>new Date(start.getTime()+i*DAY));
+    const weeklySessions=state.plannerSessions.filter(s=>days.some(d=>isoDate(d)===s.date));
+    const doneMinutes=weeklySessions.filter(s=>s.done).reduce((a,s)=>a+s.duration,0); const totalMinutes=weeklySessions.reduce((a,s)=>a+s.duration,0);
+    header('Study Planner','Build a realistic weekly plan, complete sessions and let progress update automatically.',`<button class="btn" data-action="smart-plan">✦ Generate smart plan</button><button class="btn btn-primary" data-action="add-session">＋ Add session</button>`);
+    $('#pageRoot').innerHTML=`<section class="grid grid-3" style="margin-bottom:16px">${summary('◷','Planned Time',`${Math.floor(totalMinutes/60)}h ${totalMinutes%60}m`,'This week','#155eef','Study Planner')}${summary('✓','Completed Time',`${Math.floor(doneMinutes/60)}h ${doneMinutes%60}m`,`${totalMinutes?Math.round(doneMinutes/totalMinutes*100):0}% of plan`,'#079455','Study Planner')}${summary('▧','Study Blocks',weeklySessions.length,`${weeklySessions.filter(s=>!s.done).length} remaining`,'#7f56d9','Study Planner')}</section><div class="week-toolbar"><div class="week-nav"><button class="btn btn-sm" data-action="prev-week">‹</button><button class="btn btn-sm" data-action="today-week">Today</button><button class="btn btn-sm" data-action="next-week">›</button><strong>${shortDate(isoDate(days[0]))} – ${shortDate(isoDate(days[6]))}</strong></div><select class="select" id="plannerSubject" style="width:210px"><option>All</option>${state.subjects.map(s=>`<option>${esc(s.name)}</option>`).join('')}<option>Full Syllabus</option><option>Weekly Review</option></select></div><section class="week-board">${days.map(d=>{const date=isoDate(d);const sessions=state.plannerSessions.filter(s=>s.date===date&&(ui.plannerSubject==='All'||s.subject===ui.plannerSubject)).sort((a,b)=>a.time.localeCompare(b.time));return `<article class="day-column ${date===isoDate(TODAY)?'today':''}"><div class="day-head"><div><strong>${d.toLocaleDateString('en-IN',{weekday:'short'})}</strong><small>${d.toLocaleDateString('en-IN',{day:'numeric',month:'short'})}</small></div><button class="btn btn-sm" data-action="add-session-date" data-date="${date}">＋</button></div>${sessions.map(sessionCard).join('')||'<p style="color:var(--muted);font-size:10px">No sessions planned</p>'}</article>`}).join('')}</section><section class="grid grid-3" style="margin-top:16px">${state.subjects.slice(0,3).map(s=>`<article class="card goal-card"><div class="goal-head"><h3>${esc(s.name)}</h3><b>${s.progress}%</b></div><div class="bar"><i style="--w:${s.progress}%;--c:${s.color}"></i></div><p style="color:var(--muted);font-size:10px;margin:8px 0 0">${s.completed}/${s.total} topics completed · ${s.hours} hours</p></article>`).join('')}</section>`;
+    $('#plannerSubject').value=ui.plannerSubject;
+  }
+  function sessionCard(s){ const tone={'Practice':'#155eef','Revision':'#7f56d9','Study':'#079455','Mock Test':'#dc6803','Review':'#0e9384'}[s.type]||'#155eef'; return `<article class="session ${s.done?'done':''}" style="--tone:${tone}"><strong>${esc(s.topic)}</strong><small>${esc(s.time)} · ${s.duration} min</small><small>${esc(s.subject)} · ${esc(s.type)}</small><div class="session-actions"><button data-action="toggle-session" data-id="${s.id}">${s.done?'Undo':'Complete'}</button><button data-action="edit-session" data-id="${s.id}">Edit</button><button data-action="delete-session" data-id="${s.id}">Delete</button></div></article>`; }
+
+  function renderMockTests(){
+    header('Mock Tests','Attempt full-length and sectional tests, then review accuracy, time and rank trends.',`<button class="btn" data-action="custom-test">⚙ Build custom test</button>`);
+    const avg=state.attempts.length?Math.round(state.attempts.reduce((a,x)=>a+x.accuracy,0)/state.attempts.length):0;
+    $('#pageRoot').innerHTML=`<section class="grid grid-4" style="margin-bottom:16px">${summary('◫','Tests Attempted',state.attempts.length,'All time','#155eef','Mock Tests')}${summary('◎','Average Accuracy',`${avg}%`,'Across recent attempts','#079455','Mock Tests')}${summary('♛','Best Percentile',`${Math.max(...state.attempts.map(a=>a.percentile),0)}%`,'Your strongest attempt','#7f56d9','Mock Tests')}${summary('◷','Practice Time',`${Math.round(state.attempts.reduce((a,x)=>a+x.time,0)/60)} min`,'Recorded test time','#dc6803','Mock Tests')}</section><div class="tabs" style="margin-bottom:15px"><button class="tab ${ui.mockTab==='available'?'active':''}" data-action="mock-tab" data-tab="available">Available Tests</button><button class="tab ${ui.mockTab==='history'?'active':''}" data-action="mock-tab" data-tab="history">Attempt History</button></div>${ui.mockTab==='available'?`<div class="mock-grid">${state.mockTests.map(t=>`<article class="card mock-card"><div class="mock-card-top"><span class="badge badge-${t.difficulty==='Easy'?'green':t.difficulty==='Hard'?'red':'orange'}">${t.difficulty}</span><span class="chip">${t.free?'Free':'Premium'}</span></div><h3>${esc(t.title)}</h3><p>${esc(t.exam)} · ${t.attempts.toLocaleString('en-IN')} attempts</p><div class="mock-info"><span class="chip">${t.questions} questions</span><span class="chip">${t.duration} min</span><span class="chip">Auto-submit</span></div><button class="btn btn-primary" style="width:100%" data-action="start-test" data-id="${t.id}">Start test</button></article>`).join('')}</div>`:`<article class="card table-scroll"><table class="data-table"><thead><tr><th>Test</th><th>Date</th><th>Score</th><th>Accuracy</th><th>Time</th><th>Percentile</th><th></th></tr></thead><tbody>${state.attempts.map(a=>{const t=state.mockTests.find(x=>x.id===a.testId);return `<tr><td><strong>${esc(t?.title||'Custom Test')}</strong></td><td>${fmtDate(a.date)}</td><td>${a.score}/${a.total}</td><td>${a.accuracy}%</td><td>${Math.floor(a.time/60)}m ${a.time%60}s</td><td>${a.percentile}%</td><td><button class="btn btn-sm" data-action="review-attempt" data-id="${a.id}">Review</button></td></tr>`}).join('')}</tbody></table></article>`}`;
+  }
+
+  function renderProgress(){
+    const overall=Math.round(state.subjects.reduce((a,s)=>a+s.progress,0)/state.subjects.length); const totalMinutes=state.plannerSessions.filter(s=>s.done).reduce((a,s)=>a+s.duration,0);
+    header('Study Progress','Measure consistency, subject mastery, accuracy and weekly study behaviour.',`<button class="btn" data-action="log-study">＋ Log study time</button><button class="btn btn-primary" data-action="download-report">⇩ Download report</button>`);
+    const weekly=[145,190,120,210,175,240,165];
+    $('#pageRoot').innerHTML=`<section class="grid grid-4" style="margin-bottom:16px">${summary('▥','Overall Progress',`${overall}%`,'Across 5 subjects','#155eef','Study Progress')}${summary('◷','Recorded Hours',`${Math.floor(totalMinutes/60)}h ${totalMinutes%60}m`,'Completed planner sessions','#079455','Study Progress')}${summary('✓','Topics Completed',state.subjects.reduce((a,s)=>a+s.completed,0),`of ${state.subjects.reduce((a,s)=>a+s.total,0)} topics`,'#7f56d9','Study Progress')}${summary('◎','Average Accuracy',`${Math.round(state.subjects.reduce((a,s)=>a+s.accuracy,0)/state.subjects.length)}%`,'Tests and practice','#dc6803','Study Progress')}</section><section class="grid grid-2"><article class="card chart-card"><div class="card-header" style="padding:0 0 12px;border:0"><div><h2>Study Time This Week</h2><p>Minutes completed each day</p></div></div><div class="bars-chart">${weekly.map((v,i)=>`<div class="chart-bar"><b>${v}</b><i style="--h:${Math.round(v/240*170)}px"></i><span>${['Mon','Tue','Wed','Thu','Fri','Sat','Sun'][i]}</span></div>`).join('')}</div></article><article class="card"><div class="card-header"><div><h2>Subject Mastery</h2><p>Progress, accuracy and completed topics</p></div></div><div class="subject-list">${state.subjects.map(s=>`<div style="margin-bottom:15px"><div style="display:flex;justify-content:space-between;margin-bottom:6px"><strong>${esc(s.name)}</strong><span style="color:var(--muted);font-size:10px">${s.accuracy}% accuracy</span></div><div class="bar"><i style="--w:${s.progress}%;--c:${s.color}"></i></div><small style="color:var(--muted)">${s.completed}/${s.total} topics · ${s.hours}h</small></div>`).join('')}</div></article><article class="card card-pad"><div class="card-header" style="padding:0 0 13px;border:0"><div><h2>Study Consistency</h2><p>Activity over the last 8 weeks</p></div></div><div class="heatmap">${Array.from({length:56},(_,i)=>`<span class="heat" style="--level:${[8,18,32,48,68,86][(i*7+i%5)%6]}%" title="${20+(i%5)*20} minutes"></span>`).join('')}</div><div style="display:flex;justify-content:space-between;margin-top:10px;color:var(--muted);font-size:9px"><span>8 weeks ago</span><span>Today</span></div></article><article class="card"><div class="card-header"><div><h2>Focus Recommendations</h2><p>Based on weak areas and upcoming exams</p></div></div><div class="list"><div class="task-row"><span class="check" style="color:var(--warning);border-color:var(--warning)">!</span><span class="task-copy"><span>Increase General Awareness revision</span><small>Lowest accuracy among active SSC CGL subjects</small></span><button class="btn btn-sm" data-route="Study Planner">Plan</button></div><div class="task-row"><span class="check" style="color:var(--primary);border-color:var(--primary)">i</span><span class="task-copy"><span>Attempt one full mock this week</span><small>Your last full mock was 2 days ago</small></span><button class="btn btn-sm" data-route="Mock Tests">Start</button></div><div class="task-row"><span class="check" style="color:var(--success);border-color:var(--success)">✓</span><span class="task-copy"><span>Quantitative Aptitude is on track</span><small>80% syllabus complete with improving accuracy</small></span><button class="btn btn-sm" data-route="Resources" data-resource="Syllabus">Review</button></div></div></article></section>`;
+  }
+
+  function renderBookmarks(){
+    const filtered=state.bookmarks.filter(b=>(ui.bookmarkFilter==='All'||b.type===ui.bookmarkFilter)&&`${b.title} ${b.description} ${b.source}`.toLowerCase().includes(ui.bookmarkQuery.toLowerCase()));
+    header('Bookmarks','Save important papers, syllabus sections, current affairs and strategies for quick access.',`<button class="btn btn-primary" data-action="add-bookmark">＋ Add bookmark</button>`);
+    $('#pageRoot').innerHTML=`<div class="toolbar"><input class="input grow" id="bookmarkSearch" placeholder="Search bookmarks..." value="${esc(ui.bookmarkQuery)}"><select class="select" id="bookmarkFilter" style="width:180px"><option>All</option><option>Syllabus</option><option>Paper</option><option>Current Affairs</option><option>Strategy</option><option>Cut Off</option></select></div>${filtered.length?`<div class="bookmark-grid">${filtered.map(b=>`<article class="card bookmark-card"><div style="display:flex;justify-content:space-between;gap:10px"><span class="bookmark-icon">${b.icon}</span><button class="icon-btn" data-action="remove-bookmark" data-id="${b.id}" title="Remove bookmark">×</button></div><h3>${esc(b.title)}</h3><p>${esc(b.description)}</p><div style="display:flex;align-items:center;justify-content:space-between;color:var(--muted);font-size:10px"><span>${esc(b.type)} · ${esc(b.source)}</span><span>${shortDate(b.date)}</span></div><button class="btn" style="width:100%;margin-top:12px" data-action="open-bookmark" data-id="${b.id}">Open resource</button></article>`).join('')}</div>`:empty('No bookmarks match your search','♧')}`;
+    $('#bookmarkFilter').value=ui.bookmarkFilter;
+  }
+
+  function renderNotes(){
+    const notes=state.notes.filter(n=>`${n.title} ${n.body} ${n.tag}`.toLowerCase().includes(ui.noteQuery.toLowerCase())).sort((a,b)=>Number(b.pinned)-Number(a.pinned)||new Date(b.updated)-new Date(a.updated));
+    if(!state.notes.find(n=>n.id===ui.selectedNoteId)) ui.selectedNoteId=state.notes[0]?.id||null;
+    const selected=state.notes.find(n=>n.id===ui.selectedNoteId);
+    header('Notes','Create searchable, tagged and persistent study notes. Changes save automatically.',`<button class="btn btn-primary" data-action="new-note">＋ New note</button>`);
+    $('#pageRoot').innerHTML=`<article class="card note-layout"><aside class="note-sidebar"><div class="note-toolbar"><input class="input" id="noteSearch" value="${esc(ui.noteQuery)}" placeholder="Search notes..."></div><div class="note-list">${notes.map(n=>`<button class="note-item ${n.id===ui.selectedNoteId?'active':''}" data-action="select-note" data-id="${n.id}"><h4>${n.pinned?'★ ':''}${esc(n.title||'Untitled note')}</h4><p>${esc(n.body.slice(0,90)||'Empty note')}</p><small style="color:var(--muted)">${esc(n.tag)} · ${timeAgo(n.updated)}</small></button>`).join('')||empty('No notes found','▨')}</div></aside><section class="note-editor">${selected?`<input class="note-title" id="noteTitle" value="${esc(selected.title)}" placeholder="Note title"><div class="note-meta"><input class="input" id="noteTag" value="${esc(selected.tag)}" placeholder="Tag" style="max-width:180px"><button class="btn btn-sm" data-action="pin-note" data-id="${selected.id}">${selected.pinned?'★ Pinned':'☆ Pin'}</button><button class="btn btn-sm" data-action="delete-note" data-id="${selected.id}">Delete</button><span style="margin-left:auto;color:var(--muted);font-size:10px" id="noteSaveState">Saved ${timeAgo(selected.updated)}</span></div><textarea class="editor-area" id="noteBody" placeholder="Write your note...">${esc(selected.body)}</textarea>`:`${empty('Create your first note','▨')}`}</section></article>`;
+  }
+
+  function renderAlerts(){
+    const types=['All',...new Set(state.alerts.map(a=>a.type))]; const alerts=state.alerts.filter(a=>ui.alertFilter==='All'||a.type===ui.alertFilter);
+    header('Alerts & Updates','Stay on top of application windows, admit cards, results, exam dates and study reminders.',`<button class="btn" data-action="mark-all-read">✓ Mark all read</button><button class="btn btn-primary" data-route="Settings" data-settings-tab="notifications">⚙ Alert settings</button>`);
+    $('#pageRoot').innerHTML=`<section class="grid grid-3" style="margin-bottom:16px">${summary('♢','Unread',state.alerts.filter(a=>!a.read).length,'Needs your attention','#e11d48','Alerts & Updates')}${summary('▧','Exam Updates',state.alerts.filter(a=>['Admit Card','Result','Application','Exam Date'].includes(a.type)).length,'Official activity','#155eef','Alerts & Updates')}${summary('◎','Study Reminders',state.alerts.filter(a=>['Study','Reminder'].includes(a.type)).length,'Personal preparation alerts','#079455','Alerts & Updates')}</section><div class="toolbar"><select class="select" id="alertFilter" style="width:210px">${types.map(t=>`<option>${esc(t)}</option>`).join('')}</select></div><article class="card"><div class="list">${alerts.map(a=>`${alertRow(a)}<div style="display:flex;gap:7px;justify-content:flex-end;padding:0 15px 10px;margin-top:-5px"><button class="btn btn-sm" data-action="toggle-alert-read" data-id="${a.id}">${a.read?'Mark unread':'Mark read'}</button><button class="btn btn-sm" data-action="delete-alert" data-id="${a.id}">Dismiss</button></div>`).join('')||empty('No alerts in this category','♢')}</div></article>`;
+    $('#alertFilter').value=ui.alertFilter;
+  }
+
+  function renderDownloads(){
+    const filtered=state.downloads.filter(d=>ui.downloadFilter==='All'||d.type===ui.downloadFilter); const types=['All',...new Set(state.downloads.map(d=>d.type))];
+    header('Downloads','Access saved admit cards, scorecards, reports, syllabus files and question-paper bundles.',`<button class="btn" data-action="clear-downloads">Clear history</button>`);
+    $('#pageRoot').innerHTML=`<section class="grid grid-3" style="margin-bottom:16px">${summary('⇩','Files',state.downloads.length,'Saved in this browser','#155eef','Downloads')}${summary('▤','Documents',state.downloads.filter(d=>!d.name.endsWith('.zip')).length,'PDF-ready files','#079455','Downloads')}${summary('◫','Question Bundles',state.downloads.filter(d=>d.name.endsWith('.zip')).length,'Practice archives','#7f56d9','Downloads')}</section><div class="toolbar"><select class="select" id="downloadFilter" style="width:210px">${types.map(t=>`<option>${esc(t)}</option>`).join('')}</select></div><article class="card table-scroll"><table class="data-table"><thead><tr><th>File</th><th>Type</th><th>Size</th><th>Date</th><th>Status</th><th></th></tr></thead><tbody>${filtered.map(d=>`<tr><td><strong>${esc(d.name)}</strong></td><td>${esc(d.type)}</td><td>${esc(d.size)}</td><td>${fmtDate(d.date)}</td><td><span class="badge badge-green">${esc(d.status)}</span></td><td><div class="row-actions"><button class="btn btn-sm" data-action="download-file" data-id="${d.id}">Download</button><button class="btn btn-sm" data-action="remove-download" data-id="${d.id}">Remove</button></div></td></tr>`).join('')}</tbody></table></article>`;
+    $('#downloadFilter').value=ui.downloadFilter;
+  }
+
+  function renderSettings(){
+    header('Settings','Manage profile, preferences, appearance, notifications and local data.',`<button class="btn btn-primary" data-action="save-settings">Save changes</button>`);
+    const tabs=[['profile','Profile'],['study','Study & Focus'],['notifications','Notifications'],['appearance','Appearance'],['privacy','Data & Privacy']];
+    let panel='';
+    if(state.activeSettingsTab==='profile') panel=`<form id="profileForm"><div class="form-grid"><div class="field"><label>Full name</label><input class="input" name="name" value="${esc(state.profile.name)}" required></div><div class="field"><label>Email</label><input class="input" type="email" name="email" value="${esc(state.profile.email)}" required></div><div class="field"><label>Phone</label><input class="input" name="phone" value="${esc(state.profile.phone)}"></div><div class="field"><label>State</label><input class="input" name="state" value="${esc(state.profile.state)}"></div><div class="field"><label>Preferred language</label><select class="select" name="language"><option>English</option><option>Hindi</option><option>English + Hindi</option></select></div><div class="field"><label>Primary target</label><select class="select" name="target">${state.exams.map(e=>`<option>${esc(e.name)}</option>`).join('')}</select></div></div><button class="btn btn-primary" style="margin-top:15px">Update profile</button></form>`;
+    if(state.activeSettingsTab==='study') panel=`<div class="field" style="max-width:340px;margin-bottom:16px"><label>Daily study goal (hours)</label><input class="input" id="dailyGoal" type="number" min="1" max="16" value="${state.profile.dailyGoal}"></div>${switchRow('focusSounds','Focus-session sounds','Play subtle sounds when a timer starts or ends')}${switchRow('wakeLock','Keep screen awake','Use the browser Wake Lock API during study and mock-test sessions')}${switchRow('dataSaver','Data saver','Reduce optional visual activity on limited connections')}<button class="btn" style="margin-top:16px" data-action="test-focus">Start 1-minute focus test</button>`;
+    if(state.activeSettingsTab==='notifications') panel=`${switchRow('emailAlerts','Email alerts','Application, admit-card and result emails')}${switchRow('pushAlerts','Browser notifications','Important updates in supported browsers')}${switchRow('examReminders','Exam reminders','Countdown and preparation reminders')}${switchRow('resultAlerts','Result alerts','Notify when an official result is published')}${switchRow('weeklyReport','Weekly study report','Receive a weekly preparation summary')}`;
+    if(state.activeSettingsTab==='appearance') panel=`<div class="grid grid-2"><button class="card card-pad" data-action="set-theme" data-theme="light" style="text-align:left;color:var(--text);${state.theme==='light'?'border-color:var(--primary)':''}"><strong>☀ Light</strong><p style="color:var(--muted);margin:6px 0 0">Bright workspace optimised for daytime use.</p></button><button class="card card-pad" data-action="set-theme" data-theme="dark" style="text-align:left;color:var(--text);${state.theme==='dark'?'border-color:var(--primary)':''}"><strong>☾ Dark</strong><p style="color:var(--muted);margin:6px 0 0">Low-glare workspace for evening study.</p></button></div><div class="switch-row"><div class="switch-copy"><strong>Compact navigation</strong><small>Use icons-only navigation on desktop</small></div><label class="switch"><input id="compactSetting" type="checkbox" ${state.compactSidebar?'checked':''}><span></span></label></div>`;
+    if(state.activeSettingsTab==='privacy') panel=`<div class="card card-pad" style="margin-bottom:13px"><h3>Export your data</h3><p style="color:var(--muted)">Download exams, planner sessions, notes, attempts and preferences as JSON.</p><button class="btn" data-action="export-data">⇩ Export data</button></div><div class="card card-pad" style="margin-bottom:13px"><h3>Import backup</h3><p style="color:var(--muted)">Restore a compatible portal backup from your device.</p><button class="btn" data-action="import-data">↑ Import data</button></div><div class="card card-pad" style="border-color:var(--danger)"><h3 style="color:var(--danger)">Reset portal</h3><p style="color:var(--muted)">Delete local changes and restore the original demonstration data.</p><button class="btn btn-danger" data-action="reset-data">Reset all data</button></div>`;
+    $('#pageRoot').innerHTML=`<section class="settings-layout"><aside class="card settings-nav">${tabs.map(([id,label])=>`<button class="${state.activeSettingsTab===id?'active':''}" data-action="settings-tab" data-tab="${id}">${label}</button>`).join('')}</aside><article class="card settings-panel">${panel}</article></section>`;
+    const lang=$('[name="language"]');if(lang)lang.value=state.profile.language;const target=$('[name="target"]');if(target)target.value=state.profile.target;
+  }
+  function switchRow(key,title,desc){ return `<div class="switch-row"><div class="switch-copy"><strong>${title}</strong><small>${desc}</small></div><label class="switch"><input type="checkbox" data-pref="${key}" ${state.preferences[key]?'checked':''}><span></span></label></div>`; }
+
+  function renderResources(){
+    const tabs=['Syllabus','Previous Papers','Current Affairs','Exam Calendar','Community','Topper Strategy','Cut Offs'];
+    header('Study Resources','Syllabus, previous papers, daily current affairs, exam dates, strategies and cut-off intelligence.',`<button class="btn" data-action="bookmark-current-resource">♧ Bookmark resource</button>`);
+    let body='';
+    if(state.activeResource==='Syllabus') body=renderSyllabusResource();
+    if(state.activeResource==='Previous Papers') body=renderPapersResource();
+    if(state.activeResource==='Current Affairs') body=renderCurrentAffairsResource();
+    if(state.activeResource==='Exam Calendar') body=renderCalendarResource();
+    if(state.activeResource==='Community') body=renderCommunityResource();
+    if(state.activeResource==='Topper Strategy') body=renderStrategyResource();
+    if(state.activeResource==='Cut Offs') body=renderCutoffResource();
+    $('#pageRoot').innerHTML=`<section class="resource-layout"><aside class="card resource-nav">${tabs.map(t=>`<button class="${state.activeResource===t?'active':''}" data-route="Resources" data-resource="${t}">${t}</button>`).join('')}</aside><article class="card settings-panel">${body}</article></section>`;
+  }
+  function renderSyllabusResource(){
+    const topics=state.syllabus.filter(t=>t.exam===ui.syllabusExam); const done=topics.filter(t=>t.done).length; const bySubject=[...new Set(topics.map(t=>t.subject))];
+    return `<div class="card-header" style="padding:0 0 15px;border:0"><div><h2>Interactive Syllabus Tracker</h2><p>Check off completed topics; progress updates immediately.</p></div><select class="select" id="syllabusExam" style="width:180px"><option>SSC CGL</option></select></div><div class="grid grid-3" style="margin-bottom:16px">${statBox('Topics',topics.length,'Current exam')}${statBox('Completed',done,`${Math.round(done/topics.length*100)}% complete`)}${statBox('Remaining',topics.length-done,'Build into planner')}</div>${bySubject.map(subject=>`<section style="margin-bottom:18px"><h3>${esc(subject)}</h3><div class="topic-tree">${topics.filter(t=>t.subject===subject).map(t=>`<button class="topic-item ${t.done?'done':''}" data-action="toggle-topic" data-id="${t.id}" style="background:var(--surface);color:var(--text);text-align:left"><span class="topic-check">${t.done?'✓':''}</span><span>${esc(t.topic)}</span><small>${t.done?'Completed':'Pending'}</small></button>`).join('')}</div></section>`).join('')}`;
+  }
+  function renderPapersResource(){ const papers=[['SSC CGL','2024','12 Sep · Shift 1','100 questions','With solutions'],['SSC CGL','2024','11 Sep · Shift 3','100 questions','With solutions'],['RRB NTPC','2021','CBT 1 · Shift 2','100 questions','With solutions'],['UP Police','2024','18 Feb · Shift 1','150 questions','Answer key included'],['IBPS PO','2025','Prelims memory paper','100 questions','Detailed analysis']]; return `<div class="card-header" style="padding:0 0 15px;border:0"><div><h2>Previous Year Papers</h2><p>Practise in test mode or save a printable copy.</p></div></div><div class="list">${papers.map((p,i)=>`<div class="paper-row"><span class="bookmark-icon">▤</span><span class="item-copy"><strong>${p[0]} ${p[1]}</strong><small>${p[2]} · ${p[3]} · ${p[4]}</small></span><span class="row-actions"><button class="btn btn-sm" data-action="paper-test" data-paper="${esc(p[0])}">Attempt</button><button class="btn btn-sm" data-action="download-paper" data-paper="${esc(p[0]+' '+p[1]+' '+p[2])}">Download</button></span></div>`).join('')}</div>`; }
+  function renderCurrentAffairsResource(){ const news=[['National','Cabinet approves expansion of a national skilling programme','Focus on eligibility, implementing ministry and targets.'],['Economy','RBI releases updated banking and payments data','Revise key monetary policy terms and digital-payment indicators.'],['Science','ISRO announces next-stage mission readiness review','Remember mission objective, launch vehicle and location.'],['International','India participates in a multilateral economic dialogue','Revise member countries, headquarters and core purpose.']]; return `<div class="card-header" style="padding:0 0 15px;border:0"><div><h2>Current Affairs — 3 August 2026</h2><p>Exam-focused summaries with a quick daily quiz.</p></div><button class="btn btn-primary" data-action="start-current-quiz">Start 5-question quiz</button></div><div class="news-grid">${news.map(n=>`<article class="card news-card"><span class="badge badge-blue">${n[0]}</span><h3 style="margin-top:11px">${n[1]}</h3><p>${n[2]}</p><button class="btn btn-sm" data-action="bookmark-news" data-title="${esc(n[1])}">♧ Save</button></article>`).join('')}</div>${state.currentAffairsQuizScore!==null?`<div class="card card-pad" style="margin-top:16px;border-color:var(--success)"><strong>Latest quiz score: ${state.currentAffairsQuizScore}/5</strong><p style="color:var(--muted);margin:4px 0 0">Your score has been added to study activity.</p></div>`:''}`; }
+  function renderCalendarResource(){ const first=new Date('2026-08-01T12:00:00'); const startDay=first.getDay(); const cells=[]; for(let i=0;i<42;i++){const d=new Date(first.getTime()+(i-startDay)*DAY);cells.push(d)} const events={'2026-08-03':'RBI Grade B opens','2026-08-12':'IBPS PO closes','2026-08-26':'SSC CGL Tier 1','2026-09-08':'RRB admit card','2026-09-17':'RRB NTPC exam'}; return `<div class="card-header" style="padding:0 0 15px;border:0"><div><h2>Exam Calendar — August 2026</h2><p>Official and tracked dates in one calendar.</p></div><button class="btn" data-action="add-calendar-event">＋ Add reminder</button></div><div class="calendar">${['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].map(d=>`<div class="calendar-head">${d}</div>`).join('')}${cells.map(d=>{const date=isoDate(d),same=d.getMonth()===7;return `<button class="calendar-day ${same?'':'muted'} ${date===isoDate(TODAY)?'today':''}" data-action="calendar-day" data-date="${date}" style="color:var(--text);text-align:left"><strong>${d.getDate()}</strong>${events[date]?`<span class="calendar-event">${events[date]}</span>`:''}${state.plannerSessions.some(s=>s.date===date)?`<span class="calendar-event" style="background:var(--success-soft);color:var(--success)">${state.plannerSessions.filter(s=>s.date===date).length} study blocks</span>`:''}</button>`}).join('')}</div>`; }
+  function renderCommunityResource(){ return `<div class="detail-hero"><span class="bookmark-icon" style="width:64px;height:64px;font-size:28px">➤</span><div><h2 style="margin:0">Sarkari Aspirant Community</h2><p style="color:var(--muted);margin:4px 0">Daily updates, doubt discussions and accountability groups.</p></div></div><section class="grid grid-3" style="margin:18px 0">${statBox('Members','48,200+','Growing community')}${statBox('Daily Updates','12–18','Curated notifications')}${statBox('Study Rooms','26','Exam-specific groups')}</section><div class="card card-pad"><h3>Community guidelines</h3><p style="color:var(--muted)">Only verified official links, no leaked papers, respectful discussion and no spam. Personal data should never be shared publicly.</p><button class="btn btn-primary" data-action="join-community">Join community</button></div>`; }
+  function renderStrategyResource(){ const steps=[['Weeks 1–4','Foundation','Complete core concepts, make short notes and solve topic-wise questions.'],['Weeks 5–8','Application','Increase timed practice, take sectional tests and maintain an error log.'],['Weeks 9–11','Mock phase','Attempt full mocks, analyse every error and revise weak topics.'],['Week 12','Final revision','Revise formulas, current affairs, previous errors and sleep consistently.']]; return `<div class="card-header" style="padding:0 0 15px;border:0"><div><h2>90-Day Topper-Inspired Strategy</h2><p>Adapt the framework to your available hours and target exam.</p></div><button class="btn btn-primary" data-action="apply-strategy">Apply to planner</button></div><div class="timeline">${steps.map((s,i)=>`<div class="timeline-item ${i===0?'current':''}"><span class="timeline-dot">${i+1}</span><div class="timeline-copy"><strong>${s[0]} · ${s[1]}</strong><small>${s[2]}</small></div></div>`).join('')}</div><div class="grid grid-2" style="margin-top:15px"><div class="card card-pad"><h3>Daily template</h3><p style="color:var(--muted)">2h concepts · 1h practice · 45m revision · 30m current affairs · error-log review.</p></div><div class="card card-pad"><h3>Non-negotiables</h3><p style="color:var(--muted)">Weekly mock, full analysis, spaced revision, realistic targets and at least one recovery block.</p></div></div>`; }
+  function renderCutoffResource(){ const rows=[['SSC CGL UR',[137,139,150,153,158]],['SSC CGL OBC',[131,135,145,149,154]],['SSC CGL SC',[115,121,127,136,141]],['SSC CGL ST',[106,112,118,125,131]]]; return `<div class="card-header" style="padding:0 0 15px;border:0"><div><h2>Cut-off Trends & Safe-Score Estimator</h2><p>Historical demo data for planning; always verify official notices.</p></div></div><div class="cutoff-chart">${rows.map(r=>`<div class="cutoff-row"><strong>${r[0]}</strong><div class="bar" style="height:12px"><i style="--w:${r[1][4]/2}%;--c:${r[0].includes('UR')?'var(--primary)':'var(--violet)'}"></i></div><b>${r[1][4]}</b></div>`).join('')}</div><div class="card card-pad" style="margin-top:20px"><h3>Estimate your buffer</h3><div class="form-grid"><div class="field"><label>Your mock score</label><input class="input" id="cutoffScore" type="number" value="162"></div><div class="field"><label>Category</label><select class="select" id="cutoffCategory"><option>UR</option><option>OBC</option><option>SC</option><option>ST</option></select></div></div><button class="btn btn-primary" style="margin-top:13px" data-action="estimate-cutoff">Estimate</button><div id="cutoffResult" style="margin-top:12px"></div></div>`; }
+
+  function openModal(title, subtitle, body, actions='', wide=false){
+    $('#modalPanel').className=`modal-panel ${wide?'wide':''}`;
+    $('#modalPanel').innerHTML=`<div class="modal-head"><div><h2>${title}</h2>${subtitle?`<p>${subtitle}</p>`:''}</div><button class="icon-btn" data-action="close-modal">×</button></div><div class="modal-body">${body}</div>${actions?`<div class="modal-actions">${actions}</div>`:''}`;
+    $('#overlay').classList.add('open'); $('#modal').classList.add('open'); $('#modal').setAttribute('aria-hidden','false');
+  }
+  function closeModal(){ clearInterval(ui.testTimer);ui.testTimer=null;ui.currentTest=null;$('#overlay').classList.remove('open');$('#modal').classList.remove('open');$('#modal').setAttribute('aria-hidden','true'); }
+  function formField(label,name,value='',type='text',full=false,extra=''){ return `<div class="field ${full?'full':''}"><label>${label}</label><input class="input" name="${name}" type="${type}" value="${esc(value)}" ${extra}></div>`; }
+
+  function openExamForm(exam=null){
+    const e=exam||{name:'',board:'',date:'2026-09-01',stage:'upcoming',priority:'Medium',reminder:7,prep:0};
+    openModal(exam?'Edit exam':'Add an exam','Track deadlines, readiness and reminders.',`<form id="examForm" data-id="${exam?.id||''}"><div class="form-grid">${formField('Exam name','name',e.name,'text',true,'required placeholder="e.g. RBI Grade B 2026"')}${formField('Conducting body','board',e.board,'text',true,'required')}${formField('Exam date','date',e.date,'date',false,'required')}<div class="field"><label>Stage</label><select class="select" name="stage"><option value="upcoming">Upcoming</option><option value="application">Application in progress</option><option value="completed">Completed</option></select></div><div class="field"><label>Priority</label><select class="select" name="priority"><option>High</option><option>Medium</option><option>Low</option></select></div>${formField('Readiness (%)','prep',e.prep,'number',false,'min="0" max="100"')}${formField('Reminder (days before)','reminder',e.reminder,'number',false,'min="0" max="60"')}</div><div class="modal-actions" style="padding:15px 0 0;border:0"><button type="button" class="btn" data-action="close-modal">Cancel</button><button class="btn btn-primary">${exam?'Save changes':'Add exam'}</button></div></form>`);
+    const form=$('#examForm');form.stage.value=e.stage;form.priority.value=e.priority;
+  }
+
+  function showExamDetail(id){
+    const e=examById(id),a=appByExam(id);if(!e)return;const days=daysUntil(e.date);
+    openModal(esc(e.name),esc(e.board),`<div class="detail-hero"><span class="exam-logo" style="--a:${e.logo[0]};--b:${e.logo[1]}">${e.code}</span><div><span class="badge badge-${badgeClass(e.stage)}">${stageLabel(e.stage)}</span><h3 style="margin:8px 0 2px">${fmtDate(e.date)}</h3><small style="color:var(--muted)">${days>0?days+' days remaining':'Exam completed'}</small></div></div><div class="detail-grid"><div class="detail-box"><small>Application</small><strong>${esc(a?appStageLabel(a.stage):e.application)}</strong></div><div class="detail-box"><small>Readiness</small><strong>${e.prep}%</strong></div><div class="detail-box"><small>Priority</small><strong>${e.priority}</strong></div><div class="detail-box"><small>Reminder</small><strong>${e.reminder} days before</strong></div></div><div class="subject-row" style="grid-template-columns:110px 1fr 40px"><span>Readiness score</span><div class="bar"><i style="--w:${e.prep}%;--c:${e.prep>=75?'var(--success)':'var(--primary)'}"></i></div><b>${e.prep}%</b></div><div class="timeline"><div class="timeline-item done"><span class="timeline-dot">✓</span><div class="timeline-copy"><strong>Exam tracked</strong><small>Added to your dashboard</small></div></div><div class="timeline-item ${a?.stage==='draft'?'current':'done'}"><span class="timeline-dot">${a?.stage==='draft'?'2':'✓'}</span><div class="timeline-copy"><strong>Application</strong><small>${a?appStageLabel(a.stage):'Not connected'}</small></div></div><div class="timeline-item ${state.admitCards.some(x=>x.examId===e.id)?'done':'current'}"><span class="timeline-dot">3</span><div class="timeline-copy"><strong>Admit card</strong><small>${state.admitCards.some(x=>x.examId===e.id)?'Tracked in Admit Cards':'We will alert you when released'}</small></div></div><div class="timeline-item ${state.results.some(x=>x.examId===e.id&&x.status==='qualified')?'done':''}"><span class="timeline-dot">4</span><div class="timeline-copy"><strong>Result</strong><small>${state.results.find(x=>x.examId===e.id)?.status||'Not announced'}</small></div></div></div>`,`<button class="btn btn-danger" data-action="delete-exam" data-id="${e.id}">Delete</button><button class="btn" data-action="edit-exam" data-id="${e.id}">Edit</button><button class="btn" data-route="Resources" data-resource="Syllabus">Syllabus</button><button class="btn btn-primary" data-action="open-exam-plan" data-id="${e.id}">Study plan</button>`);
+  }
+
+  function openApplication(id){
+    const a=state.applications.find(x=>x.id===Number(id)),e=examById(a?.examId);if(!a||!e)return;
+    openModal('Manage application',e.name,`<form id="applicationManageForm" data-id="${a.id}"><div class="form-grid"><div class="field"><label>Application number</label><input class="input" name="applicationNo" value="${esc(a.applicationNo)}"></div><div class="field"><label>Stage</label><select class="select" name="stage"><option value="draft">Draft</option><option value="submitted">Submitted</option><option value="verified">Verified</option><option value="completed">Completed</option></select></div><div class="field"><label>Fee status</label><select class="select" name="fee"><option>Pending</option><option>Paid</option><option>Refunded</option></select></div></div><h3 style="margin-top:18px">Document checklist</h3><div class="doc-checklist">${Object.entries({photo:'Photograph',signature:'Signature',id:'Identity proof',certificate:'Category/EWS certificate'}).map(([k,label])=>`<label class="doc-item"><span>${label}</span><input type="checkbox" name="doc_${k}" ${a.documents[k]?'checked':''}></label>`).join('')}</div><div class="modal-actions" style="padding:15px 0 0;border:0"><button type="button" class="btn" data-action="close-modal">Cancel</button><button class="btn btn-primary">Save application</button></div></form>`);
+    const f=$('#applicationManageForm');f.stage.value=a.stage;f.fee.value=a.fee;
+  }
+
+  function openApplicationForm(){
+    const available=state.exams.filter(e=>!state.applications.some(a=>a.examId===e.id));
+    openModal('New application','Connect an exam application to your dashboard.',available.length?`<form id="applicationForm"><div class="form-grid"><div class="field full"><label>Exam</label><select class="select" name="examId">${available.map(e=>`<option value="${e.id}">${esc(e.name)}</option>`).join('')}</select></div>${formField('Application number','applicationNo','Draft','text') }<div class="field"><label>Stage</label><select class="select" name="stage"><option value="draft">Draft</option><option value="submitted">Submitted</option><option value="verified">Verified</option></select></div></div><div class="modal-actions" style="padding:15px 0 0;border:0"><button type="button" class="btn" data-action="close-modal">Cancel</button><button class="btn btn-primary">Add application</button></div></form>`:empty('All tracked exams already have applications','✓'));
+  }
+
+  function openTaskForm(){ openModal('Add today’s task','Create a preparation task for 3 August 2026.',`<form id="taskForm"><div class="form-grid">${formField('Task','title','','text',true,'required placeholder="e.g. Revise economics notes"')}<div class="field"><label>Category</label><select class="select" name="category"><option>Study</option><option>Practice</option><option>Revision</option><option>Mock test</option><option>Current affairs</option></select></div>${formField('Target state','state','Not started','text')}</div><div class="modal-actions" style="padding:15px 0 0;border:0"><button class="btn" type="button" data-action="close-modal">Cancel</button><button class="btn btn-primary">Add task</button></div></form>`); }
+
+  function openSessionForm(session=null, presetDate=null){
+    const s=session||{date:presetDate||isoDate(TODAY),time:'18:00',duration:60,subject:'Quantitative Aptitude',topic:'',type:'Study'};
+    openModal(session?'Edit study session':'Add study session','The session will update your weekly planner and progress.',`<form id="sessionForm" data-id="${session?.id||''}"><div class="form-grid">${formField('Date','date',s.date,'date',false,'required')}${formField('Start time','time',s.time,'time',false,'required')}${formField('Duration (minutes)','duration',s.duration,'number',false,'min="10" max="300" required')}<div class="field"><label>Subject</label><select class="select" name="subject">${state.subjects.map(x=>`<option>${esc(x.name)}</option>`).join('')}<option>Full Syllabus</option><option>Weekly Review</option></select></div>${formField('Topic / activity','topic',s.topic,'text',true,'required placeholder="What will you study?"')}<div class="field"><label>Session type</label><select class="select" name="type"><option>Study</option><option>Practice</option><option>Revision</option><option>Mock Test</option><option>Review</option></select></div></div><div class="modal-actions" style="padding:15px 0 0;border:0"><button type="button" class="btn" data-action="close-modal">Cancel</button><button class="btn btn-primary">Save session</button></div></form>`);
+    const f=$('#sessionForm');f.subject.value=s.subject;f.type.value=s.type;
+  }
+
+  function openAdmitDetail(id){ const a=state.admitCards.find(x=>x.id===Number(id)),e=examById(a?.examId);if(!a||!e)return;openModal('Admit card details',e.name,`<div class="detail-grid"><div class="detail-box"><small>Exam date</small><strong>${fmtDate(a.examDate)}</strong></div><div class="detail-box"><small>Reporting city</small><strong>${esc(a.city)}</strong></div><div class="detail-box"><small>Shift</small><strong>${esc(a.shift)}</strong></div><div class="detail-box"><small>Status</small><strong>${a.downloaded?'Downloaded':a.status}</strong></div></div><div class="card card-pad"><h3>Exam centre</h3><p style="margin:5px 0 0;color:var(--muted)">${esc(a.centre)}</p></div><div class="card card-pad" style="margin-top:12px"><h3>Checklist</h3><p style="color:var(--muted)">Printed admit card · Original photo ID · Two passport photos · Arrive at least 60 minutes early.</p></div>`,`<button class="btn" data-route="Resources" data-resource="Exam Calendar">Calendar</button><button class="btn btn-primary" data-action="download-admit" data-id="${a.id}" ${a.status==='upcoming'?'disabled':''}>Download admit card</button>`); }
+
+  function openResultDetail(id){ const r=state.results.find(x=>x.id===Number(id)),e=examById(r?.examId);if(!r||!e)return;if(r.status!=='qualified'){openModal('Result update',e.name,`<div class="empty-state"><i>◷</i><strong>Official result is expected soon</strong><p>Result alerts are active. You will see the scorecard here after publication.</p></div>`);return;} openModal('Result analysis',e.name,`<section class="grid grid-4" style="margin-bottom:16px">${statBox('Score',`${r.score}/${r.maxScore}`,'Total marks')}${statBox('Cut-off',r.cutoff,'Qualified')}${statBox('Percentile',`${r.percentile}%`,'Strong performance')}${statBox('Rank',`#${r.rank.toLocaleString('en-IN')}`,'All candidates')}</section><h3>Sectional performance</h3><div class="subject-list" style="padding:0">${r.sectionScores.map(s=>`<div class="subject-row"><span>${s[0]}</span><div class="bar"><i style="--w:${s[1]/s[2]*100}%;--c:var(--primary)"></i></div><b>${s[1]}</b></div>`).join('')}</div>`,`<button class="btn" data-route="Study Progress">View progress</button><button class="btn btn-primary" data-action="download-scorecard" data-id="${r.id}">Download scorecard</button>`); }
+
+  function startTest(id){
+    const test=state.mockTests.find(t=>t.id===Number(id));if(!test)return;ui.currentTest={...test,startedAt:Date.now()};ui.currentQuestion=0;ui.testAnswers={};ui.testSeconds=test.duration*60;renderTestModal();requestWakeLock();ui.testTimer=setInterval(()=>{ui.testSeconds--;const el=$('#testTimer');if(el)el.textContent=formatTime(ui.testSeconds);if(ui.testSeconds<=0)submitTest(true)},1000);
+  }
+  function formatTime(sec){return `${String(Math.floor(sec/60)).padStart(2,'0')}:${String(Math.max(0,sec%60)).padStart(2,'0')}`;}
+  function renderTestModal(){
+    const t=ui.currentTest,q=testQuestions[ui.currentQuestion];if(!t)return;
+    openModal(esc(t.title),`${t.exam} · ${t.questions} questions`, `<div class="question-shell"><aside class="question-palette"><p style="color:var(--muted);font-size:10px">Question palette</p><div class="question-palette-grid">${testQuestions.map((_,i)=>`<button class="q-number ${i===ui.currentQuestion?'active':''} ${ui.testAnswers[i]!==undefined?'answered':''}" data-action="test-question" data-index="${i}">${i+1}</button>`).join('')}</div><div style="margin-top:18px;color:var(--muted);font-size:10px"><p>Answered: ${Object.keys(ui.testAnswers).length}/${testQuestions.length}</p><p>Unanswered questions can be revisited before submission.</p></div></aside><main class="question-main"><div class="test-head"><div><strong>Question ${ui.currentQuestion+1} of ${testQuestions.length}</strong><small style="display:block;color:var(--muted)">+1 correct · no negative marking in demo</small></div><span class="timer" id="testTimer">${formatTime(ui.testSeconds)}</span></div><div class="question-text">${esc(q.q)}</div>${q.options.map((o,i)=>`<button class="option ${ui.testAnswers[ui.currentQuestion]===i?'selected':''}" data-action="test-option" data-index="${i}"><i>${String.fromCharCode(65+i)}</i><span>${esc(o)}</span></button>`).join('')}<div class="test-nav"><button class="btn" data-action="test-prev" ${ui.currentQuestion===0?'disabled':''}>← Previous</button><div><button class="btn" data-action="test-clear">Clear</button> ${ui.currentQuestion===testQuestions.length-1?'<button class="btn btn-primary" data-action="submit-test">Submit test</button>':'<button class="btn btn-primary" data-action="test-next">Save & next →</button>'}</div></div></main></div>`, '', true);
+  }
+  function submitTest(auto=false){
+    if(!ui.currentTest)return;clearInterval(ui.testTimer);ui.testTimer=null;const score=testQuestions.reduce((n,q,i)=>n+(ui.testAnswers[i]===q.answer?1:0),0);const accuracy=Math.round(score/testQuestions.length*100);const elapsed=Math.min(ui.currentTest.duration*60,Math.round((Date.now()-ui.currentTest.startedAt)/1000));const attempt={id:uniqueId(),testId:ui.currentTest.id,date:isoDate(TODAY),score,total:testQuestions.length,accuracy,time:elapsed,percentile:Math.min(99,55+score*8)};state.attempts.unshift(attempt);save();openModal(auto?'Test auto-submitted':'Test submitted',ui.currentTest.title,`<div class="grid grid-4" style="margin-bottom:18px">${statBox('Score',`${score}/${testQuestions.length}`,'Correct answers')}${statBox('Accuracy',`${accuracy}%`,'Attempt accuracy')}${statBox('Time',formatTime(elapsed),'Time used')}${statBox('Percentile',`${attempt.percentile}%`,'Estimated')}</div><h3>Answer review</h3><div>${testQuestions.map((q,i)=>`<div class="card card-pad" style="margin-bottom:9px"><strong>${i+1}. ${esc(q.q)}</strong><p style="margin:7px 0 0;color:${ui.testAnswers[i]===q.answer?'var(--success)':'var(--danger)'}">Your answer: ${ui.testAnswers[i]!==undefined?esc(q.options[ui.testAnswers[i]]):'Not answered'} · Correct: ${esc(q.options[q.answer])}</p></div>`).join('')}</div>`,`<button class="btn" data-action="close-modal">Close</button><button class="btn btn-primary" data-action="go-test-history">View attempt history</button>`,true);ui.currentTest=null;
+  }
+
+  function startCurrentQuiz(){
+    ui.currentQuizAnswers={};openModal('Daily Current Affairs Quiz','5 exam-focused questions',`<form id="currentQuizForm">${quizQuestions.map((q,qi)=>`<div class="card card-pad" style="margin-bottom:12px"><strong>${qi+1}. ${esc(q.q)}</strong>${q.options.map((o,oi)=>`<label class="option" style="cursor:pointer"><input type="radio" name="q${qi}" value="${oi}" required><span>${esc(o)}</span></label>`).join('')}</div>`).join('')}<button class="btn btn-primary" style="width:100%">Submit quiz</button></form>`,'',true);
+  }
+
+  function openBookmarkForm(){ openModal('Add bookmark','Save a useful resource or external reference.',`<form id="bookmarkForm"><div class="form-grid">${formField('Title','title','','text',true,'required')}${formField('Description','description','','text',true,'required')}<div class="field"><label>Type</label><select class="select" name="type"><option>Syllabus</option><option>Paper</option><option>Current Affairs</option><option>Strategy</option><option>Cut Off</option></select></div>${formField('Source','source','Personal','text')}</div><div class="modal-actions" style="padding:15px 0 0;border:0"><button type="button" class="btn" data-action="close-modal">Cancel</button><button class="btn btn-primary">Save bookmark</button></div></form>`); }
+
+  function openCalendarForm(date=isoDate(TODAY)){ openModal('Add calendar reminder','Create a planner session and reminder for a selected date.',`<form id="calendarForm"><div class="form-grid">${formField('Date','date',date,'date',false,'required')}${formField('Time','time','09:00','time',false,'required')}${formField('Reminder title','topic','','text',true,'required placeholder="e.g. Application closes"')}</div><div class="modal-actions" style="padding:15px 0 0;border:0"><button type="button" class="btn" data-action="close-modal">Cancel</button><button class="btn btn-primary">Add reminder</button></div></form>`); }
+
+  function openStudyLog(){ openModal('Log study time','Add completed study activity to your planner and progress.',`<form id="studyLogForm"><div class="form-grid">${formField('Date','date',isoDate(TODAY),'date',false,'required')}${formField('Duration (minutes)','duration',60,'number',false,'min="5" max="600" required')}<div class="field"><label>Subject</label><select class="select" name="subject">${state.subjects.map(s=>`<option>${esc(s.name)}</option>`).join('')}</select></div>${formField('Topic','topic','Manual study log','text',true,'required')}</div><div class="modal-actions" style="padding:15px 0 0;border:0"><button type="button" class="btn" data-action="close-modal">Cancel</button><button class="btn btn-primary">Log time</button></div></form>`); }
+
+  function openCheckResult(){ openModal('Check an official result','Enter details to save a result lookup. This demo does not contact an external website.',`<form id="resultCheckForm"><div class="form-grid"><div class="field full"><label>Exam</label><select class="select" name="examId">${state.exams.map(e=>`<option value="${e.id}">${esc(e.name)}</option>`).join('')}</select></div>${formField('Roll number','roll','','text',false,'required')}${formField('Date of birth','dob','','date',false,'required')}</div><div class="modal-actions" style="padding:15px 0 0;border:0"><button type="button" class="btn" data-action="close-modal">Cancel</button><button class="btn btn-primary">Check status</button></div></form>`); }
+
+  function addSmartPlan(){
+    const start=new Date(state.plannerWeekStart+'T12:00:00'); const weakest=[...state.subjects].sort((a,b)=>a.progress-b.progress).slice(0,3);let added=0;
+    weakest.forEach((s,i)=>{const d=new Date(start.getTime()+(i+1)*DAY);const date=isoDate(d);if(!state.plannerSessions.some(x=>x.date===date&&x.subject===s.name)){state.plannerSessions.push({id:uniqueId(),date,time:'18:00',duration:60,subject:s.name,topic:`Smart revision: ${s.name} weak areas`,type:'Revision',done:false});added++;}});
+    save();render();toast('Smart plan generated',`${added} focused sessions added to this week.`,'success');
+  }
+
+  function downloadText(name, content, type='text/plain'){
+    const blob=new Blob([content],{type});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
+  }
+  function downloadableContent(title, lines){ return `${title}\n${'='.repeat(title.length)}\n\n${lines.join('\n')}\n\nGenerated by Sarkari Aspirant on 3 August 2026.`; }
+  function addDownload(name,type,size='Generated') { const existing=state.downloads.find(d=>d.name===name);if(!existing)state.downloads.unshift({id:uniqueId(),name,type,size,date:isoDate(TODAY),status:'Ready'});save(); }
+
+  async function requestWakeLock(){
+    if(!state.preferences.wakeLock)return;
+    try{ if('wakeLock' in navigator) await navigator.wakeLock.request('screen'); else toast('Wake lock unavailable','This browser or file context does not support screen wake lock.','warning'); }catch{ toast('Wake lock unavailable','Permission was not granted in this context.','warning'); }
+  }
+
+  function toast(title,message='',type='info'){
+    const el=document.createElement('div');el.className=`toast ${type}`;el.innerHTML=`<i>${type==='success'?'✓':type==='warning'?'!':'i'}</i><div><strong>${esc(title)}</strong>${message?`<span>${esc(message)}</span>`:''}</div>`;$('#toastArea').appendChild(el);setTimeout(()=>{el.style.opacity='0';el.style.transform='translateY(8px)'},3000);setTimeout(()=>el.remove(),3300);
+  }
+
+  function closeSidebar(){ $('#sidebar').classList.remove('mobile-open');$('#overlay').classList.remove('open'); }
+
+  function refocusInput(id){ setTimeout(()=>{ const input=$(id); if(input){ input.focus(); const n=input.value.length; input.setSelectionRange?.(n,n); } },0); }
+
+  function bindPageInputs(){
+    $('#examSearch')?.addEventListener('input',e=>{ui.examQuery=e.target.value;renderMyExams();bindPageInputs();refocusInput('#examSearch')});
+    $('#examFilter')?.addEventListener('change',e=>{ui.examFilter=e.target.value;renderMyExams();bindPageInputs()});
+    $('#plannerSubject')?.addEventListener('change',e=>{ui.plannerSubject=e.target.value;renderPlanner();bindPageInputs()});
+    $('#resultFilter')?.addEventListener('change',e=>{ui.resultFilter=e.target.value;renderResults();bindPageInputs()});
+    $('#bookmarkSearch')?.addEventListener('input',e=>{ui.bookmarkQuery=e.target.value;renderBookmarks();bindPageInputs();refocusInput('#bookmarkSearch')});
+    $('#bookmarkFilter')?.addEventListener('change',e=>{ui.bookmarkFilter=e.target.value;renderBookmarks();bindPageInputs()});
+    $('#noteSearch')?.addEventListener('input',e=>{ui.noteQuery=e.target.value;renderNotes();bindPageInputs();refocusInput('#noteSearch')});
+    $('#alertFilter')?.addEventListener('change',e=>{ui.alertFilter=e.target.value;renderAlerts();bindPageInputs()});
+    $('#downloadFilter')?.addEventListener('change',e=>{ui.downloadFilter=e.target.value;renderDownloads();bindPageInputs()});
+    $('#noteTitle')?.addEventListener('input',saveNoteFields);
+    $('#noteTag')?.addEventListener('input',saveNoteFields);
+    $('#noteBody')?.addEventListener('input',saveNoteFields);
+    $('#dailyGoal')?.addEventListener('change',e=>{state.profile.dailyGoal=Number(e.target.value);save();toast('Daily goal updated',`${state.profile.dailyGoal} hours per day.`,'success')});
+    $('#compactSetting')?.addEventListener('change',e=>{state.compactSidebar=e.target.checked;$('#sidebar').classList.toggle('compact',state.compactSidebar);save()});
+    $$('[data-pref]').forEach(input=>input.addEventListener('change',async e=>{state.preferences[e.target.dataset.pref]=e.target.checked;save();if(e.target.dataset.pref==='wakeLock'&&e.target.checked)await requestWakeLock();toast('Preference updated','','success')}));
+  }
+  let noteSaveTimer;
+  function saveNoteFields(){ clearTimeout(noteSaveTimer);const n=state.notes.find(x=>x.id===ui.selectedNoteId);if(!n)return;n.title=$('#noteTitle').value;n.tag=$('#noteTag').value;n.body=$('#noteBody').value;n.updated=new Date().toISOString();$('#noteSaveState').textContent='Saving…';noteSaveTimer=setTimeout(()=>{save();$('#noteSaveState')&&($('#noteSaveState').textContent='Saved just now')},350); }
+
+  function buildSearchIndex(){
+    return [
+      ...state.exams.map(e=>({title:e.name,meta:e.board,route:'My Exams',action:'view-exam',id:e.id,icon:'▣'})),
+      ...state.notes.map(n=>({title:n.title,meta:`Note · ${n.tag}`,route:'Notes',noteId:n.id,icon:'▨'})),
+      ...state.mockTests.map(t=>({title:t.title,meta:`Mock Test · ${t.exam}`,route:'Mock Tests',action:'start-test',id:t.id,icon:'◫'})),
+      ...state.bookmarks.map(b=>({title:b.title,meta:`Bookmark · ${b.type}`,route:'Bookmarks',bookmarkId:b.id,icon:b.icon})),
+      ...['Syllabus','Previous Papers','Current Affairs','Exam Calendar','Community','Topper Strategy','Cut Offs'].map(r=>({title:r,meta:'Study resource',route:'Resources',resource:r,icon:'▥'})),
+      {title:'Study Planner',meta:'Create and manage study sessions',route:'Study Planner',icon:'▧'},
+      {title:'Admit Cards',meta:'Available and upcoming hall tickets',route:'Admit Cards',icon:'▤'},
+      {title:'Results & Scorecards',meta:'Marks, rank and cut-offs',route:'Results',icon:'◎'}
+    ];
+  }
+  function renderSearch(q){
+    const panel=$('#searchResults');q=q.trim().toLowerCase();if(!q){panel.classList.remove('open');panel.innerHTML='';return;}const matches=buildSearchIndex().filter(x=>`${x.title} ${x.meta}`.toLowerCase().includes(q)).slice(0,9);panel.innerHTML=matches.length?matches.map((x,i)=>`<button class="search-result" data-search-index="${i}"><span>${x.icon}</span><span><strong>${esc(x.title)}</strong><small>${esc(x.meta)}</small></span><span>›</span></button>`).join(''):`<div class="empty-state" style="padding:22px">No matches found.</div>`;panel.classList.add('open');$$('[data-search-index]',panel).forEach((b,i)=>b.addEventListener('click',()=>{const x=matches[i];panel.classList.remove('open');$('#globalSearch').value='';if(x.noteId){ui.selectedNoteId=x.noteId;navigate('Notes');return;}if(x.bookmarkId){navigate('Bookmarks');return;}navigate(x.route,{resource:x.resource});setTimeout(()=>{if(x.action==='view-exam')showExamDetail(x.id);if(x.action==='start-test')startTest(x.id)},50)}));
+  }
+
+  function createPdfBlob(lines){
+    const safe=lines.map(x=>String(x).replace(/[^\x20-\x7E]/g,' ').replace(/([\\()])/g,'\\$1')).slice(0,38);
+    const stream=['BT','/F1 12 Tf','50 790 Td',...safe.flatMap((line,i)=>[i?'0 -18 Td':'',`(${line}) Tj`]).filter(Boolean),'ET'].join('\n');
+    const objects=[
+      '<< /Type /Catalog /Pages 2 0 R >>',
+      '<< /Type /Pages /Kids [3 0 R] /Count 1 >>',
+      '<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 4 0 R >> >> /Contents 5 0 R >>',
+      '<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>',
+      `<< /Length ${stream.length} >>\nstream\n${stream}\nendstream`
+    ];
+    let pdf='%PDF-1.4\n';const offsets=[0];objects.forEach((o,i)=>{offsets[i+1]=pdf.length;pdf+=`${i+1} 0 obj\n${o}\nendobj\n`});const xref=pdf.length;pdf+=`xref\n0 ${objects.length+1}\n0000000000 65535 f \n`;for(let i=1;i<=objects.length;i++)pdf+=`${String(offsets[i]).padStart(10,'0')} 00000 n \n`;pdf+=`trailer\n<< /Size ${objects.length+1} /Root 1 0 R >>\nstartxref\n${xref}\n%%EOF`;
+    return new Blob([pdf],{type:'application/pdf'});
+  }
+  function downloadBlob(name,blob){ const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1200); }
+  function downloadPdf(name,lines){ downloadBlob(name,createPdfBlob(lines)); }
+
+  document.addEventListener('click', e => {
+    const route=e.target.closest('[data-route]');
+    if(route){ const page=route.dataset.route;const resource=route.dataset.resource;const settingsTab=route.dataset.settingsTab;closeModal();navigate(page,{resource,settingsTab});return; }
+    const el=e.target.closest('[data-action]');if(!el)return;const action=el.dataset.action,id=Number(el.dataset.id);
+    switch(action){
+      case 'close-modal': closeModal(); break;
+      case 'focus-mode': document.body.classList.toggle('focus-mode');toast(document.body.classList.contains('focus-mode')?'Focus mode enabled':'Focus mode disabled','Dashboard distractions have been adjusted.','success'); break;
+      case 'add-exam': openExamForm(); break;
+      case 'view-exam': showExamDetail(id); break;
+      case 'edit-exam': {const exam=examById(id);closeModal();openExamForm(exam);break;}
+      case 'delete-exam': if(confirm('Delete this tracked exam and its connected records?')){state.exams=state.exams.filter(x=>x.id!==id);state.applications=state.applications.filter(x=>x.examId!==id);state.admitCards=state.admitCards.filter(x=>x.examId!==id);state.results=state.results.filter(x=>x.examId!==id);save();closeModal();render();toast('Exam deleted','','success')} break;
+      case 'open-exam-plan': {const exam=examById(id);closeModal();navigate('Study Planner');setTimeout(()=>openSessionForm(null,isoDate(TODAY)),50);toast('Plan for '+exam.name,'Add a focused session for your target exam.','info');break;}
+      case 'export-exams': {const csv=['Exam,Board,Date,Stage,Readiness,Priority',...state.exams.map(x=>[x.name,x.board,x.date,x.stage,x.prep,x.priority].map(v=>`"${String(v).replaceAll('"','""')}"`).join(','))].join('\n');downloadText('tracked-exams.csv',csv,'text/csv');toast('Exam list exported','','success');break;}
+      case 'application-view': ui.applicationView=ui.applicationView==='table'?'board':'table';renderApplications();bindPageInputs();break;
+      case 'add-application': openApplicationForm();break;
+      case 'view-application': openApplication(id);break;
+      case 'refresh-admit': toast('Admit cards checked','No newer official releases were found in this demo.','success');break;
+      case 'view-admit': openAdmitDetail(id);break;
+      case 'download-admit': {const a=state.admitCards.find(x=>x.id===id),exam=examById(a?.examId);if(!a||!exam)return;a.downloaded=true;a.status='downloaded';const name=`${exam.code}-Admit-Card.pdf`;downloadPdf(name,[exam.name,'ADMIT CARD',`Candidate: ${state.profile.name}`,`Exam date: ${fmtDate(a.examDate)}`,`City: ${a.city}`,`Centre: ${a.centre}`,`Shift: ${a.shift}`,'Carry a printed copy and original photo identification.']);addDownload(name,'Admit Card','248 KB');save();closeModal();render();toast('Admit card downloaded',name,'success');break;}
+      case 'check-result': openCheckResult();break;
+      case 'view-result': openResultDetail(id);break;
+      case 'download-scorecard': {const r=state.results.find(x=>x.id===id),exam=examById(r?.examId);if(!r||!exam)return;const name=`${exam.code}-Scorecard.pdf`;downloadPdf(name,[exam.name,'SCORECARD',`Candidate: ${state.profile.name}`,`Score: ${r.score}/${r.maxScore}`,`Cut-off: ${r.cutoff}`,`Percentile: ${r.percentile}`,`Rank: ${r.rank}`,`Status: ${r.status.toUpperCase()}`,...r.sectionScores.map(s=>`${s[0]}: ${s[1]}/${s[2]}`)]);addDownload(name,'Scorecard','184 KB');save();toast('Scorecard downloaded',name,'success');break;}
+      case 'add-task': openTaskForm();break;
+      case 'toggle-task': {const t=state.tasks.find(x=>x.id===id);if(t){t.done=!t.done;t.progress=t.done?100:50;t.state=t.done?'Done':'In progress';save();render();toast(t.done?'Task completed':'Task reopened',t.title,'success')}break;}
+      case 'add-session': openSessionForm();break;
+      case 'add-session-date': openSessionForm(null,el.dataset.date);break;
+      case 'toggle-session': {const s=state.plannerSessions.find(x=>x.id===id);if(s){s.done=!s.done;save();render();toast(s.done?'Session completed':'Session reopened',s.topic,'success')}break;}
+      case 'edit-session': openSessionForm(state.plannerSessions.find(x=>x.id===id));break;
+      case 'delete-session': if(confirm('Delete this study session?')){state.plannerSessions=state.plannerSessions.filter(x=>x.id!==id);save();render();toast('Session deleted','','success')}break;
+      case 'prev-week': {const d=new Date(state.plannerWeekStart+'T12:00:00');d.setDate(d.getDate()-7);state.plannerWeekStart=isoDate(d);save();render();break;}
+      case 'next-week': {const d=new Date(state.plannerWeekStart+'T12:00:00');d.setDate(d.getDate()+7);state.plannerWeekStart=isoDate(d);save();render();break;}
+      case 'today-week': state.plannerWeekStart='2026-08-03';save();render();break;
+      case 'smart-plan': addSmartPlan();break;
+      case 'mock-tab': ui.mockTab=el.dataset.tab;renderMockTests();bindPageInputs();break;
+      case 'start-test': startTest(id);break;
+      case 'custom-test': startTest(604);toast('Custom test generated','A balanced five-question practice test is ready.','success');break;
+      case 'review-attempt': {const a=state.attempts.find(x=>x.id===id),t=state.mockTests.find(x=>x.id===a?.testId);openModal('Attempt review',t?.title||'Mock Test',`<section class="grid grid-4">${statBox('Score',`${a.score}/${a.total}`,'Questions')}${statBox('Accuracy',`${a.accuracy}%`,'Correct attempts')}${statBox('Time',formatTime(a.time),'Total time')}${statBox('Percentile',`${a.percentile}%`,'Estimated rank')}</section><div class="card card-pad" style="margin-top:15px"><h3>Recommended action</h3><p style="color:var(--muted)">${a.accuracy<75?'Review incorrect concepts and retake a similar sectional test.':'Maintain speed and increase full-length mock frequency.'}</p></div>`);break;}
+      case 'test-question': ui.currentQuestion=Number(el.dataset.index);renderTestModal();break;
+      case 'test-option': ui.testAnswers[ui.currentQuestion]=Number(el.dataset.index);renderTestModal();break;
+      case 'test-prev': ui.currentQuestion=Math.max(0,ui.currentQuestion-1);renderTestModal();break;
+      case 'test-next': ui.currentQuestion=Math.min(testQuestions.length-1,ui.currentQuestion+1);renderTestModal();break;
+      case 'test-clear': delete ui.testAnswers[ui.currentQuestion];renderTestModal();break;
+      case 'submit-test': if(Object.keys(ui.testAnswers).length<testQuestions.length&&!confirm('Some questions are unanswered. Submit anyway?'))return;submitTest(false);break;
+      case 'go-test-history': closeModal();ui.mockTab='history';navigate('Mock Tests');break;
+      case 'log-study': openStudyLog();break;
+      case 'download-report': {const mins=state.plannerSessions.filter(s=>s.done).reduce((a,s)=>a+s.duration,0);const name='Weekly-Study-Report.pdf';downloadPdf(name,['WEEKLY STUDY REPORT',`Candidate: ${state.profile.name}`,`Completed study time: ${Math.floor(mins/60)}h ${mins%60}m`,`Mock tests attempted: ${state.attempts.length}`,`Average subject progress: ${Math.round(state.subjects.reduce((a,s)=>a+s.progress,0)/state.subjects.length)}%`,...state.subjects.map(s=>`${s.name}: ${s.progress}% progress, ${s.accuracy}% accuracy`)]);addDownload(name,'Report','392 KB');toast('Study report downloaded',name,'success');break;}
+      case 'add-bookmark': openBookmarkForm();break;
+      case 'remove-bookmark': state.bookmarks=state.bookmarks.filter(x=>x.id!==id);save();render();toast('Bookmark removed','','success');break;
+      case 'open-bookmark': {const b=state.bookmarks.find(x=>x.id===id);if(!b)return;const map={'Syllabus':'Syllabus','Paper':'Previous Papers','Current Affairs':'Current Affairs','Strategy':'Topper Strategy','Cut Off':'Cut Offs'};navigate('Resources',{resource:map[b.type]||'Syllabus'});break;}
+      case 'new-note': {const n={id:uniqueId(),title:'Untitled note',body:'',tag:'General',updated:new Date().toISOString(),pinned:false};state.notes.unshift(n);ui.selectedNoteId=n.id;save();render();setTimeout(()=>$('#noteTitle')?.select(),30);break;}
+      case 'select-note': ui.selectedNoteId=id;renderNotes();bindPageInputs();break;
+      case 'pin-note': {const n=state.notes.find(x=>x.id===id);n.pinned=!n.pinned;n.updated=new Date().toISOString();save();render();break;}
+      case 'delete-note': if(confirm('Delete this note?')){state.notes=state.notes.filter(x=>x.id!==id);ui.selectedNoteId=state.notes[0]?.id||null;save();render();toast('Note deleted','','success')}break;
+      case 'open-alert': {const a=state.alerts.find(x=>x.id===id);if(!a)return;a.read=true;save();navigate(a.route,{resource:a.resource});break;}
+      case 'toggle-alert-read': {const a=state.alerts.find(x=>x.id===id);a.read=!a.read;save();render();break;}
+      case 'delete-alert': state.alerts=state.alerts.filter(x=>x.id!==id);save();render();toast('Alert dismissed','','success');break;
+      case 'mark-all-read': state.alerts.forEach(a=>a.read=true);save();render();toast('All alerts marked as read','','success');break;
+      case 'download-file': {const d=state.downloads.find(x=>x.id===id);if(!d)return;downloadPdf(d.name.endsWith('.pdf')?d.name:d.name.replace(/\.[^.]+$/,'.pdf'),[d.name,`Type: ${d.type}`,`Candidate: ${state.profile.name}`,`Saved: ${fmtDate(d.date)}`,'This is a generated prototype document.']);toast('Download started',d.name,'success');break;}
+      case 'remove-download': state.downloads=state.downloads.filter(x=>x.id!==id);save();render();toast('Download removed from history','','success');break;
+      case 'clear-downloads': if(confirm('Clear the download history?')){state.downloads=[];save();render();toast('Download history cleared','','success')}break;
+      case 'settings-tab': state.activeSettingsTab=el.dataset.tab;save();render();break;
+      case 'save-settings': $('#profileForm')?.requestSubmit(); if(!$('#profileForm'))toast('Settings saved','','success');break;
+      case 'set-theme': setTheme(el.dataset.theme);render();break;
+      case 'test-focus': openModal('Focus test','A short demonstration focus session.',`<div class="progress-ring" style="--value:100"><div><strong>01:00</strong><span>Focus timer</span></div></div><p style="text-align:center;color:var(--muted);margin-top:14px">Wake lock and focus sounds follow your preferences.</p>`,`<button class="btn btn-primary" data-action="close-modal">Finish</button>`);requestWakeLock();break;
+      case 'export-data': downloadText('sarkari-aspirant-backup.json',JSON.stringify(state,null,2),'application/json');toast('Backup exported','','success');break;
+      case 'import-data': $('#importFile').click();break;
+      case 'reset-data': if(confirm('Reset all portal data? This cannot be undone.')){state=clone(defaultState);save();closeModal();render();toast('Portal reset','Original demonstration data restored.','success')}break;
+      case 'bookmark-current-resource': {const exists=state.bookmarks.some(b=>b.title===state.activeResource);if(exists){toast('Already bookmarked',state.activeResource,'info');break;}state.bookmarks.unshift({id:uniqueId(),type:state.activeResource==='Previous Papers'?'Paper':state.activeResource==='Topper Strategy'?'Strategy':state.activeResource==='Cut Offs'?'Cut Off':'Syllabus',title:state.activeResource,description:`Saved ${state.activeResource} resource.`,source:'Resources',date:isoDate(TODAY),icon:'▥'});save();toast('Resource bookmarked',state.activeResource,'success');break;}
+      case 'toggle-topic': {const t=state.syllabus.find(x=>x.id===id);t.done=!t.done;save();render();toast(t.done?'Topic completed':'Topic reopened',t.topic,'success');break;}
+      case 'paper-test': closeModal();navigate('Mock Tests');setTimeout(()=>startTest(601),50);break;
+      case 'download-paper': {const name=el.dataset.paper.replace(/[^a-z0-9]+/gi,'-')+'.pdf';downloadPdf(name,[el.dataset.paper,'PREVIOUS YEAR QUESTION PAPER','100 questions','Includes answer key and solution references.']);addDownload(name,'Question Papers','1.8 MB');toast('Paper downloaded',name,'success');break;}
+      case 'start-current-quiz': startCurrentQuiz();break;
+      case 'bookmark-news': state.bookmarks.unshift({id:uniqueId(),type:'Current Affairs',title:el.dataset.title,description:'Saved from the daily current-affairs feed.',source:'Current Affairs',date:isoDate(TODAY),icon:'◎'});save();toast('Current affair saved','','success');break;
+      case 'add-calendar-event': openCalendarForm();break;
+      case 'calendar-day': openCalendarForm(el.dataset.date);break;
+      case 'join-community': toast('Community access ready','In production, this would open the verified community invite.','success');break;
+      case 'apply-strategy': addSmartPlan();navigate('Study Planner');break;
+      case 'estimate-cutoff': {const score=Number($('#cutoffScore').value),cat=$('#cutoffCategory').value,cut={UR:158,OBC:154,SC:141,ST:131}[cat],buffer=score-cut;$('#cutoffResult').innerHTML=`<div class="card card-pad" style="border-color:${buffer>=0?'var(--success)':'var(--danger)'}"><strong style="color:${buffer>=0?'var(--success)':'var(--danger)'}">${buffer>=0?`You are ${buffer} marks above the recent ${cat} cut-off.`:`You are ${Math.abs(buffer)} marks below the recent ${cat} cut-off.`}</strong><p style="margin:5px 0 0;color:var(--muted)">Treat this only as a planning estimate, not a prediction.</p></div>`;break;}
+    }
+  });
+
+  document.addEventListener('submit', e => {
+    e.preventDefault();const f=e.target,fd=new FormData(f);
+    if(f.id==='examForm'){
+      const id=Number(f.dataset.id),existing=examById(id);const name=fd.get('name'),code=name.split(/\s+/).slice(0,2).map(x=>x[0]).join('').toUpperCase();const data={code,name,board:fd.get('board'),date:fd.get('date'),stage:fd.get('stage'),priority:fd.get('priority'),prep:Number(fd.get('prep')),reminder:Number(fd.get('reminder')),application:fd.get('stage')==='completed'?'Completed':'Not started',logo:existing?.logo||['#155eef','#7f56d9'],target:existing?.target||false};if(existing)Object.assign(existing,data);else state.exams.push({id:uniqueId(),...data});save();closeModal();render();toast(existing?'Exam updated':'Exam added',name,'success');
+    }
+    if(f.id==='applicationManageForm'){const a=state.applications.find(x=>x.id===Number(f.dataset.id));a.applicationNo=fd.get('applicationNo');a.stage=fd.get('stage');a.fee=fd.get('fee');a.lastUpdated=isoDate(TODAY);for(const k of ['photo','signature','id','certificate'])a.documents[k]=fd.get(`doc_${k}`)==='on';save();closeModal();render();toast('Application updated','','success');}
+    if(f.id==='applicationForm'){state.applications.push({id:uniqueId(),examId:Number(fd.get('examId')),applicationNo:fd.get('applicationNo'),stage:fd.get('stage'),fee:'Pending',lastUpdated:isoDate(TODAY),documents:{photo:false,signature:false,id:false,certificate:false}});save();closeModal();render();toast('Application added','','success');}
+    if(f.id==='taskForm'){state.tasks.push({id:uniqueId(),title:fd.get('title'),date:isoDate(TODAY),done:false,progress:0,state:fd.get('state'),category:fd.get('category')});save();closeModal();render();toast('Task added',fd.get('title'),'success');}
+    if(f.id==='sessionForm'){const id=Number(f.dataset.id),existing=state.plannerSessions.find(x=>x.id===id);const data={date:fd.get('date'),time:fd.get('time'),duration:Number(fd.get('duration')),subject:fd.get('subject'),topic:fd.get('topic'),type:fd.get('type'),done:existing?.done||false};if(existing)Object.assign(existing,data);else state.plannerSessions.push({id:uniqueId(),...data});save();closeModal();render();toast(existing?'Session updated':'Session added',data.topic,'success');}
+    if(f.id==='bookmarkForm'){state.bookmarks.unshift({id:uniqueId(),type:fd.get('type'),title:fd.get('title'),description:fd.get('description'),source:fd.get('source'),date:isoDate(TODAY),icon:'♧'});save();closeModal();render();toast('Bookmark added','','success');}
+    if(f.id==='profileForm'){state.profile.name=fd.get('name');state.profile.email=fd.get('email');state.profile.phone=fd.get('phone');state.profile.state=fd.get('state');state.profile.language=fd.get('language');state.profile.target=fd.get('target');save();render();toast('Profile updated','','success');}
+    if(f.id==='currentQuizForm'){let score=0;quizQuestions.forEach((q,i)=>{if(Number(fd.get(`q${i}`))===q.answer)score++});state.currentAffairsQuizScore=score;save();closeModal();render();toast('Quiz completed',`${score}/5 correct answers.`,'success');}
+    if(f.id==='calendarForm'){state.plannerSessions.push({id:uniqueId(),date:fd.get('date'),time:fd.get('time'),duration:15,subject:'Weekly Review',topic:fd.get('topic'),type:'Review',done:false});state.alerts.unshift({id:uniqueId(),type:'Reminder',title:fd.get('topic'),description:`Reminder scheduled for ${fmtDate(fd.get('date'))} at ${fd.get('time')}.`,time:new Date().toISOString(),read:false,route:'Resources',resource:'Exam Calendar'});save();closeModal();render();toast('Calendar reminder added','','success');}
+    if(f.id==='studyLogForm'){state.plannerSessions.push({id:uniqueId(),date:fd.get('date'),time:'Completed',duration:Number(fd.get('duration')),subject:fd.get('subject'),topic:fd.get('topic'),type:'Study',done:true});const s=state.subjects.find(x=>x.name===fd.get('subject'));if(s)s.hours=Number((s.hours+Number(fd.get('duration'))/60).toFixed(1));save();closeModal();render();toast('Study time logged','','success');}
+    if(f.id==='resultCheckForm'){closeModal();toast('Result check saved','No new official result was found for this demo lookup.','info');}
+  });
+
+  $('#globalSearch').addEventListener('input',e=>renderSearch(e.target.value));
+  $('#globalSearch').addEventListener('focus',e=>renderSearch(e.target.value));
+  $('#themeToggle').addEventListener('click',()=>{setTheme(state.theme==='light'?'dark':'light');render()});
+  $('#collapseSidebar').addEventListener('click',()=>{state.compactSidebar=!state.compactSidebar;$('#sidebar').classList.toggle('compact',state.compactSidebar);save()});
+  $('#mobileMenu').addEventListener('click',()=>{$('#sidebar').classList.add('mobile-open');$('#overlay').classList.add('open')});
+  $('#overlay').addEventListener('click',()=>{closeModal();closeSidebar()});
+  $('#importFile').addEventListener('change',e=>{const file=e.target.files[0];if(!file)return;const reader=new FileReader();reader.onload=()=>{try{const imported=JSON.parse(reader.result);state=Object.assign(clone(defaultState),imported);save();render();toast('Backup imported','','success')}catch{toast('Import failed','The selected file is not a valid backup.','warning')}};reader.readAsText(file);e.target.value=''});
+  document.addEventListener('keydown',e=>{if(e.key==='/'&&!['INPUT','TEXTAREA','SELECT'].includes(document.activeElement.tagName)){e.preventDefault();$('#globalSearch').focus()}if(e.key==='Escape'){closeModal();closeSidebar();$('#searchResults').classList.remove('open')}});
+  document.addEventListener('click',e=>{if(!e.target.closest('.global-search'))$('#searchResults').classList.remove('open')});
+
+  document.documentElement.dataset.theme=state.theme;
+  $('#sidebar').classList.toggle('compact',state.compactSidebar);
+  render();
+})();
+
+</script>
+</body>
+</html>
